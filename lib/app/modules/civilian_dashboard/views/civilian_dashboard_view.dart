@@ -4,11 +4,22 @@ import 'package:d_m/app/common/widgets/common_scaffold.dart'; // Adjust your imp
 class CivilianDashboardView extends StatelessWidget {
   const CivilianDashboardView({Key? key}) : super(key: key);
 
+  // Dummy function to check if the user is in a risk-free zone
+  bool isRiskFree() {
+    // This can later be replaced with real-time API data
+    return DateTime.now().second % 2 == 0; // Example: Changes every second
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Example Figma colors (update as needed)
     final Color accentColor = const Color(0xFF5F6898); // Updated Accent Color
     final Color communityBackground = const Color(0xFFE3F2FD); // Light Blue
+
+    // Determine the risk status dynamically
+    bool riskFree = isRiskFree();
+    Color riskCardColor = riskFree ? Colors.green[100]! : Colors.red[100]!;
+    String riskText = riskFree ? "You are in a Risk-Free Zone" : "You are in a High-Risk Zone!";
+    Color riskTextColor = riskFree ? Colors.green[900]! : Colors.red[900]!;
 
     return CommonScaffold(
       title: 'Dashboard',
@@ -35,11 +46,47 @@ class CivilianDashboardView extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            // COMMUNITY SECTION (Post with reaction options and history button)
+
+            // RISK STATUS SECTION
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: riskCardColor,
+                borderRadius: BorderRadius.circular(8.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  )
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    riskFree ? Icons.check_circle : Icons.warning,
+                    color: riskTextColor,
+                    size: 32,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    riskText,
+                    style: TextStyle(
+                      color: riskTextColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // COMMUNITY SECTION
             Expanded(
               child: Container(
-                margin:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   color: communityBackground,
@@ -59,14 +106,12 @@ class CivilianDashboardView extends StatelessWidget {
                     Row(
                       children: [
                         const CircleAvatar(
-                          backgroundImage:
-                          NetworkImage('https://via.placeholder.com/150'),
+                          backgroundImage: NetworkImage('https://via.placeholder.com/150'),
                         ),
                         const SizedBox(width: 8),
                         const Text(
                           'NDRF',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         const Spacer(),
                         IconButton(
@@ -88,12 +133,9 @@ class CivilianDashboardView extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildReactionIcon(
-                            icon: Icons.thumb_up_alt_outlined, label: 'Like'),
-                        _buildReactionIcon(
-                            icon: Icons.mode_comment_outlined, label: 'Comment'),
-                        _buildReactionIcon(
-                            icon: Icons.share_outlined, label: 'Share'),
+                        _buildReactionIcon(icon: Icons.thumb_up_alt_outlined, label: 'Like'),
+                        _buildReactionIcon(icon: Icons.mode_comment_outlined, label: 'Comment'),
+                        _buildReactionIcon(icon: Icons.share_outlined, label: 'Share'),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -110,10 +152,10 @@ class CivilianDashboardView extends StatelessWidget {
                 ),
               ),
             ),
+
             // WEATHER CARD
             Container(
-              margin:
-              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.blue[100],
@@ -128,8 +170,7 @@ class CivilianDashboardView extends StatelessWidget {
                     children: const [
                       Text(
                         'Manipur, Imphal',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Text('28° | Sunny'),
                     ],
@@ -165,8 +206,7 @@ class CivilianDashboardView extends StatelessWidget {
           child: Center(
             child: Text(
               title,
-              style:
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ),
