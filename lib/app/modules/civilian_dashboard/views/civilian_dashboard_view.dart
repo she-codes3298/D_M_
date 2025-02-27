@@ -6,14 +6,13 @@ class CivilianDashboardView extends StatelessWidget {
 
   // Dummy function to check if the user is in a risk-free zone
   bool isRiskFree() {
-    // This can later be replaced with real-time API data
     return DateTime.now().second % 2 == 0; // Example: Changes every second
   }
 
   @override
   Widget build(BuildContext context) {
-    final Color accentColor = const Color(0xFF5F6898); // Updated Accent Color
-    final Color communityBackground = const Color(0xFFE3F2FD); // Light Blue
+    final Color accentColor = const Color(0xFF5F6898);
+    final Color communityBackground = const Color(0xFFE3F2FD);
 
     // Determine the risk status dynamically
     bool riskFree = isRiskFree();
@@ -24,162 +23,179 @@ class CivilianDashboardView extends StatelessWidget {
     return CommonScaffold(
       title: 'Dashboard',
       currentIndex: 0, // Home index
-      body: SafeArea(
-        child: Column(
-          children: [
-            // BUTTON TILES (Predictive AI and Learn)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Column(
               children: [
-                _buildDashboardTile(
-                  context: context,
-                  title: 'PREDICTIVE AI',
-                  color: accentColor,
-                  routeName: '/predictive_ai',
-                ),
-                _buildDashboardTile(
-                  context: context,
-                  title: 'LEARN',
-                  color: accentColor,
-                  routeName: '/learn',
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-
-            // RISK STATUS SECTION
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: riskCardColor,
-                borderRadius: BorderRadius.circular(8.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  )
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    riskFree ? Icons.check_circle : Icons.warning,
-                    color: riskTextColor,
-                    size: 32,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    riskText,
-                    style: TextStyle(
-                      color: riskTextColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                // BUTTON TILES (Predictive AI and Learn)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildDashboardTile(
+                      context: context,
+                      title: 'PREDICTIVE AI',
+                      color: accentColor,
+                      routeName: '/predictive_ai',
                     ),
-                  ),
-                ],
-              ),
-            ),
-
-            // COMMUNITY SECTION
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: communityBackground,
-                  borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
-                    )
+                    _buildDashboardTile(
+                      context: context,
+                      title: 'LEARN',
+                      color: accentColor,
+                      routeName: '/learn',
+                    ),
                   ],
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Community Post Header
-                    Row(
-                      children: [
-                        const CircleAvatar(
-                          backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+                const SizedBox(height: 8),
+
+                // RISK STATUS SECTION
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: riskCardColor,
+                    borderRadius: BorderRadius.circular(8.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      )
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        riskFree ? Icons.check_circle : Icons.warning,
+                        color: riskTextColor,
+                        size: 32,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        riskText,
+                        style: TextStyle(
+                          color: riskTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
-                        const SizedBox(width: 8),
-                        const Text(
-                          'NDRF',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          icon: const Icon(Icons.more_vert),
-                          onPressed: () {
-                            // TODO: Show post options
-                          },
+                      ),
+                    ],
+                  ),
+                ),
+
+                // COMMUNITY SECTION
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: communityBackground,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
                         )
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    // Community Post Content
-                    const Text(
-                      'This is a sample community post showing real-time updates on disaster management. Stay alert and follow the instructions provided.',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    const SizedBox(height: 8),
-                    // Reaction Bar
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildReactionIcon(icon: Icons.thumb_up_alt_outlined, label: 'Like'),
-                        _buildReactionIcon(icon: Icons.mode_comment_outlined, label: 'Comment'),
-                        _buildReactionIcon(icon: Icons.share_outlined, label: 'Share'),
+                        // Community Post Header
+                        Row(
+                          children: [
+                            const CircleAvatar(
+                              backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'NDRF',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              icon: const Icon(Icons.more_vert),
+                              onPressed: () {
+                                // TODO: Show post options
+                              },
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        // Community Post Content
+                        const Text(
+                          'This is a sample community post showing real-time updates on disaster management. Stay alert and follow the instructions provided.',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        const SizedBox(height: 8),
+                        // Reaction Bar
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildReactionIcon(icon: Icons.thumb_up_alt_outlined, label: 'Like'),
+                            _buildReactionIcon(icon: Icons.mode_comment_outlined, label: 'Comment'),
+                            _buildReactionIcon(icon: Icons.share_outlined, label: 'Share'),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        // History Button
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/community_history');
+                            },
+                            child: const Text('History'),
+                          ),
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    // History Button
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/community_history');
-                        },
-                        child: const Text('History'),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
 
-            // WEATHER CARD
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.blue[100],
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.cloud, size: 48, color: Colors.blue),
-                  const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Manipur, Imphal',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                // WEATHER CARD
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.cloud, size: 48, color: Colors.blue),
+                      const SizedBox(width: 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Manipur, Imphal',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          Text('28° | Sunny'),
+                        ],
                       ),
-                      Text('28° | Sunny'),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+
+          // Floating AI Chatbot Button (Shifted Down by 0.5 cm)
+          Positioned(
+            bottom: 101, // Adjusted position (original 120, reduced by ~19px)
+            right: 16,
+            child: FloatingActionButton(
+              backgroundColor: accentColor,
+              onPressed: () {
+                Navigator.pushNamed(context, '/ai_chatbot'); // Navigate to chatbot page
+              },
+              child: const Icon(Icons.chat, color: Colors.white, size: 28),
+            ),
+          ),
+        ],
       ),
     );
   }

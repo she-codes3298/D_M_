@@ -4,12 +4,17 @@ class CommonScaffold extends StatelessWidget {
   final Widget body;
   final String title;
   final int currentIndex;
+  final String profileImageUrl;
+
+  static const IconData accountCircleOutlined =
+  IconData(0xee35, fontFamily: 'MaterialIcons');
 
   const CommonScaffold({
     Key? key,
     required this.body,
     this.title = '',
     this.currentIndex = 0,
+    this.profileImageUrl = 'https://via.placeholder.com/150',
   }) : super(key: key);
 
   @override
@@ -27,17 +32,25 @@ class CommonScaffold extends StatelessWidget {
           },
         ),
         actions: [
-          // Profile Icon with Popup Menu (includes sign out)
           PopupMenuButton<String>(
-            icon: const CircleAvatar(
-              backgroundImage:
-              NetworkImage('https://via.placeholder.com/150'),
+            icon: CircleAvatar(
+              backgroundColor: Colors.grey[300],
+              child: ClipOval(
+                child: Image.network(
+                  profileImageUrl,
+                  fit: BoxFit.cover,
+                  width: 40,
+                  height: 40,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(accountCircleOutlined, size: 32, color: Colors.black);
+                  },
+                ),
+              ),
             ),
             onSelected: (value) {
               if (value == 'profile') {
                 Navigator.pushNamed(context, '/profile');
               } else if (value == 'signout') {
-                // Dummy sign-out action: show a SnackBar
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Signed Out')),
                 );
@@ -60,8 +73,9 @@ class CommonScaffold extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
+        selectedFontSize: 14,
+        unselectedFontSize: 12,
         onTap: (index) {
-          // Navigate using named routes based on the selected index.
           switch (index) {
             case 0:
               Navigator.pushNamed(context, '/');
@@ -80,24 +94,31 @@ class CommonScaffold extends StatelessWidget {
               break;
           }
         },
-        items: const [
-          BottomNavigationBarItem(
+        items: [
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.location_on),
             label: 'Refugee Camp',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.sos),
+            icon: Container(
+              padding: const EdgeInsets.all(8), // Makes the icon bigger
+              decoration: BoxDecoration(
+                color: Color(0xFFB01629),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.sos, color: Colors.white, size: 40), // Larger size
+            ),
             label: 'SOS',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.menu_book),
             label: 'User Guide',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.call),
             label: 'Call',
           ),
