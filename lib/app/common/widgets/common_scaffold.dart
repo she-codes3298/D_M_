@@ -4,12 +4,17 @@ class CommonScaffold extends StatelessWidget {
   final Widget body;
   final String title;
   final int currentIndex;
+  final String profileImageUrl;
+
+  static const IconData accountCircleOutlined =
+  IconData(0xee35, fontFamily: 'MaterialIcons');
 
   const CommonScaffold({
     Key? key,
     required this.body,
     this.title = '',
     this.currentIndex = 0,
+    this.profileImageUrl = 'https://via.placeholder.com/150',
   }) : super(key: key);
 
   @override
@@ -20,10 +25,27 @@ class CommonScaffold extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: primaryColor,
         title: Text(title),
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            // TODO: Implement drawer or menu action
+          },
+        ),
         actions: [
           PopupMenuButton<String>(
-            icon: const CircleAvatar(
-              backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+            icon: CircleAvatar(
+              backgroundColor: Colors.grey[300],
+              child: ClipOval(
+                child: Image.network(
+                  profileImageUrl,
+                  fit: BoxFit.cover,
+                  width: 40,
+                  height: 40,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(accountCircleOutlined, size: 32, color: Colors.black);
+                  },
+                ),
+              ),
             ),
             onSelected: (value) {
               if (value == 'profile') {
@@ -34,9 +56,15 @@ class CommonScaffold extends StatelessWidget {
                 );
               }
             },
-            itemBuilder: (context) => [
-              const PopupMenuItem(value: 'profile', child: Text('Profile')),
-              const PopupMenuItem(value: 'signout', child: Text('Sign Out')),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'profile',
+                child: Text('Profile'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'signout',
+                child: Text('Sign Out'),
+              ),
             ],
           ),
         ],
@@ -45,34 +73,55 @@ class CommonScaffold extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
+        selectedFontSize: 14,
+        unselectedFontSize: 12,
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.pushReplacementNamed(context, '/');
+              Navigator.pushNamed(context, '/');
               break;
             case 1:
-              Navigator.pushReplacementNamed(context, '/refugee_camp');
+              Navigator.pushNamed(context, '/refugee_camp');
               break;
             case 2:
-              Navigator.pushReplacementNamed(context, '/sos');
+              Navigator.pushNamed(context, '/sos');
               break;
             case 3:
-              Navigator.pushReplacementNamed(context, '/user_guide');
+              Navigator.pushNamed(context, '/user_guide');
               break;
             case 4:
-              Navigator.pushReplacementNamed(context, '/call');
+              Navigator.pushNamed(context, '/call');
               break;
           }
         },
         items: [
-          const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          const BottomNavigationBarItem(icon: Icon(Icons.location_on), label: 'Refugee Camp'),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.location_on),
+            label: 'Refugee Camp',
+          ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.sos, size: 32, color: Color(0xFFB01629)), // 🔴 Bigger & Red SOS Button
+            icon: Container(
+              padding: const EdgeInsets.all(8), // Makes the icon bigger
+              decoration: BoxDecoration(
+                color: Color(0xFFB01629),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.sos, color: Colors.white, size: 40), // Larger size
+            ),
             label: 'SOS',
           ),
-          const BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'User Guide'),
-          const BottomNavigationBarItem(icon: Icon(Icons.call), label: 'Call'),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'User Guide',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.call),
+            label: 'Call',
+          ),
         ],
       ),
     );
