@@ -108,7 +108,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('E-sahyog Chatbot'),
+        title: Text('E-Sahyog'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
