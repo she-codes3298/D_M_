@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:d_m/app/common/widgets/common_scaffold.dart'; // Adjust your import path
+import 'package:d_m/app/modules/ai_chatbot.dart'; // Import the chatbot screen
 
 class CivilianDashboardView extends StatelessWidget {
   const CivilianDashboardView({Key? key}) : super(key: key);
@@ -187,7 +188,7 @@ class CivilianDashboardView extends StatelessWidget {
           Positioned(
             bottom: 101, // Adjusted position (original 120, reduced by ~19px)
             right: 16,
-            child: FloatingActionButton(
+            child:FloatingActionButton(
               backgroundColor: accentColor,
               onPressed: () {
                 Navigator.pushNamed(context, '/ai_chatbot'); // Navigate to chatbot page
