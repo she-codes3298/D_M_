@@ -8,6 +8,7 @@ import 'app/modules/user_guide/views/user_guide_page.dart';
 import 'app/modules/call/views/call_page.dart';
 import 'app/modules/profile/views/profile_page.dart';
 import 'app/modules/community_history/views/community_history_page.dart';
+import 'app/modules/ai_chatbot.dart';
 
 void main() {
   runApp(const MyApp());
