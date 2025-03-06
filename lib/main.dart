@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
     '/call': (context) => const CallPage(),
     '/profile': (context) => const ProfilePage(),
     '/community_history': (context) => const CommunityHistoryPage(),
+    '/ai_chatbot': (context) => AIChatbotScreen(),
   };
 
   @override
