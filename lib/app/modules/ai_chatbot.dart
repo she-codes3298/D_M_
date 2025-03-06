@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gemini/gemini.dart'; // Import the Gemini API package
+import 'package:flutter_gemini/flutter_gemini.dart'; // For Gemini API
+import 'package:dash_chat_2/dash_chat_2.dart'; // For chat UI
+import 'package:image_picker/image_picker.dart'; // For image upload
+import 'dart:convert'; // For base64 encoding
+import 'dart:io'; // For File operations
 
 class AIChatbotScreen extends StatefulWidget {
   @override
@@ -7,32 +11,96 @@ class AIChatbotScreen extends StatefulWidget {
 }
 
 class _AIChatbotScreenState extends State<AIChatbotScreen> {
-  final TextEditingController _controller = TextEditingController();
-  final List<Map<String, String>> _messages = [];
-  final Gemini _gemini = Gemini(apiKey: 'YOUR_GEMINI_API_KEY'); // Replace with your Gemini API key
+  final Gemini _gemini = Gemini.instance; // Initialize Gemini
+  final ChatUser _user = ChatUser(id: '1', firstName: 'User'); // Chat user
+  final ChatUser _bot = ChatUser(id: '2', firstName: 'E-sahyog'); // Chat bot
+  final List<ChatMessage> _messages = []; // List of chat messages
+  final ImagePicker _picker = ImagePicker(); // For image upload
 
-  void _sendMessage() async {
-    String userMessage = _controller.text.trim();
-    if (userMessage.isEmpty) return;
-
+  void _sendMessage(ChatMessage message) async {
     // Add user message to the chat
     setState(() {
-      _messages.add({'role': 'user', 'message': userMessage});
+      _messages.insert(0, message);
     });
-
-    // Clear the input field
-    _controller.clear();
 
     // Send the message to Gemini API
     try {
-      final response = await _gemini.generateText(prompt: userMessage);
-      setState(() {
-        _messages.add({'role': 'bot', 'message': response});
-      });
+      print('Sending message: ${message.text}'); // Log the message
+      final response = await _gemini.text(message.text);
+      if (response != null) {
+        print('Received response: ${response.output}'); // Log the response
+        // Add bot response to the chat
+        setState(() {
+          _messages.insert(0, ChatMessage(
+            user: _bot,
+            text: response.output!,
+            createdAt: DateTime.now(),
+          ));
+        });
+      }
     } catch (e) {
+      print('Error: $e'); // Log the error
+      // Handle errors
       setState(() {
-        _messages.add({'role': 'bot', 'message': 'Error: Failed to fetch response.'});
+        _messages.insert(0, ChatMessage(
+          user: _bot,
+          text: 'Error: Failed to fetch response.',
+          createdAt: DateTime.now(),
+        ));
       });
+    }
+  }
+  void _sendImage() async {
+    // Pick an image from the gallery
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      // Read the image file and encode it as base64
+      final bytes = await File(image.path).readAsBytes();
+      final base64Image = base64Encode(bytes);
+
+      // Add image message to the chat
+      setState(() {
+        _messages.insert(0, ChatMessage(
+          user: _user,
+          createdAt: DateTime.now(),
+          medias: [
+            ChatMedia(
+              url: image.path,
+              fileName: "image.jpg",
+              type: MediaType.image,
+            ),
+          ],
+        ));
+      });
+
+      // Send the image to Gemini API
+      try {
+        print('Sending image: ${image.path}'); // Log the image
+        final response = await _gemini.text(
+          'Describe this image: $base64Image', // Send base64 image as a prompt
+        );
+        if (response != null) {
+          print('Received response: ${response.output}'); // Log the response
+          // Add bot response to the chat
+          setState(() {
+            _messages.insert(0, ChatMessage(
+              user: _bot,
+              text: response.output!,
+              createdAt: DateTime.now(),
+            ));
+          });
+        }
+      } catch (e) {
+        print('Error: $e'); // Log the error
+        // Handle errors
+        setState(() {
+          _messages.insert(0, ChatMessage(
+            user: _bot,
+            text: 'Error: Failed to process image.',
+            createdAt: DateTime.now(),
+          ));
+        });
+      }
     }
   }
 
@@ -48,72 +116,19 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
           },
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(8.0),
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                return ChatBubble(
-                  role: message['role']!,
-                  message: message['message']!,
-                );
-              },
+      body: DashChat(
+        currentUser: _user,
+        messages: _messages,
+        onSend: (ChatMessage message) {
+          _sendMessage(message); // Send text message
+        },
+        inputOptions: InputOptions(
+          trailing: [
+            IconButton(
+              icon: Icon(Icons.image),
+              onPressed: _sendImage, // Send image message
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: 'Write a message...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 8.0),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: _sendMessage,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ChatBubble extends StatelessWidget {
-  final String role;
-  final String message;
-
-  ChatBubble({required this.role, required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: role == 'user' ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-        padding: EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          color: role == 'user' ? Colors.blue : Colors.grey[300],
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Text(
-          message,
-          style: TextStyle(
-            color: role == 'user' ? Colors.white : Colors.black,
-          ),
+          ],
         ),
       ),
     );
