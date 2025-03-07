@@ -184,16 +184,20 @@ class CivilianDashboardView extends StatelessWidget {
             ),
           ),
 
-          // Floating AI Chatbot Button (Shifted Down by 0.5 cm)
+          // Floating AI Chatbot Button
           Positioned(
-            bottom: 101, // Adjusted position (original 120, reduced by ~19px)
+            bottom: 101, // Adjusted position
             right: 16,
             child:FloatingActionButton(
               backgroundColor: accentColor,
               onPressed: () {
                 Navigator.pushNamed(context, '/ai_chatbot'); // Navigate to chatbot page
               },
-              child: const Icon(Icons.chat, color: Colors.white, size: 28),
+              child: Image.asset(
+                'assets/images/chatbot.gif',
+                width: 28, // Set the width
+                height: 28, // Set the height
+              ),
             ),
           ),
         ],
