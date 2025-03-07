@@ -194,7 +194,7 @@ class CivilianDashboardView extends StatelessWidget {
                 Navigator.pushNamed(context, '/ai_chatbot'); // Navigate to chatbot page
               },
               child: Image.asset(
-                'assets/images/chatbot.gif',
+                'assets/images/chatbot.png',
                 width: 28, // Set the width
                 height: 28, // Set the height
               ),
