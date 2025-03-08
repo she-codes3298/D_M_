@@ -17,10 +17,23 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
   final List<ChatMessage> _messages = []; // List of chat messages
   final ImagePicker _picker = ImagePicker(); // For image upload
 
+  // List of custom prompts
+  final List<String> _customPrompts = [
+    "What should I do during an earthquake?",
+    "How can I prepare for a flood?",
+    "What are the emergency contacts for a cyclone?",
+    "How do I use the SOS feature?",
+    "Where can I find refugee centers near me?",
+    "How do I update my medical records in the app?",
+  ];
+
+  bool _showPrompts = true; // Controls visibility of the prompt list
+
   void _sendMessage(ChatMessage message) async {
     // Add user message to the chat
     setState(() {
       _messages.insert(0, message);
+      _showPrompts = false; // Hide prompts after sending a message
     });
 
     // Send the message to Gemini API
@@ -50,6 +63,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
       });
     }
   }
+
   void _sendImage() async {
     // Pick an image from the gallery
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -109,6 +123,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('E-Sahyog'),
+        backgroundColor: Colors.blue[100],
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -116,20 +131,77 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
           },
         ),
       ),
-      body: DashChat(
-        currentUser: _user,
-        messages: _messages,
-        onSend: (ChatMessage message) {
-          _sendMessage(message); // Send text message
-        },
-        inputOptions: InputOptions(
-          trailing: [
-            IconButton(
-              icon: Icon(Icons.image),
-              onPressed: _sendImage, // Send image message
+      backgroundColor: Colors.blue[100],
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              // Chat interface
+              Expanded(
+                child: DashChat(
+                  currentUser: _user,
+                  messages: _messages,
+                  onSend: (ChatMessage message) {
+                    _sendMessage(message); // Send text message
+                  },
+                  inputOptions: InputOptions(
+                    trailing: [
+                      IconButton(
+                        icon: Icon(Icons.image),
+                        onPressed: _sendImage, // Send image message
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // Custom prompts overlay
+          if (_showPrompts)
+            Positioned(
+              bottom: 80, // Adjust position to be above the input box
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 100, // Adjust height as needed
+                decoration: BoxDecoration(
+                  color: Colors.blue[100], // Lightest blue background
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(10)), // Fixed syntax
+                ),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _customPrompts.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue[80], // Button color
+                          foregroundColor: Colors.grey[900], // Text color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20), // Rounded corners
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        ),
+                        onPressed: () {
+                          // Automatically send the selected prompt
+                          _sendMessage(ChatMessage(
+                            user: _user,
+                            text: _customPrompts[index],
+                            createdAt: DateTime.now(),
+                          ));
+                        },
+                        child: Text(
+                          _customPrompts[index],
+                          style: TextStyle(fontSize: 14), // Fixed syntax
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }
