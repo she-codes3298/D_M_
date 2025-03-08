@@ -41,6 +41,8 @@ dependencies:
   dash_chat_2: ^0.0.21
   image_picker: ^1.1.2
   flutter_svg: ^2.0.17
+  flutter_native_splash: ^2.3.3
+  flutter_launcher_icons: ^0.14.3
   
 dev_dependencies:
   flutter_test:
@@ -70,8 +72,22 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
   - assets/images/chatbot.png
+  - assets/images/logo.png
 
+flutter_native_splash:
+  color: "#000000"
+  image: assets/logo.png
+  android: true
+  ios: true
+  web: true
+  fullscreen: true
 
+  flutter_icons:
+    android: true
+    ios: true
+    image_path: "assets/logo.png"
+    adaptive_icon_background: "#000000"
+    adaptive_icon_foreground: "assets/logo.png"
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
