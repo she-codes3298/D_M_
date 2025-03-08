@@ -25,14 +25,16 @@ class CommonScaffold extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: primaryColor,
         title: Text(title),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            // TODO: Implement drawer or menu action
-          },
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer(); // Open the drawer
+            },
+          ),
         ),
         actions: [
-          PopupMenuButton<String>(
+          IconButton(
             icon: CircleAvatar(
               backgroundColor: Colors.grey[300],
               child: ClipOval(
@@ -42,33 +44,22 @@ class CommonScaffold extends StatelessWidget {
                   width: 40,
                   height: 40,
                   errorBuilder: (context, error, stackTrace) {
-                    return const Icon(accountCircleOutlined, size: 32, color: Colors.black);
+                    return const Icon(
+                      accountCircleOutlined,
+                      size: 32,
+                      color: Colors.black,
+                    );
                   },
                 ),
               ),
             ),
-            onSelected: (value) {
-              if (value == 'profile') {
-                Navigator.pushNamed(context, '/profile');
-              } else if (value == 'signout') {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Signed Out')),
-                );
-              }
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile'); // Navigate to profile
             },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'profile',
-                child: Text('Profile'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'signout',
-                child: Text('Sign Out'),
-              ),
-            ],
           ),
         ],
       ),
+      drawer: _buildDrawer(context), // Add the drawer here
       body: body,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -121,6 +112,118 @@ class CommonScaffold extends StatelessWidget {
           const BottomNavigationBarItem(
             icon: Icon(Icons.call),
             label: 'Call',
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Build the drawer
+  Widget _buildDrawer(BuildContext context) {
+    return Drawer(
+      backgroundColor: Colors.blueGrey[300],
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(color: Colors.grey[900]),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 30,
+                  child: ClipOval(
+                    child: Image.network(
+                      profileImageUrl,
+                      fit: BoxFit.cover,
+                      width: 60,
+                      height: 60,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          accountCircleOutlined,
+                          size: 35,
+                          color: Colors.black,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  "Welcome!",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.person, color: Colors.white),
+            title: const Text(
+              "Profile",
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.pushNamed(context, '/profile'); // Navigate to profile
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.group, color: Colors.white),
+            title: const Text(
+              "Community",
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.pushNamed(context, '/community'); // Navigate to community
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.help, color: Colors.white),
+            title: const Text(
+              "Help",
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              // TODO: Implement help action
+              Navigator.pop(context); // Close the drawer
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings, color: Colors.white),
+            title: const Text(
+              "Settings",
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              // TODO: Implement settings action
+              Navigator.pop(context); // Close the drawer
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.info, color: Colors.white),
+            title: const Text(
+              "E-Sahyog",
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+            Navigator.pushNamed(context, '/ai_chatbot'); // Navigate to chatbot page
+           },
+          ),
+          const Divider(color: Colors.white30),
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.red),
+            title: const Text(
+              "Logout",
+              style: TextStyle(color: Colors.red),
+            ),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Signed Out')),
+              );
+            },
           ),
         ],
       ),
