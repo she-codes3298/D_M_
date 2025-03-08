@@ -1,3 +1,4 @@
+import 'package:d_m/app/modules/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'app/modules/civilian_dashboard/views/civilian_dashboard_view.dart';
 import 'app/modules/predictive_ai/views/predictive_ai_page.dart';
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
 
   // Define the named routes here.
   static final Map<String, WidgetBuilder> routes = {
-    '/': (context) => const CivilianDashboardView(),
+    '/': (context) => const SplashScreen(), // Set splash screen as initial route
+    '/civilian_dashboard': (context) => const CivilianDashboardView(),
     '/predictive_ai': (context) => const PredictiveAIPage(),
     '/learn': (context) => const LearnPage(),
     '/refugee_camp': (context) => const RefugeeCampPage(),
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
       title: 'Disaster Management App',
       debugShowCheckedModeBanner: false,
       routes: routes,
-      initialRoute: '/',
+      initialRoute: '/', // Set splash screen as the initial route
     );
   }
 }
