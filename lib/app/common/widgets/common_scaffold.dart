@@ -115,7 +115,7 @@ class CommonScaffold extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ); 
   }
 
   // Build the drawer
