@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
     '/sos': (context) => const SOSPage(),
     '/user_guide': (context) => const UserGuidePage(),
     '/call': (context) => const CallPage(),
-    '/profile': (context) => const ProfilePage(),
+    '/profile': (context) =>  ProfilePage(),
     '/community_history': (context) => const CommunityHistoryPage(),
     '/ai_chatbot': (context) => AIChatbotScreen(),
   };
