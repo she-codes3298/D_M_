@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'complete_profile_page.dart';
 
 class ViewDetailsPage extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
   final Color background = const Color(0xFFE3F2FD);
 
   String? name, age, bloodGroup, emergencyContact, abhaId, allergies, medicalHistory;
+  bool isProfileComplete = true; // Flag to check if all details are filled
 
   @override
   void initState() {
@@ -28,7 +30,22 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
       abhaId = prefs.getString('abhaId') ?? 'N/A';
       allergies = prefs.getString('allergies') ?? 'None';
       medicalHistory = prefs.getString('medicalHistory') ?? 'No medical history available';
+
+      // Check if any field is still 'N/A'
+      isProfileComplete = !(name == 'N/A' || age == 'N/A' || bloodGroup == 'N/A' ||
+          emergencyContact == 'N/A' || abhaId == 'N/A');
     });
+  }
+
+  void _navigateToCompleteProfile() async {
+    bool? profileUpdated = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CompleteProfilePage()),
+    );
+
+    if (profileUpdated == true) {
+      loadProfileDetails(); // Refresh profile details after updating
+    }
   }
 
   @override
@@ -71,6 +88,17 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
               SizedBox(height: 30),
               Center(
                 child: ElevatedButton.icon(
+                  onPressed: _navigateToCompleteProfile,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isProfileComplete ? Colors.orange : Colors.red,
+                  ),
+                  icon: Icon(Icons.edit, color: Colors.white),
+                  label: Text(isProfileComplete ? "Edit Profile" : "Complete Profile", style: TextStyle(color: Colors.white)),
+                ),
+              ),
+              SizedBox(height: 10),
+              Center(
+                child: ElevatedButton.icon(
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -98,3 +126,4 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
     );
   }
 }
+
