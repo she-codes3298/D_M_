@@ -12,7 +12,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final Color accentColor = const Color(0xFF5F6898);
-  final Color communityBackground = const Color(0xFFE3F2FD);
+  final Color backgroundColor = const Color(0xFFE3F2FD);
 
   String userName = "Pratiksha"; // Default name
   String? qrData;
@@ -37,6 +37,12 @@ class _ProfilePageState extends State<ProfilePage> {
         Blood Group: ${prefs.getString('bloodGroup')}
         Emergency Contact: ${prefs.getString('emergencyContact')}
         ABHA ID: ${prefs.getString('abhaId')}
+        Allergies: ${prefs.getString('allergies')}
+        Medical History: ${prefs.getString('medicalHistory')}
+        Existing Medications: ${prefs.getString('existingMedications')}
+        Disabilities: ${prefs.getString('disabilities')}
+        Vaccination Status: ${prefs.getString('vaccinationStatus')}
+        Organ Donor: ${prefs.getString('organDonor')}
         ''';
       }
     });
@@ -76,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: communityBackground,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: accentColor,
         title: Text('Profile', style: TextStyle(color: Colors.white)),
@@ -88,20 +94,15 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Profile Picture and Name
-              Column(
-                children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: accentColor,
-                    child: Icon(Icons.person, size: 50, color: Colors.white),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    userName,
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: accentColor),
-                  ),
-                ],
+              CircleAvatar(
+                radius: 50,
+                backgroundColor: accentColor,
+                child: Icon(Icons.person, size: 50, color: Colors.white),
+              ),
+              SizedBox(height: 10),
+              Text(
+                userName,
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: accentColor),
               ),
               SizedBox(height: 20),
 
@@ -118,35 +119,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       isProfileComplete
                           ? QrImageView(data: qrData!, size: 150)
-                          : Stack(
-                        children: [
-                          Opacity(
-                            opacity: 0.2, // Blur effect for incomplete profile
-                            child: QrImageView(data: 'Incomplete Profile', size: 150),
-                          ),
-                          Positioned.fill(
-                            child: Center(
-                              child: Text(
-                                'Complete Profile to View',
-                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.red),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                          : Text("Complete your profile to generate QR Code"),
                       SizedBox(height: 10),
-
-                      // Complete or Edit Profile Button
-                      isProfileComplete
-                          ? ElevatedButton(
-                        onPressed: _navigateToCompleteProfile,
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-                        child: Text('Edit Profile', style: TextStyle(color: Colors.white)),
-                      )
-                          : ElevatedButton(
+                      ElevatedButton(
                         onPressed: _navigateToCompleteProfile,
                         style: ElevatedButton.styleFrom(backgroundColor: accentColor),
-                        child: Text('Complete Profile', style: TextStyle(color: Colors.white)),
+                        child: Text(
+                          isProfileComplete ? 'Edit Profile' : 'Complete Profile',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
@@ -154,7 +135,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               SizedBox(height: 20),
 
-              // View Details & Share QR Code Buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -173,45 +153,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
-              SizedBox(height: 30),
-
-              // Additional Buttons (Community, e-Sahyog, Settings, Help)
-              Column(
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.groups, color: accentColor),
-                    title: Text('Community Support'),
-                    tileColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    onTap: () {}, // Add Community Page Navigation
-                  ),
-                  SizedBox(height: 10),
-                  ListTile(
-                    leading: Icon(Icons.volunteer_activism, color: accentColor),
-                    title: Text('e-Sahyog'),
-                    tileColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    onTap: () {}, // Add e-Sahyog Functionality
-                  ),
-                  SizedBox(height: 10),
-                  ListTile(
-                    leading: Icon(Icons.settings, color: accentColor),
-                    title: Text('Settings'),
-                    tileColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    onTap: () {}, // Settings Page
-                  ),
-                  SizedBox(height: 10),
-                  ListTile(
-                    leading: Icon(Icons.help_outline, color: accentColor),
-                    title: Text('Help & Support'),
-                    tileColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    onTap: () {}, // Help Page
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
             ],
           ),
         ),
