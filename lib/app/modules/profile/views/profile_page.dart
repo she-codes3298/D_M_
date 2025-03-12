@@ -111,7 +111,7 @@ Disabilities - Vision Impairment
                   CircleAvatar(
                     radius: 50,
                     backgroundColor: accentColor,
-                    child: Icon(Icons.person, size: 50, color: Colors.white),
+                    child: Icon(Icons.person, size: 50, color: Colors.black),
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -163,7 +163,7 @@ Disabilities - Vision Impairment
                   ElevatedButton.icon(
                     onPressed: _navigateToMedicalDetails,
                     style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    ElevatedButton.styleFrom(backgroundColor: accentColor),
                     icon: Icon(Icons.info, color: Colors.white),
                     label: Text("View Medical Details",
                         style: TextStyle(color: Colors.white)),
@@ -185,26 +185,47 @@ Disabilities - Vision Impairment
               Column(
                 children: [
                   ListTile(
-                    leading: Icon(Icons.groups, color: accentColor),
+                    leading: Icon(Icons.groups, color: Colors.black),
                     title: Text('Community'),
                     tileColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    onTap: () {}, // Add Community Page Navigation
+                    onTap: () {
+                      Navigator.pushNamed(context, '/community_history');
+                    }, // Add Community Page Navigation
                   ),
                   SizedBox(height: 10),
-                  ListTile(
-                    leading:
-                    Icon(Icons.volunteer_activism, color: accentColor),
-                    title: Text('E-Sahyog'),
-                    tileColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    onTap: () {}, // Add e-Sahyog Functionality
+                  // AI Chatbot Button (Replacing E-Sahyog)
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/ai_chatbot'); // Navigate to chatbot page
+                    },
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/chatbot.png',
+                          width: 28, // Set the width
+                          height: 28, // Set the height
+                        ),
+                        SizedBox(width: 10), // Space between image and text
+                        Text(
+                          'E-Sahyog',
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.all(12),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                   ),
+
                   SizedBox(height: 10),
                   ListTile(
-                    leading: Icon(Icons.settings, color: accentColor),
+                    leading: Icon(Icons.settings, color: Colors.black),
                     title: Text('Settings'),
                     tileColor: Colors.white,
                     shape: RoundedRectangleBorder(
@@ -213,7 +234,7 @@ Disabilities - Vision Impairment
                   ),
                   SizedBox(height: 10),
                   ListTile(
-                    leading: Icon(Icons.help_outline, color: accentColor),
+                    leading: Icon(Icons.help_outline, color: Colors.black),
                     title: Text('Help & Support'),
                     tileColor: Colors.white,
                     shape: RoundedRectangleBorder(
