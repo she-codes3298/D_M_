@@ -8,12 +8,15 @@ class CompleteProfilePage extends StatefulWidget {
 }
 
 class _CompleteProfilePageState extends State<CompleteProfilePage> {
+  final Color accentColor = const Color(0xFF5F6898);
+  final Color backgroundColor = const Color(0xFFE3F2FD);
+
+  // Controllers for text fields
   final TextEditingController nameController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController emergencyNameController = TextEditingController();
   final TextEditingController emergencyContactController = TextEditingController();
   final TextEditingController abhaIdController = TextEditingController();
-
   final TextEditingController otherMedicalHistoryController = TextEditingController();
   final TextEditingController otherAllergiesController = TextEditingController();
   final TextEditingController otherMedicationsController = TextEditingController();
@@ -22,14 +25,17 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
   String? selectedBloodGroup;
   String? selectedEmergencyRelation;
 
+  // Dropdown options
   final List<String> bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
   final List<String> emergencyRelations = ['Father', 'Mother', 'Sibling', 'Spouse', 'Friend', 'Other'];
 
-  final List<String> medicalHistoryOptions = ['Diabetes', 'Hypertension', 'Asthma', 'Heart Disease', 'Other'];
-  final List<String> allergiesOptions = ['Peanuts', 'Pollen', 'Dust', 'Gluten', 'Other'];
-  final List<String> medicationsOptions = ['Insulin', 'Aspirin', 'Antibiotics', 'Other'];
-  final List<String> disabilitiesOptions = ['Hearing Impairment', 'Vision Impairment', 'Other'];
+  // Multi-select options
+  final List<String> medicalHistoryOptions = ['Diabetes', 'Hypertension', 'Asthma', 'Heart Disease', 'Epilepsy', 'Cancer', 'Other'];
+  final List<String> allergiesOptions = ['Peanuts', 'Shellfish', 'Pollen', 'Dust', 'Dairy', 'Gluten', 'Insect Stings', 'Latex', 'Medication', 'Other'];
+  final List<String> medicationsOptions = ['Insulin', 'Aspirin', 'Antibiotics', 'Steroids', 'Painkillers', 'Other'];
+  final List<String> disabilitiesOptions = ['Hearing Impairment', 'Vision Impairment', 'Physical Disability', 'Cognitive Disability', 'Speech Impairment', 'Other'];
 
+  // Selected values
   List<String> selectedMedicalHistory = [];
   List<String> selectedAllergies = [];
   List<String> selectedMedications = [];
@@ -61,24 +67,6 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
 
   Future<void> _saveProfileData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (selectedMedicalHistory.contains('Other')) {
-      selectedMedicalHistory.remove('Other');
-      selectedMedicalHistory.add('Other: ${otherMedicalHistoryController.text}');
-    }
-    if (selectedAllergies.contains('Other')) {
-      selectedAllergies.remove('Other');
-      selectedAllergies.add('Other: ${otherAllergiesController.text}');
-    }
-    if (selectedMedications.contains('Other')) {
-      selectedMedications.remove('Other');
-      selectedMedications.add('Other: ${otherMedicationsController.text}');
-    }
-    if (selectedDisabilities.contains('Other')) {
-      selectedDisabilities.remove('Other');
-      selectedDisabilities.add('Other: ${otherDisabilitiesController.text}');
-    }
-
     await prefs.setString('name', nameController.text);
     await prefs.setString('age', ageController.text);
     await prefs.setString('bloodGroup', selectedBloodGroup ?? '');
@@ -87,12 +75,102 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
     await prefs.setString('emergencyRelation', selectedEmergencyRelation ?? '');
     await prefs.setString('abhaId', abhaIdController.text);
 
-    await prefs.setStringList('medicalHistory', selectedMedicalHistory);
-    await prefs.setStringList('allergies', selectedAllergies);
-    await prefs.setStringList('medications', selectedMedications);
-    await prefs.setStringList('disabilities', selectedDisabilities);
+    // Save multi-select lists
+    await prefs.setStringList('medicalHistory', _getUpdatedList(selectedMedicalHistory, otherMedicalHistoryController.text));
+    await prefs.setStringList('allergies', _getUpdatedList(selectedAllergies, otherAllergiesController.text));
+    await prefs.setStringList('medications', _getUpdatedList(selectedMedications, otherMedicationsController.text));
+    await prefs.setStringList('disabilities', _getUpdatedList(selectedDisabilities, otherDisabilitiesController.text));
 
-    Navigator.pop(context, true);
+    Navigator.pop(context, true); // Refresh ProfilePage
+  }
+
+  List<String> _getUpdatedList(List<String> selectedItems, String otherText) {
+    List<String> updatedList = List.from(selectedItems);
+    if (updatedList.contains("Other") && otherText.isNotEmpty) {
+      updatedList.remove("Other");
+      updatedList.add(otherText);
+    }
+    return updatedList;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        title: Text('Complete Profile', style: TextStyle(color: Colors.white)),
+        backgroundColor: accentColor,
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildTextField("Name", nameController),
+            buildTextField("Age", ageController, keyboardType: TextInputType.number),
+            buildDropdownField("Blood Group", bloodGroups, selectedBloodGroup, (value) {
+              setState(() => selectedBloodGroup = value);
+            }),
+            buildTextField("ABHA ID", abhaIdController),
+
+            Text("Emergency Contact", style: sectionTitleStyle()),
+            buildTextField("Name", emergencyNameController),
+            buildDropdownField("Relation", emergencyRelations, selectedEmergencyRelation, (value) {
+              setState(() => selectedEmergencyRelation = value);
+            }),
+            buildTextField("Phone Number", emergencyContactController, keyboardType: TextInputType.phone),
+
+            buildMultiSelectField("Medical History", medicalHistoryOptions, selectedMedicalHistory, otherMedicalHistoryController),
+            buildMultiSelectField("Allergies", allergiesOptions, selectedAllergies, otherAllergiesController),
+            buildMultiSelectField("Existing Medications", medicationsOptions, selectedMedications, otherMedicationsController),
+            buildMultiSelectField("Disabilities", disabilitiesOptions, selectedDisabilities, otherDisabilitiesController),
+
+            SizedBox(height: 30),
+            Center(
+              child: ElevatedButton(
+                onPressed: _saveProfileData,
+                style: ElevatedButton.styleFrom(backgroundColor: accentColor),
+                child: Text('Save Profile', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildTextField(String label, TextEditingController controller, {TextInputType keyboardType = TextInputType.text}) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.0),
+      child: TextField(
+        controller: controller,
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(),
+          filled: true,
+          fillColor: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget buildDropdownField(String label, List<String> items, String? selectedValue, ValueChanged<String?> onChanged) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.0),
+      child: DropdownButtonFormField<String>(
+        value: selectedValue,
+        items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+        onChanged: onChanged,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(),
+          filled: true,
+          fillColor: Colors.white,
+        ),
+      ),
+    );
   }
 
   Widget buildMultiSelectField(String label, List<String> items, List<String> selectedValues, TextEditingController otherController) {
@@ -117,34 +195,5 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
     );
   }
 
-  Widget buildTextField(String label, TextEditingController controller) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 12.0),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(labelText: label, border: OutlineInputBorder()),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Complete Profile')),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            buildTextField("Name", nameController),
-            buildTextField("Age", ageController),
-            buildMultiSelectField("Medical History", medicalHistoryOptions, selectedMedicalHistory, otherMedicalHistoryController),
-            buildMultiSelectField("Allergies", allergiesOptions, selectedAllergies, otherAllergiesController),
-            buildMultiSelectField("Medications", medicationsOptions, selectedMedications, otherMedicationsController),
-            buildMultiSelectField("Disabilities", disabilitiesOptions, selectedDisabilities, otherDisabilitiesController),
-            ElevatedButton(onPressed: _saveProfileData, child: Text('Save Profile')),
-          ],
-        ),
-      ),
-    );
-  }
+  TextStyle sectionTitleStyle() => TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: accentColor);
 }

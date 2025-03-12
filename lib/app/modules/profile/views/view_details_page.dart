@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'complete_profile_page.dart';
 
 class ViewDetailsPage extends StatefulWidget {
   @override
@@ -11,8 +10,8 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
   final Color accentColor = const Color(0xFF5F6898);
   final Color background = const Color(0xFFE3F2FD);
 
-  String? name, age, bloodGroup, emergencyContact, abhaId, allergies, medicalHistory;
-  bool isProfileComplete = true; // Flag to check if all details are filled
+  String? name, age, bloodGroup, emergencyName, emergencyContact, emergencyRelation, abhaId;
+  List<String> medicalHistory = [], allergies = [], medications = [], disabilities = [];
 
   @override
   void initState() {
@@ -26,26 +25,20 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
       name = prefs.getString('name') ?? 'N/A';
       age = prefs.getString('age') ?? 'N/A';
       bloodGroup = prefs.getString('bloodGroup') ?? 'N/A';
+      emergencyName = prefs.getString('emergencyName') ?? 'N/A';
       emergencyContact = prefs.getString('emergencyContact') ?? 'N/A';
+      emergencyRelation = prefs.getString('emergencyRelation') ?? 'N/A';
       abhaId = prefs.getString('abhaId') ?? 'N/A';
-      allergies = prefs.getString('allergies') ?? 'None';
-      medicalHistory = prefs.getString('medicalHistory') ?? 'No medical history available';
 
-      // Check if any field is still 'N/A'
-      isProfileComplete = !(name == 'N/A' || age == 'N/A' || bloodGroup == 'N/A' ||
-          emergencyContact == 'N/A' || abhaId == 'N/A');
+      medicalHistory = prefs.getStringList('medicalHistory') ?? [];
+      allergies = prefs.getStringList('allergies') ?? [];
+      medications = prefs.getStringList('medications') ?? [];
+      disabilities = prefs.getStringList('disabilities') ?? [];
     });
   }
 
-  void _navigateToCompleteProfile() async {
-    bool? profileUpdated = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CompleteProfilePage()),
-    );
-
-    if (profileUpdated == true) {
-      loadProfileDetails(); // Refresh profile details after updating
-    }
+  String formatList(List<String> list) {
+    return list.isNotEmpty ? list.join(", ") : "None";
   }
 
   @override
@@ -63,40 +56,29 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Section Title: Personal Information
-              Text(
-                "Personal Information",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: accentColor),
-              ),
+              Text("Personal Information", style: sectionTitleStyle()),
               SizedBox(height: 10),
               buildInfoTile("Name", name),
               buildInfoTile("Age", age),
               buildInfoTile("Blood Group", bloodGroup),
-              buildInfoTile("Emergency Contact", emergencyContact),
               buildInfoTile("ABHA ID", abhaId),
-              SizedBox(height: 20),
 
-              // Section Title: Medical History
-              Text(
-                "Medical History",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: accentColor),
-              ),
+              SizedBox(height: 20),
+              Text("Emergency Contact", style: sectionTitleStyle()),
               SizedBox(height: 10),
-              buildInfoTile("Allergies", allergies),
-              buildInfoTile("Medical History", medicalHistory),
+              buildInfoTile("Name", emergencyName),
+              buildInfoTile("Relation", emergencyRelation),
+              buildInfoTile("Phone Number", emergencyContact),
+
+              SizedBox(height: 20),
+              Text("Medical Details", style: sectionTitleStyle()),
+              SizedBox(height: 10),
+              buildInfoTile("Medical History", formatList(medicalHistory)),
+              buildInfoTile("Allergies", formatList(allergies)),
+              buildInfoTile("Medications", formatList(medications)),
+              buildInfoTile("Disabilities", formatList(disabilities)),
 
               SizedBox(height: 30),
-              Center(
-                child: ElevatedButton.icon(
-                  onPressed: _navigateToCompleteProfile,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isProfileComplete ? Colors.orange : Colors.red,
-                  ),
-                  icon: Icon(Icons.edit, color: Colors.white),
-                  label: Text(isProfileComplete ? "Edit Profile" : "Complete Profile", style: TextStyle(color: Colors.white)),
-                ),
-              ),
-              SizedBox(height: 10),
               Center(
                 child: ElevatedButton.icon(
                   onPressed: () {
@@ -125,5 +107,6 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
       ),
     );
   }
-}
 
+  TextStyle sectionTitleStyle() => TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: accentColor);
+}
