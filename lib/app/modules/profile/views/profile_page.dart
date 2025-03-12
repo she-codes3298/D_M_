@@ -111,7 +111,7 @@ Disabilities - Vision Impairment
                   CircleAvatar(
                     radius: 50,
                     backgroundColor: accentColor,
-                    child: Icon(Icons.person, size: 50, color: Colors.black),
+                    child: Icon(Icons.person, size: 50, color: Colors.white70),
                   ),
                   SizedBox(height: 10),
                   Text(
