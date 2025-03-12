@@ -12,11 +12,31 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final Color accentColor = const Color(0xFF5F6898);
-  final Color background = const Color(0xFFE3F2FD);
+  final Color communityBackground = const Color(0xFFE3F2FD);
 
   String userName = "Pratiksha"; // Default name
   String? qrData;
   bool isProfileComplete = false;
+
+  // Dummy QR Data for Initial Display
+  final String dummyQRData = """
+Personal Information:
+Name - Pratiksha
+Age - 21
+Blood Group - O+
+ABHA ID - 5278496372920016
+
+Emergency Contact:
+Name - Kumari Nisha
+Relation - Sibling
+Phone Number - 9863301615
+
+Medical Details:
+Medical History - Asthma, Hypertension
+Allergies - Dust, Peanuts, Soy
+Medications - Painkillers, Antibiotics, Aspirin
+Disabilities - Vision Impairment
+""";
 
   @override
   void initState() {
@@ -28,21 +48,24 @@ class _ProfilePageState extends State<ProfilePage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       userName = prefs.getString('name') ?? 'Pratiksha';
-      isProfileComplete = prefs.getString('abhaId') != null &&
-          prefs.getString('age') != null &&
-          prefs.getString('bloodGroup') != null &&
-          prefs.getString('emergencyContact') != null;
+      isProfileComplete = prefs.getString('abhaId')?.isNotEmpty ?? false;
 
       if (isProfileComplete) {
-        qrData = '''
-        Name: ${prefs.getString('name')}
-        Age: ${prefs.getString('age')}
-        Blood Group: ${prefs.getString('bloodGroup')}
-        Emergency Contact: ${prefs.getString('emergencyContact')}
-        ABHA ID: ${prefs.getString('abhaId')}
-        ''';
+        qrData = prefs.getString('qrData') ?? dummyQRData; // Load actual QR data
+      } else {
+        qrData = dummyQRData; // Show predefined dummy QR data
       }
     });
+  }
+
+  void _shareQRCode() {
+    if (qrData != null && qrData!.isNotEmpty) {
+      Share.share(qrData!, subject: "My Medical QR Code");
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Complete your profile to share QR Code")),
+      );
+    }
   }
 
   void _navigateToCompleteProfile() async {
@@ -52,18 +75,25 @@ class _ProfilePageState extends State<ProfilePage> {
     );
 
     if (profileUpdated == true) {
-      loadProfile(); // Refresh profile and QR code
+      loadProfile();
     }
   }
 
   void _navigateToMedicalDetails() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewDetailsPage()));
+    if (isProfileComplete) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ViewDetailsPage()));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Complete your profile to view details")),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: background,
+      backgroundColor: communityBackground,
       appBar: AppBar(
         backgroundColor: accentColor,
         title: Text('Profile', style: TextStyle(color: Colors.white)),
@@ -75,18 +105,124 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(radius: 50, backgroundColor: accentColor, child: Icon(Icons.person, size: 50, color: Colors.white)),
-              SizedBox(height: 10),
-              Text(userName, style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: accentColor)),
-              SizedBox(height: 20),
-
-              ElevatedButton(
-                onPressed: _navigateToCompleteProfile,
-                style: ElevatedButton.styleFrom(backgroundColor: isProfileComplete ? Colors.orange : Colors.red),
-                child: Text(isProfileComplete ? "Edit Profile" : "Complete Profile", style: TextStyle(color: Colors.white)),
+              // Profile Picture and Name
+              Column(
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundColor: accentColor,
+                    child: Icon(Icons.person, size: 50, color: Colors.white),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    userName,
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: accentColor),
+                  ),
+                ],
               ),
               SizedBox(height: 20),
-              ElevatedButton(onPressed: _navigateToMedicalDetails, style: ElevatedButton.styleFrom(backgroundColor: Colors.green), child: Text("View Medical Details", style: TextStyle(color: Colors.white))),
+
+              // QR Code Section
+              Center(
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(color: Colors.grey.shade300, blurRadius: 5)
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      QrImageView(data: qrData!, size: 150),
+                      SizedBox(height: 10),
+
+                      // Complete or Edit Profile Button
+                      ElevatedButton(
+                        onPressed: _navigateToCompleteProfile,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                            isProfileComplete ? Colors.orange : accentColor),
+                        child: Text(isProfileComplete ? 'Edit Profile' : 'Complete Profile',
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+
+              // View Details & Share QR Code Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: _navigateToMedicalDetails,
+                    style:
+                    ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    icon: Icon(Icons.info, color: Colors.white),
+                    label: Text("View Medical Details",
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                  SizedBox(width: 10),
+                  ElevatedButton.icon(
+                    onPressed: _shareQRCode,
+                    style:
+                    ElevatedButton.styleFrom(backgroundColor: accentColor),
+                    icon: Icon(Icons.share, color: Colors.white),
+                    label: Text("Share QR Code",
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                ],
+              ),
+              SizedBox(height: 30),
+
+              // Additional Buttons (Community, e-Sahyog, Settings, Help)
+              Column(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.groups, color: accentColor),
+                    title: Text('Community'),
+                    tileColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    onTap: () {}, // Add Community Page Navigation
+                  ),
+                  SizedBox(height: 10),
+                  ListTile(
+                    leading:
+                    Icon(Icons.volunteer_activism, color: accentColor),
+                    title: Text('E-Sahyog'),
+                    tileColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    onTap: () {}, // Add e-Sahyog Functionality
+                  ),
+                  SizedBox(height: 10),
+                  ListTile(
+                    leading: Icon(Icons.settings, color: accentColor),
+                    title: Text('Settings'),
+                    tileColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    onTap: () {}, // Settings Page
+                  ),
+                  SizedBox(height: 10),
+                  ListTile(
+                    leading: Icon(Icons.help_outline, color: accentColor),
+                    title: Text('Help & Support'),
+                    tileColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    onTap: () {}, // Help Page
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
             ],
           ),
         ),
