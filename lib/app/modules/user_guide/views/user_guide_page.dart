@@ -174,60 +174,83 @@ Map<String, IconData> disasterCategories = {
 // Disaster-Specific Do’s, Don'ts, and Video Links
 Map<String, Map<String, dynamic>> disasterDetails = {
   'Earthquake': {
-    'do': [
-      'Drop, Cover, and Hold under a sturdy table.',
-      'Stay indoors until the shaking stops.',
-      'Turn off gas, electricity if safe to do so.',
-      'Keep emergency supplies ready.',
+    'icon': Icons.house,
+    'backgroundColor': Colors.orange[100],
+    'generalInfo': "Earthquakes occur due to sudden movements of tectonic plates beneath the Earth's surface. They can cause severe destruction, collapsing buildings, and triggering landslides or tsunamis. Preparedness is key to minimizing damage.",
+    'dos': [
+      "Drop, Cover, and Hold under sturdy furniture.",
+      "Move away from windows, mirrors, and heavy objects.",
+      "If outside, move to an open area away from buildings and trees.",
+      "Keep an emergency kit with food, water, and medical supplies.",
+      "Secure heavy furniture to walls to prevent falling hazards."
     ],
-    'dont': [
-      'Do not use elevators during tremors.',
-      'Do not stand near windows or mirrors.',
-      'Do not run outside immediately.',
+    'donts': [
+      "Do not use elevators during an earthquake.",
+      "Do not stand near windows or glass doors.",
+      "Do not rush outdoors if inside a high-rise building.",
+      "Do not light matches or candles in case of gas leaks."
     ],
-    'video': 'https://www.youtube.com/watch?v=GSDmqLQmMN0',
+    'videoLink': "https://www.youtube.com/watch?v=G2Trp3XBT9E"
   },
+
   'Flood': {
-    'do': [
-      'Move to higher ground immediately.',
-      'Turn off electrical appliances.',
-      'Store drinking water in clean containers.',
-      'Follow evacuation instructions from authorities.',
+    'icon': Icons.water,
+    'backgroundColor': Colors.blue[100],
+    'generalInfo': "Floods result from excessive rainfall, dam failures, or storm surges. They lead to property damage, loss of life, and waterborne diseases. Early warning systems and proper drainage can help mitigate their effects.",
+    'dos': [
+      "Move to higher ground immediately.",
+      "Turn off electricity and gas to prevent hazards.",
+      "Keep emergency supplies, including drinking water and dry food.",
+      "Avoid walking or driving through floodwaters.",
+      "Stay tuned to weather reports for updates."
     ],
-    'dont': [
-      'Do not drive or walk through floodwaters.',
-      'Do not touch electrical equipment if wet.',
-      'Do not ignore weather alerts.',
+    'donts': [
+      "Do not attempt to swim through floodwaters.",
+      "Do not ignore evacuation orders from authorities.",
+      "Do not touch electrical appliances if wet.",
+      "Do not drink floodwater—it may be contaminated."
     ],
-    'video': 'https://www.youtube.com/watch?v=8y_U0DFiB0I',
+    'videoLink': "https://www.youtube.com/watch?v=78p_w_7GOWg"
   },
+
   'Cyclone': {
-    'do': [
-      'Secure loose objects outside your home.',
-      'Stay indoors and away from windows.',
-      'Stockpile emergency supplies.',
-      'Charge your phone and power banks.',
+    'icon': Icons.air,
+    'backgroundColor': Colors.cyan[100],
+    'generalInfo': "Cyclones are intense circular storms that form over warm ocean waters. They bring heavy rainfall, strong winds, and storm surges, causing widespread devastation. Preparedness and timely warnings save lives.",
+    'dos': [
+      "Secure doors, windows, and loose objects outside.",
+      "Stock up on food, water, and first aid supplies.",
+      "Stay indoors during the storm and away from windows.",
+      "Charge mobile phones and keep emergency contacts handy.",
+      "Follow evacuation orders if issued by local authorities."
     ],
-    'dont': [
-      'Do not go near coastal areas.',
-      'Do not use candles if power goes out (fire risk).',
-      'Do not spread rumors about cyclone paths.',
+    'donts': [
+      "Do not ignore cyclone warnings.",
+      "Do not venture outside until an official all-clear is given.",
+      "Do not use mobile phones unnecessarily to keep networks free.",
+      "Do not attempt to drive during heavy winds."
     ],
-    'video': 'https://www.youtube.com/watch?v=RKTgNNB4kB0',
+    'videoLink': "https://www.youtube.com/watch?v=9MrflsDV0cA"
   },
+
   'Fire Safety': {
-    'do': [
-      'Stop, Drop, and Roll if clothing catches fire.',
-      'Use a fire extinguisher for small fires.',
-      'Evacuate immediately in case of large fires.',
-      'Test smoke alarms regularly.',
+    'icon': Icons.local_fire_department,
+    'backgroundColor': Colors.red[100],
+    'generalInfo': "Fires can start due to electrical faults, gas leaks, or unattended flames. They spread rapidly, causing severe injuries and property damage. Fire safety training and precautions are essential for prevention.",
+    'dos': [
+      "Install smoke detectors and fire extinguishers at home.",
+      "Have an emergency evacuation plan for all family members.",
+      "Turn off electrical appliances when not in use.",
+      "Use a fire blanket or extinguisher to control small fires.",
+      "Crawl low under smoke to avoid inhaling toxic fumes."
     ],
-    'dont': [
-      'Do not use water on electrical fires.',
-      'Do not open doors if you feel heat behind them.',
-      'Do not re-enter a burning building.',
+    'donts': [
+      "Do not leave cooking unattended.",
+      "Do not overload electrical circuits.",
+      "Do not block emergency exits or fire escape routes.",
+      "Do not use water to extinguish oil or electrical fires."
     ],
-    'video': 'https://www.youtube.com/watch?v=dcQ_kJB2mO8',
+    'videoLink': "https://www.youtube.com/watch?v=RQUiVT4XJUM"
   },
 };
 
