@@ -174,23 +174,27 @@ Map<String, IconData> disasterCategories = {
 // Disaster-Specific Do’s, Don'ts, and Video Links
 Map<String, Map<String, dynamic>> disasterDetails = {
   'Earthquake': {
-    'icon': Icons.house,
-    'backgroundColor': Colors.orange[100],
-    'generalInfo': "Earthquakes occur due to sudden movements of tectonic plates beneath the Earth's surface. They can cause severe destruction, collapsing buildings, and triggering landslides or tsunamis. Preparedness is key to minimizing damage.",
-    'dos': [
-      "Drop, Cover, and Hold under sturdy furniture.",
+    'causes': "Earthquakes occur due to sudden movements in the Earth's crust, mainly caused by tectonic plate shifts along fault lines. These movements generate seismic waves, leading to ground shaking. The most common causes of earthquakes include:\n\n- **Tectonic Activity**: The Earth's crust is divided into plates that constantly move. When stress builds up at the plate boundaries, it is released as an earthquake.\n- **Volcanic Eruptions**: Underground magma movement can trigger earthquakes near active volcanoes.\n- **Human Activities**: Mining, fracking, dam construction, and underground nuclear tests can induce seismic activity.\n- **Subduction Zones**: When one tectonic plate slides beneath another, intense pressure builds up, eventually causing massive quakes, often leading to tsunamis.",
+    'do': [
+      "Secure heavy furniture and appliances to prevent them from toppling.",
+      "Identify safe spots in your home, such as under sturdy tables or against interior walls.",
+      "Keep an emergency kit with food, water, flashlight, and first-aid supplies.",
+      "Drop, Cover, and Hold under sturdy furniture during an earthquake.",
       "Move away from windows, mirrors, and heavy objects.",
       "If outside, move to an open area away from buildings and trees.",
-      "Keep an emergency kit with food, water, and medical supplies.",
-      "Secure heavy furniture to walls to prevent falling hazards."
+      "If in a vehicle, pull over safely and remain inside until the shaking stops.",
+      "Check yourself and others for injuries after the shaking stops.",
+      "Turn off gas and electricity if there are signs of leaks or sparks.",
+      "Listen to emergency broadcasts and follow official evacuation instructions."
     ],
-    'donts': [
-      "Do not use elevators during an earthquake.",
-      "Do not stand near windows or glass doors.",
-      "Do not rush outdoors if inside a high-rise building.",
-      "Do not light matches or candles in case of gas leaks."
+    'dont': [
+      "Do not use elevators during or after an earthquake.",
+      "Do not rush outside if you’re in a high-rise building; use stairs after the shaking stops.",
+      "Do not light matches or candles immediately after a quake, as gas leaks may cause explosions.",
+      "Do not stand under doorways, as they are no longer the safest places in modern buildings.",
+      "Do not spread unverified information or rumors that could cause panic."
     ],
-    'videoLink': "https://www.youtube.com/watch?v=G2Trp3XBT9E"
+    'video': "https://www.youtube.com/watch?v=G2Trp3XBT9E"
   },
 
   'Flood': {
