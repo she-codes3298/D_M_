@@ -66,18 +66,18 @@ class DisasterDetailPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            // Image Illustration
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: Image.asset(
-                'assets/images/${category.toLowerCase().replaceAll(" ", "_")}.png', // Add images in assets
-                height: 200,
-                fit: BoxFit.cover,
-              ),
-            ),
             SizedBox(height: 16),
 
-            // To-Do List
+            Text(
+              '🌍 Causes:',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
+            ),
+            Text(
+              disasterInfo['causes'] ?? '',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 12),
+
             Text(
               '✅ To-Do List:',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.green[800]),
@@ -94,7 +94,6 @@ class DisasterDetailPage extends StatelessWidget {
             )),
             SizedBox(height: 12),
 
-            // Don'ts List
             Text(
               "❌ Don'ts:",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.red[800]),
@@ -111,7 +110,6 @@ class DisasterDetailPage extends StatelessWidget {
             )),
             SizedBox(height: 12),
 
-            // Learn More Video
             if (disasterInfo['video']!.isNotEmpty)
               ElevatedButton.icon(
                 onPressed: () async {
@@ -136,7 +134,6 @@ class DisasterDetailPage extends StatelessWidget {
     );
   }
 }
-
 // Disaster Categories
 
 Map<String, IconData> disasterCategories = {
@@ -198,63 +195,29 @@ Map<String, Map<String, dynamic>> disasterDetails = {
   },
 
   'Flood': {
-    'icon': Icons.water,
-    'backgroundColor': Colors.blue[100],
-    'generalInfo': "Floods result from excessive rainfall, dam failures, or storm surges. They lead to property damage, loss of life, and waterborne diseases. Early warning systems and proper drainage can help mitigate their effects.",
-    'dos': [
-      "Move to higher ground immediately.",
-      "Turn off electricity and gas to prevent hazards.",
-      "Keep emergency supplies, including drinking water and dry food.",
-      "Avoid walking or driving through floodwaters.",
-      "Stay tuned to weather reports for updates."
+    'causes': "Floods occur when excessive water overflows onto normally dry land. They can be triggered by both natural and human activities. Common causes include:\n\n- **Heavy Rainfall**: Prolonged or intense rain can overwhelm drainage systems and rivers, causing flooding.\n- **Cyclones and Hurricanes**: These storms bring heavy rainfall and storm surges, flooding coastal areas.\n- **Dam Failures**: Structural weaknesses or excessive water pressure can cause dams to break, releasing massive amounts of water.\n- **Deforestation**: Loss of trees reduces water absorption, increasing runoff and the risk of flash floods.\n- **Urbanization**: Concrete surfaces prevent water absorption, causing water to accumulate rapidly.\n- **Glacial Melting**: Climate change accelerates glacier melting, leading to rising water levels and floods in nearby regions.\n\nFloods can cause severe destruction, including loss of life, water contamination, building collapses, and landslides. Low-lying areas and regions near rivers are at the highest risk.",
+    'do': [
+      "Stay updated with weather forecasts and flood warnings.",
+      "Move valuables and important documents to higher levels in your home.",
+      "Store emergency supplies, including clean water, food, flashlights, and first aid kits.",
+      "Know your area's evacuation routes and nearest shelters.",
+      "Turn off electricity and gas to prevent fire hazards during a flood.",
+      "Move to higher ground or upper floors if it is safe to do so.",
+      "Avoid walking or driving through floodwaters. Even six inches of moving water can knock you down.",
+      "Abandon your vehicle if water is rising quickly and seek higher ground immediately.",
+      "Boil drinking water or use purification tablets to prevent disease after a flood.",
+      "Watch out for weakened structures and sinkholes before entering buildings.",
+      "Report fallen power lines and other hazards to authorities."
     ],
-    'donts': [
-      "Do not attempt to swim through floodwaters.",
-      "Do not ignore evacuation orders from authorities.",
-      "Do not touch electrical appliances if wet.",
-      "Do not drink floodwater—it may be contaminated."
+    'dont': [
+      "Do not ignore flood warnings or delay evacuation orders.",
+      "Do not attempt to swim in floodwaters; currents can be stronger than they appear.",
+      "Do not use electrical appliances or touch outlets in a flooded area.",
+      "Do not drive through water-covered roads; as little as two feet of water can carry away most vehicles.",
+      "Do not return home until authorities declare it safe."
     ],
-    'videoLink': "https://www.youtube.com/watch?v=78p_w_7GOWg"
+    'video': "https://www.youtube.com/watch?v=example_flood_video"
   },
 
-  'Cyclone': {
-    'icon': Icons.air,
-    'backgroundColor': Colors.cyan[100],
-    'generalInfo': "Cyclones are intense circular storms that form over warm ocean waters. They bring heavy rainfall, strong winds, and storm surges, causing widespread devastation. Preparedness and timely warnings save lives.",
-    'dos': [
-      "Secure doors, windows, and loose objects outside.",
-      "Stock up on food, water, and first aid supplies.",
-      "Stay indoors during the storm and away from windows.",
-      "Charge mobile phones and keep emergency contacts handy.",
-      "Follow evacuation orders if issued by local authorities."
-    ],
-    'donts': [
-      "Do not ignore cyclone warnings.",
-      "Do not venture outside until an official all-clear is given.",
-      "Do not use mobile phones unnecessarily to keep networks free.",
-      "Do not attempt to drive during heavy winds."
-    ],
-    'videoLink': "https://www.youtube.com/watch?v=9MrflsDV0cA"
-  },
-
-  'Fire Safety': {
-    'icon': Icons.local_fire_department,
-    'backgroundColor': Colors.red[100],
-    'generalInfo': "Fires can start due to electrical faults, gas leaks, or unattended flames. They spread rapidly, causing severe injuries and property damage. Fire safety training and precautions are essential for prevention.",
-    'dos': [
-      "Install smoke detectors and fire extinguishers at home.",
-      "Have an emergency evacuation plan for all family members.",
-      "Turn off electrical appliances when not in use.",
-      "Use a fire blanket or extinguisher to control small fires.",
-      "Crawl low under smoke to avoid inhaling toxic fumes."
-    ],
-    'donts': [
-      "Do not leave cooking unattended.",
-      "Do not overload electrical circuits.",
-      "Do not block emergency exits or fire escape routes.",
-      "Do not use water to extinguish oil or electrical fires."
-    ],
-    'videoLink': "https://www.youtube.com/watch?v=RQUiVT4XJUM"
-  },
 };
 
