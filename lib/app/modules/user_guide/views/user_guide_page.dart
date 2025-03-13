@@ -218,6 +218,56 @@ Map<String, Map<String, dynamic>> disasterDetails = {
     ],
     'video': "https://www.youtube.com/watch?v=example_flood_video"
   },
+  'Cyclone': {
+    'causes': "Cyclones, also known as hurricanes or typhoons in different regions, are powerful storms that form over warm ocean waters. They develop due to:\n\n- **Warm Ocean Temperatures**: Cyclones require sea surface temperatures of at least 26.5°C to fuel their growth.\n- **Low-Pressure Systems**: Warm, moist air rises, creating a low-pressure zone. As more air rushes in, the system intensifies.\n- **Coriolis Effect**: The Earth's rotation causes the cyclone to spin, with counterclockwise rotation in the Northern Hemisphere and clockwise in the Southern Hemisphere.\n- **Moisture and Wind Conditions**: Cyclones thrive when there is minimal wind shear (abrupt changes in wind speed and direction).\n- **Climate Change**: Rising ocean temperatures and unpredictable weather patterns have increased cyclone frequency and intensity.\n\nCyclones bring extreme winds, heavy rainfall, storm surges, and coastal flooding, causing massive destruction to homes, infrastructure, and agriculture.",
+    'do': [
+      "Stay updated with weather reports and cyclone warnings.",
+      "Reinforce windows and doors, and secure loose outdoor objects.",
+      "Keep emergency kits with essential supplies like food, water, medicine, and a flashlight.",
+      "If in a coastal area, move to designated cyclone shelters or higher ground.",
+      "Stay indoors, away from windows, and take shelter in a strong interior room.",
+      "If evacuation is required, leave early to avoid getting trapped.",
+      "Disconnect electrical appliances to prevent damage from power surges.",
+      "Use battery-powered radios to stay informed about the situation.",
+      "Wait for official announcements before venturing outside.",
+      "Beware of fallen power lines, damaged buildings, and water contamination.",
+      "Avoid stagnant water, as it may contain diseases or hidden dangers.",
+      "Assist in community recovery efforts if it is safe to do so."
+    ],
+    'dont': [
+      "Do not go near coastal areas or riverbanks during a cyclone.",
+      "Do not ignore evacuation warnings, as storm surges can be deadly.",
+      "Do not spread misinformation or panic others.",
+      "Do not drive through flooded areas; water levels can rise unpredictably.",
+      "Do not consume food or water that may have been contaminated."
+    ],
+    'video': "https://www.youtube.com/watch?v=example_cyclone_video"
+  },
+  'Fire Safety': {
+    'causes': "Fires can start due to various reasons, often resulting in severe damage and loss of life. The common causes include:\n\n- **Electrical Faults**: Short circuits, overloaded outlets, and faulty wiring can spark fires.\n- **Gas Leaks**: Leaking LPG or natural gas can ignite when exposed to flames or sparks.\n- **Unattended Cooking**: Leaving food unattended on a stove is a leading cause of house fires.\n- **Flammable Materials**: Improper storage of gasoline, alcohol, or chemicals can lead to fire hazards.\n- **Smoking & Open Flames**: Cigarettes, candles, and incense can ignite flammable objects.\n- **Wildfires**: Dry weather, lightning strikes, or human activities like campfires and discarded cigarettes can cause large-scale wildfires.\n- **Arson**: Deliberate acts of fire-setting lead to significant property and environmental damage.\n\nFires spread rapidly, consuming oxygen and releasing toxic smoke, making escape difficult. They can cause burns, asphyxiation, and structural collapses.",
+    'do': [
+      "Install smoke detectors and check them regularly.",
+      "Keep fire extinguishers at home, especially in kitchens and garages.",
+      "Store flammable liquids in well-ventilated areas, away from heat sources.",
+      "Use surge protectors to prevent electrical fires.",
+      "Stay low to the ground to avoid inhaling smoke.",
+      "If a fire is small, use a fire extinguisher (PASS method: Pull, Aim, Squeeze, Sweep).",
+      "If clothing catches fire, STOP, DROP, and ROLL to extinguish the flames.",
+      "If trapped, close doors to slow fire spread and signal for help from a window.",
+      "Use stairs, not elevators, when evacuating a burning building.",
+      "Seek medical attention for burns or smoke inhalation.",
+      "Avoid entering a burned structure until authorities declare it safe.",
+      "Contact emergency services for damage assessment."
+    ],
+    'dont': [
+      "Do not panic; staying calm improves survival chances.",
+      "Do not use water on electrical or oil fires—it may worsen the flames.",
+      "Do not re-enter a burning building to retrieve belongings.",
+      "Do not block fire exits or pathways with furniture.",
+      "Do not leave candles or cooking appliances unattended."
+    ],
+    'video': "https://www.youtube.com/watch?v=example_fire_safety_video"
+  },
 
 };
 
