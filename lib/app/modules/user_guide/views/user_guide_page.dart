@@ -138,17 +138,38 @@ class DisasterDetailPage extends StatelessWidget {
 }
 
 // Disaster Categories
+
 Map<String, IconData> disasterCategories = {
-  'Earthquake': Icons.house,
-  'Flood': Icons.water,
-  'Cyclone': Icons.air,
-  'Fire Safety': Icons.local_fire_department,
-  'Tsunami': Icons.waves,
-  'Landslide': Icons.terrain,
-  'Pandemic': Icons.health_and_safety,
-  'Industrial Accidents': Icons.factory,
-  'Nuclear Disasters': Icons.radioactive_sharp,
+  'Earthquake': Icons.house, // Represents home safety
+  'Flood': Icons.water, // Represents water-related disasters
+  'Cyclone': Icons.air, // Represents stormy winds
+  'Fire Safety': Icons.local_fire_department, // Represents fire hazards
+  'Tsunami': Icons.waves, // Represents massive ocean waves
+  'Landslide': Icons.terrain, // Represents ground movement
+  'Pandemic': Icons.health_and_safety, // Represents health-related disasters
+  'Industrial Accidents': Icons.factory, // Represents factory and chemical hazards
+  'Nuclear Disasters': Icons.volcano, // Represents radioactive hazards
+  'Drought': Icons.cloud_off, // Represents water scarcity
+  'Terrorist Attacks': Icons.dangerous, // Represents threats to security
+  'Chemical Spills': Icons.science, // Represents hazardous chemical leaks
+  'Volcanic Eruption': Icons.whatshot, // Represents volcanic activity
+  'Heatwave': Icons.thermostat, // Represents extreme heat conditions
+  'Cold Wave': Icons.ac_unit, // Represents extreme cold conditions
+  'Lightning Strikes': Icons.flash_on, // Represents thunderstorms
+  'Oil Spills': Icons.local_gas_station, // Represents environmental pollution
+  'Mine Collapses': Icons.construction, // Represents underground hazards
+  'Building Collapse': Icons.apartment, // Represents structural failures
+  'Tornado': Icons.wind_power, // Represents rotating windstorms
+  'Stampede': Icons.people, // Represents crowd-related hazards
+  'Train Accidents': Icons.train, // Represents rail transport hazards
+  'Airplane Crash': Icons.flight, // Represents aviation disasters
+  'Bridge Collapse': Icons.horizontal_rule_rounded, // Represents infrastructure failure
+  'Forest Fire': Icons.forest, // Represents wildfires
+  'Dam Failure': Icons.flood_sharp, // Represents water infrastructure failure
+  'Avalanche': Icons.snowing, // Represents falling snow disasters
+  'Electrocution': Icons.electric_bolt, // Represents electrical hazards
 };
+
 
 // Disaster-Specific Do’s, Don'ts, and Video Links
 Map<String, Map<String, dynamic>> disasterDetails = {
