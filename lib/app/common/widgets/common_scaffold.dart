@@ -69,7 +69,8 @@ class CommonScaffold extends StatelessWidget {
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/civilian_dashboard', (route) => false);
               break;
             case 1:
               Navigator.pushNamed(context, '/refugee_camp');
