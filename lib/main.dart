@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     '/refugee_camp': (context) => const RefugeeCampPage(),
     '/sos': (context) => const SOSPage(),
     '/user_guide': (context) => const UserGuidePage(),
-    '/call': (context) => const CallPage(),
+    '/call': (context) => CallPage(),
     '/profile': (context) =>  ProfilePage(),
     '/community_history': (context) => const CommunityHistoryPage(),
     '/ai_chatbot': (context) => AIChatbotScreen(),
