@@ -7,7 +7,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Set background color
+      backgroundColor: Colors.blue[100], // Set background color
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -17,7 +17,7 @@ class LoginPage extends StatelessWidget {
               const Text(
                 'Welcome to E-Sahyog',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -26,24 +26,24 @@ class LoginPage extends StatelessWidget {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  labelStyle: TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(color: Colors.black26),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               const SizedBox(height: 20),
               TextFormField(
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  labelStyle: TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(color: Colors.black26),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
