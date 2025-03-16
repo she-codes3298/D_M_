@@ -24,7 +24,7 @@ class CommonScaffold extends StatelessWidget {
 class CallPage extends StatelessWidget {
   final Color primaryColor = const Color(0xFF5F6898);
   final Color backgroundColor = const Color(0xFFE3F2FD);
-  final Color boxColor = Colors.blue[100]!;
+  final Color boxColor = const Color(0xFFBBDEFB);
 
   final List<Map<String, dynamic>> emergencyContacts = [
     {'name': 'Police', 'icon': Icons.local_police, 'number': '100'},
