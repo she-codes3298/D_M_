@@ -10,12 +10,12 @@ class CommonScaffold extends StatelessWidget {
   IconData(0xee35, fontFamily: 'MaterialIcons');
 
   const CommonScaffold({
-    Key? key,
+    super.key,
     required this.body,
     this.title = '',
     this.currentIndex = 0,
     this.profileImageUrl = 'https://via.placeholder.com/150',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
