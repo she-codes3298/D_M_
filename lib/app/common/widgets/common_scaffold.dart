@@ -84,6 +84,9 @@ class CommonScaffold extends StatelessWidget {
             case 4:
               Navigator.pushNamed(context, '/call');
               break;
+            case 5:
+              Navigator.pushNamed(context, '/community_history');
+              break;
           }
         },
         items: [
@@ -177,7 +180,7 @@ class CommonScaffold extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context); // Close the drawer
-              Navigator.pushNamed(context, '/community'); // Navigate to community
+              Navigator.pushNamed(context, '/community_history'); // Navigate to community
             },
           ),
           ListTile(
