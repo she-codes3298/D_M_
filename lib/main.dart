@@ -11,14 +11,21 @@ import 'app/modules/profile/views/profile_page.dart';
 import 'app/modules/community_history/views/community_history_page.dart';
 import 'app/modules/ai_chatbot.dart';
 import 'package:flutter_gemini/flutter_gemini.dart'; // Import Gemini
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  print("Initializing app...");
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  print("Firebase initialized");
   Gemini.init(apiKey: 'AIzaSyADGh1jYjjOA5hNJVVFUzBwNZ-SVMYdqXc');
+  print("Gemini initialized");
   runApp(const MyApp());
+  print("App started");
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   // Define the named routes here.
   static final Map<String, WidgetBuilder> routes = {
