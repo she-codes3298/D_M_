@@ -6,7 +6,7 @@ class CommonScaffold extends StatelessWidget {
   final Widget body;
   final Color primaryColor = const Color(0xFF5F6898);
 
-  const CommonScaffold({Key? key, required this.title, required this.body}) : super(key: key);
+  const CommonScaffold({super.key, required this.title, required this.body});
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +52,8 @@ class CallPage extends StatelessWidget {
     {'name': 'Industrial Accidents', 'icon': Icons.factory, 'number': '1800-180-5523'},
     {'name': 'Anti-Terrorism', 'icon': Icons.shield, 'number': '1090'},
   ];
+
+  CallPage({super.key});
 
   void _callNumber(String number) async {
     final Uri callUri = Uri.parse('tel:$number');
