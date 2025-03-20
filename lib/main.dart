@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     '/civilian_dashboard': (context) => const CivilianDashboardView(),
     '/predictive_ai': (context) => const PredictiveAIPage(),
     '/learn': (context) => const LearnPage(),
-    '/refugee_camp': (context) => const RefugeeCampPage(),
+    '/refugee_camp': (context) =>  CivilianRefugeeMap(),
     '/sos': (context) => const SOSPage(),
     '/user_guide': (context) => const UserGuidePage(),
     '/call': (context) => CallPage(),
