@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:d_m/app/common/widgets/common_scaffold.dart'; // Adjust your import path
 import 'package:d_m/app/modules/ai_chatbot.dart'; // Import the chatbot screen
+import 'package:d_m/app/modules/community_history/views/community_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
 
 class CivilianDashboardView extends StatelessWidget {
   const CivilianDashboardView({Key? key}) : super(key: key);
@@ -145,9 +149,17 @@ class CivilianDashboardView extends StatelessWidget {
                         Center(
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/community_history');
+                              Navigator.pushNamed(
+                                context,
+                                '/community_history',
+                                arguments: {
+                                  'author': 'NDRF',
+                                  'content': 'This is a sample community post showing real-time updates on disaster management.',
+                                },
+                              );
+
                             },
-                            child: const Text('History'),
+                            child: const Text('View Community'),
                           ),
                         ),
                       ],

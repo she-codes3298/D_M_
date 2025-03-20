@@ -8,7 +8,7 @@ import 'app/modules/sos/views/sos_page.dart';
 import 'app/modules/user_guide/views/user_guide_page.dart';
 import 'app/modules/call/views/call_page.dart';
 import 'app/modules/profile/views/profile_page.dart';
-import 'app/modules/community_history/views/community_history_page.dart';
+import 'app/modules/community_history/views/community_page.dart';
 import 'app/modules/ai_chatbot.dart';
 import 'package:flutter_gemini/flutter_gemini.dart'; // Import Gemini
 import 'package:firebase_core/firebase_core.dart';
@@ -27,9 +27,40 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // Define the named routes here.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Disaster Management App',
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/', // Set splash screen as the initial route
+      onGenerateRoute: (settings) {
+        if (settings.name == '/community_history') {
+          return MaterialPageRoute(
+            builder: (context) => const CommunityPage(),
+          );
+        }
+
+
+        // Handle other named routes safely
+        final pageBuilder = routes[settings.name];
+        if (pageBuilder != null) {
+          return MaterialPageRoute(builder: (context) => pageBuilder(context));
+        }
+
+        // Return a default error page if the route does not exist
+        return MaterialPageRoute(
+          builder: (context) => Scaffold(
+            appBar: AppBar(title: const Text("Error")),
+            body: const Center(child: Text("Page not found")),
+          ),
+        );
+      },
+    );
+  }
+
+  // Define static named routes (only for routes without parameters)
   static final Map<String, WidgetBuilder> routes = {
-    '/': (context) => const SplashScreen(), // Set splash screen as initial route
+    '/': (context) => const SplashScreen(),
     '/civilian_dashboard': (context) => const CivilianDashboardView(),
     '/predictive_ai': (context) => const PredictiveAIPage(),
     '/learn': (context) => const LearnPage(),
@@ -37,18 +68,7 @@ class MyApp extends StatelessWidget {
     '/sos': (context) => const SOSPage(),
     '/user_guide': (context) => const UserGuidePage(),
     '/call': (context) => CallPage(),
-    '/profile': (context) =>  ProfilePage(),
-    '/community_history': (context) => const CommunityHistoryPage(),
+    '/profile': (context) => ProfilePage(),
     '/ai_chatbot': (context) => AIChatbotScreen(),
   };
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Disaster Management App',
-      debugShowCheckedModeBanner: false,
-      routes: routes,
-      initialRoute: '/', // Set splash screen as the initial route
-    );
-  }
 }
