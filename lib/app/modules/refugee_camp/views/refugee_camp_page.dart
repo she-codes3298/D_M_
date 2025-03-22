@@ -57,50 +57,56 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
   }
 
   /// ✅ Step 3: Fetch refugee camps from Firestore
-  void _fetchCamps() async {
-    try {
-      var snapshot =
-          await FirebaseFirestore.instance.collection('refugee_camps').get();
+  void _fetchCamps() {
+    FirebaseFirestore.instance
+        .collection('refugee_camps')
+        .snapshots()
+        .listen(
+          (snapshot) {
+            if (snapshot.docs.isEmpty) {
+              print("⚠️ No refugee camps found.");
+            } else {
+              Set<Marker> tempMarkers = {};
 
-      if (snapshot.docs.isEmpty) {
-        print("⚠️ No refugee camps found.");
-      } else {
-        Set<Marker> tempMarkers = {}; // Temporary marker set
+              for (var camp in snapshot.docs) {
+                var data = camp.data();
+                if (data.containsKey('location') &&
+                    data['location'] is GeoPoint) {
+                  GeoPoint geoPoint = data['location'];
+                  LatLng campPosition = LatLng(
+                    geoPoint.latitude,
+                    geoPoint.longitude,
+                  );
 
-        for (var camp in snapshot.docs) {
-          var data = camp.data();
+                  tempMarkers.add(
+                    Marker(
+                      markerId: MarkerId(data['name']),
+                      position: campPosition,
+                      icon: BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed,
+                      ),
+                      infoWindow: InfoWindow(
+                        title: data['name'],
+                        snippet:
+                            "Capacity: ${data['capacity']} | Resources: ${data['resources']}",
+                      ),
+                      onTap: () => _showRouteToCamp(campPosition),
+                    ),
+                  );
+                }
+              }
 
-          if (data.containsKey('location') && data['location'] is GeoPoint) {
-            GeoPoint geoPoint = data['location'];
-            LatLng campPosition = LatLng(geoPoint.latitude, geoPoint.longitude);
+              setState(() {
+                _markers = tempMarkers;
+              });
 
-            tempMarkers.add(
-              Marker(
-                markerId: MarkerId(data['name']),
-                position: campPosition,
-                icon: BitmapDescriptor.defaultMarkerWithHue(
-                  BitmapDescriptor.hueRed,
-                ),
-                infoWindow: InfoWindow(
-                  title: data['name'],
-                  snippet:
-                      "Capacity: ${data['capacity']} | Resources: ${data['resources']}",
-                ),
-                onTap: () => _showRouteToCamp(campPosition),
-              ),
-            );
-          }
-        }
-
-        setState(() {
-          _markers.addAll(tempMarkers);
-        });
-
-        print("✅ Camps loaded: ${tempMarkers.length}");
-      }
-    } catch (e) {
-      print("❌ Firestore Error: $e");
-    }
+              print("✅ Real-time camps updated: ${tempMarkers.length}");
+            }
+          },
+          onError: (e) {
+            print("❌ Firestore Error: $e");
+          },
+        );
   }
 
   /// ✅ Step 4: Move camera to user location after fetching
