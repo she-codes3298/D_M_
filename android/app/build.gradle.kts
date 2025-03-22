@@ -1,3 +1,4 @@
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -52,6 +53,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+         val mapsApiKey: String = project.findProperty("MAPS_API_KEY") as String? ?: ""
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
+
+
     }
 
     buildTypes {
