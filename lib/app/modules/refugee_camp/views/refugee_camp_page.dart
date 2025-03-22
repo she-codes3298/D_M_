@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dio/dio.dart';
-import 'package:location/location.dart' hide PermissionStatus;
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart' as perm;
 
 class RefugeeCampMap extends StatefulWidget {
   @override
@@ -16,35 +14,36 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
   Location _location = Location();
   LatLng? _currentPosition;
   Set<Marker> _markers = {};
-  Set<Polyline> _polylines = {};
-  Dio _dio = Dio();
-
-  final String _apiKey =
-      "AIzaSyBsaQT5EqQO67yPEQsiwALAatFihQehIjU"; // Replace with your actual API key
+  bool _locationPermissionGranted = false;
 
   @override
   void initState() {
     super.initState();
-    _checkPermissionsAndFetchLocation();
+    _checkPermissionsAndFetch();
   }
 
-  /// **1️⃣ Check Location Permissions & Fetch User Location**
-  Future<void> _checkPermissionsAndFetchLocation() async {
-    PermissionStatus permission = await Permission.location.request();
-    if (permission.isGranted) {
+  /// ✅ Step 1: Check location permissions and fetch location & camp data
+  void _checkPermissionsAndFetch() async {
+    perm.PermissionStatus status = await perm.Permission.location.request();
+    if (status.isGranted) {
+      setState(() {
+        _locationPermissionGranted = true;
+      });
       _fetchUserLocation();
       _fetchCamps();
     } else {
-      print("Location permission denied");
+      print("❌ Location permission denied.");
     }
   }
 
-  /// **2️⃣ Fetch User Location & Move Camera**
+  /// ✅ Step 2: Fetch user's current location
   void _fetchUserLocation() async {
     var locationData = await _location.getLocation();
-    _currentPosition = LatLng(locationData.latitude!, locationData.longitude!);
-
     setState(() {
+      _currentPosition = LatLng(
+        locationData.latitude!,
+        locationData.longitude!,
+      );
       _markers.add(
         Marker(
           markerId: MarkerId('userLocation'),
@@ -53,148 +52,113 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
           infoWindow: InfoWindow(title: 'Your Location'),
         ),
       );
+      _moveCameraToUser();
     });
-
-    // Move camera to user's location
-    _mapController?.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: _currentPosition!, zoom: 14),
-      ),
-    );
   }
 
-  /// **3️⃣ Fetch Refugee Camps from Firestore**
-  void _fetchCamps() {
-    FirebaseFirestore.instance.collection('refugee_camps').snapshots().listen((
-      snapshot,
-    ) {
-      setState(() {
-        _markers.removeWhere(
-          (m) => m.markerId.value != 'userLocation',
-        ); // Keep user marker only
+  /// ✅ Step 3: Fetch refugee camps from Firestore
+  void _fetchCamps() async {
+    try {
+      var snapshot =
+          await FirebaseFirestore.instance.collection('refugee_camps').get();
+
+      if (snapshot.docs.isEmpty) {
+        print("⚠️ No refugee camps found.");
+      } else {
+        Set<Marker> tempMarkers = {}; // Temporary marker set
 
         for (var camp in snapshot.docs) {
           var data = camp.data();
-          if (data.containsKey('location')) {
-            var location = data['location'];
-            if (location is Map<String, dynamic> &&
-                location.containsKey('latitude') &&
-                location.containsKey('longitude')) {
-              double? lat = (location['latitude'] as num?)?.toDouble();
-              double? lng = (location['longitude'] as num?)?.toDouble();
 
-              if (lat != null && lng != null) {
-                LatLng campPosition = LatLng(lat, lng);
-                _markers.add(
-                  Marker(
-                    markerId: MarkerId(camp.id),
-                    position: campPosition,
-                    icon: BitmapDescriptor.defaultMarkerWithHue(
-                      BitmapDescriptor.hueRed,
-                    ),
-                    infoWindow: InfoWindow(
-                      title: data['name'] ?? 'Unknown Camp',
-                      snippet: data['address'] ?? 'No Address',
-                      onTap: () {
-                        _fetchRoute(campPosition);
-                      },
-                    ),
-                  ),
-                );
-              }
-            }
+          if (data.containsKey('location') && data['location'] is GeoPoint) {
+            GeoPoint geoPoint = data['location'];
+            LatLng campPosition = LatLng(geoPoint.latitude, geoPoint.longitude);
+
+            tempMarkers.add(
+              Marker(
+                markerId: MarkerId(data['name']),
+                position: campPosition,
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueRed,
+                ),
+                infoWindow: InfoWindow(
+                  title: data['name'],
+                  snippet:
+                      "Capacity: ${data['capacity']} | Resources: ${data['resources']}",
+                ),
+                onTap: () => _showRouteToCamp(campPosition),
+              ),
+            );
           }
         }
-      });
-    });
-  }
 
-  /// **4️⃣ Fetch Route and Draw Polyline**
-  Future<void> _fetchRoute(LatLng destination) async {
-    if (_currentPosition == null) return;
-
-    final String url =
-        "https://maps.googleapis.com/maps/api/directions/json?origin=${_currentPosition!.latitude},${_currentPosition!.longitude}&destination=${destination.latitude},${destination.longitude}&key=$_apiKey";
-
-    try {
-      Response response = await _dio.get(url);
-      if (response.statusCode == 200 && response.data["routes"].isNotEmpty) {
-        List<LatLng> polylinePoints = _decodePolyline(
-          response.data["routes"][0]["overview_polyline"]["points"],
-        );
         setState(() {
-          _polylines.clear();
-          _polylines.add(
-            Polyline(
-              polylineId: PolylineId("route"),
-              points: polylinePoints,
-              color: Colors.blue,
-              width: 5,
-            ),
-          );
+          _markers.addAll(tempMarkers);
         });
 
-        // Move camera to show route
-        _mapController?.animateCamera(
-          CameraUpdate.newLatLngBounds(
-            _getLatLngBounds(_currentPosition!, destination),
-            100,
-          ),
-        );
-      } else {
-        print("No route found");
+        print("✅ Camps loaded: ${tempMarkers.length}");
       }
     } catch (e) {
-      print("Error fetching route: $e");
+      print("❌ Firestore Error: $e");
     }
   }
 
-  /// **5️⃣ Decode Polyline**
-  List<LatLng> _decodePolyline(String encoded) {
-    List<LatLng> points = [];
-    int index = 0, len = encoded.length;
-    int lat = 0, lng = 0;
-
-    while (index < len) {
-      int shift = 0, result = 0;
-      int byte;
-      do {
-        byte = encoded.codeUnitAt(index++) - 63;
-        result |= (byte & 0x1F) << shift;
-        shift += 5;
-      } while (byte >= 0x20);
-      int dlat = ((result & 1) == 1 ? ~(result >> 1) : (result >> 1));
-      lat += dlat;
-
-      shift = 0;
-      result = 0;
-      do {
-        byte = encoded.codeUnitAt(index++) - 63;
-        result |= (byte & 0x1F) << shift;
-        shift += 5;
-      } while (byte >= 0x20);
-      int dlng = ((result & 1) == 1 ? ~(result >> 1) : (result >> 1));
-      lng += dlng;
-
-      points.add(LatLng(lat / 1E5, lng / 1E5));
+  /// ✅ Step 4: Move camera to user location after fetching
+  void _moveCameraToUser() {
+    if (_mapController != null && _currentPosition != null) {
+      _mapController!.animateCamera(
+        CameraUpdate.newLatLngZoom(_currentPosition!, 12.0),
+      );
     }
-    return points;
   }
 
-  /// **6️⃣ Auto-Zoom to Fit Route**
-  LatLngBounds _getLatLngBounds(LatLng point1, LatLng point2) {
-    return LatLngBounds(
-      southwest: LatLng(
-        point1.latitude < point2.latitude ? point1.latitude : point2.latitude,
-        point1.longitude < point2.longitude
-            ? point1.longitude
-            : point2.longitude,
-      ),
-      northeast: LatLng(
-        point1.latitude > point2.latitude ? point1.latitude : point2.latitude,
-        point1.longitude > point2.longitude
-            ? point1.longitude
-            : point2.longitude,
+  /// ✅ Step 5: Show route to selected refugee camp (Polyline)
+  void _showRouteToCamp(LatLng campPosition) {
+    if (_currentPosition == null) return;
+
+    setState(() {
+      _markers.add(
+        Marker(
+          markerId: MarkerId('routeStart'),
+          position: _currentPosition!,
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+            BitmapDescriptor.hueGreen,
+          ),
+          infoWindow: InfoWindow(title: 'Starting Point'),
+        ),
+      );
+
+      _markers.add(
+        Marker(
+          markerId: MarkerId('routeEnd'),
+          position: campPosition,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          infoWindow: InfoWindow(title: 'Refugee Camp'),
+        ),
+      );
+    });
+
+    _mapController!.animateCamera(
+      CameraUpdate.newLatLngBounds(
+        LatLngBounds(
+          southwest: LatLng(
+            _currentPosition!.latitude < campPosition.latitude
+                ? _currentPosition!.latitude
+                : campPosition.latitude,
+            _currentPosition!.longitude < campPosition.longitude
+                ? _currentPosition!.longitude
+                : campPosition.longitude,
+          ),
+          northeast: LatLng(
+            _currentPosition!.latitude > campPosition.latitude
+                ? _currentPosition!.latitude
+                : campPosition.latitude,
+            _currentPosition!.longitude > campPosition.longitude
+                ? _currentPosition!.longitude
+                : campPosition.longitude,
+          ),
+        ),
+        50,
       ),
     );
   }
@@ -203,16 +167,21 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Refugee Camps")),
-      body: GoogleMap(
-        onMapCreated: (controller) => _mapController = controller,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(20.5937, 78.9629), // Default India center
-          zoom: 5,
-        ),
-        markers: _markers,
-        polylines: _polylines,
-        myLocationEnabled: true,
-      ),
+      body:
+          _locationPermissionGranted
+              ? GoogleMap(
+                onMapCreated: (controller) {
+                  _mapController = controller;
+                },
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(20.5937, 78.9629), // Default position (India)
+                  zoom: 5,
+                ),
+                markers: _markers,
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
+              )
+              : Center(child: Text("Please grant location permissions.")),
     );
   }
 }
