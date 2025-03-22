@@ -112,7 +112,7 @@ class CivilianDashboardView extends StatelessWidget {
                         Row(
                           children: [
                             const CircleAvatar(
-                              backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+                              backgroundImage: NetworkImage('assets/images/default_user.png'),
                             ),
                             const SizedBox(width: 8),
                             const Text(
@@ -131,7 +131,7 @@ class CivilianDashboardView extends StatelessWidget {
                         const SizedBox(height: 8),
                         // Community Post Content
                         const Text(
-                          'This is a sample community post showing real-time updates on disaster management. Stay alert and follow the instructions provided.',
+                          'we have set few refugee camp near abc area',
                           style: TextStyle(fontSize: 14),
                         ),
                         const SizedBox(height: 8),

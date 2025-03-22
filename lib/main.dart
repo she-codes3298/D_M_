@@ -12,11 +12,15 @@ import 'app/modules/community_history/views/community_page.dart';
 import 'app/modules/ai_chatbot.dart';
 import 'package:flutter_gemini/flutter_gemini.dart'; // Import Gemini
 import 'package:firebase_core/firebase_core.dart';
+import 'services/location_service.dart';
+
 
 void main() async {
   print("Initializing app...");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  await LocationService.requestLocationAndFCM();
   print("Firebase initialized");
   Gemini.init(apiKey: 'AIzaSyADGh1jYjjOA5hNJVVFUzBwNZ-SVMYdqXc');
   print("Gemini initialized");
