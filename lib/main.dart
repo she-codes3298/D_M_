@@ -12,15 +12,18 @@ import 'app/modules/community_history/views/community_page.dart';
 import 'app/modules/ai_chatbot.dart';
 import 'package:flutter_gemini/flutter_gemini.dart'; // Import Gemini
 import 'package:firebase_core/firebase_core.dart';
-import 'services/location_service.dart';
 
+import 'services/location_service.dart';
 
 void main() async {
   print("Initializing app...");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
+
   await LocationService.requestLocationAndFCM();
+
+
   print("Firebase initialized");
   Gemini.init(apiKey: 'AIzaSyADGh1jYjjOA5hNJVVFUzBwNZ-SVMYdqXc');
   print("Gemini initialized");
@@ -39,10 +42,15 @@ class MyApp extends StatelessWidget {
       initialRoute: '/', // Set splash screen as the initial route
       onGenerateRoute: (settings) {
         if (settings.name == '/community_history') {
+
           return MaterialPageRoute(
             builder: (context) => const CommunityPage(),
           );
         }
+
+
+
+          
 
 
         // Handle other named routes safely
@@ -53,10 +61,15 @@ class MyApp extends StatelessWidget {
 
         // Return a default error page if the route does not exist
         return MaterialPageRoute(
-          builder: (context) => Scaffold(
-            appBar: AppBar(title: const Text("Error")),
-            body: const Center(child: Text("Page not found")),
-          ),
+
+         
+
+          builder:
+              (context) => Scaffold(
+                appBar: AppBar(title: const Text("Error")),
+                body: const Center(child: Text("Page not found")),
+              ),
+
         );
       },
     );
@@ -68,7 +81,11 @@ class MyApp extends StatelessWidget {
     '/civilian_dashboard': (context) => const CivilianDashboardView(),
     '/predictive_ai': (context) => const PredictiveAIPage(),
     '/learn': (context) => const LearnPage(),
-    '/refugee_camp': (context) => const RefugeeCampPage(),
+
+    
+
+    '/refugee_camp': (context) => RefugeeCampMap(),
+
     '/sos': (context) => const SOSPage(),
     '/user_guide': (context) => const UserGuidePage(),
     '/call': (context) => CallPage(),
