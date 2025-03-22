@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CommunityPage extends StatefulWidget {
-  const CommunityPage({Key? key}) : super(key: key);
+  const CommunityPage({super.key});
 
   @override
   State<CommunityPage> createState() => _CommunityPageState();
@@ -41,14 +41,17 @@ class _CommunityPageState extends State<CommunityPage> {
               final post = posts[index];
               final String postId = post.id;
               final String postAuthor = post['author'] ?? 'Unknown';
-              final String postContent = post['content'] ?? 'No content available.';
+              final String postContent =
+                  post['content'] ?? 'No content available.';
               final String? imageUrl = post['imageUrl']; // Get image URL
               final int likes = post['likes'] ?? 0; // Default likes = 0
 
               return Card(
                 margin: const EdgeInsets.all(8.0),
                 elevation: 5,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -58,12 +61,17 @@ class _CommunityPageState extends State<CommunityPage> {
                       Row(
                         children: [
                           const CircleAvatar(
-                            backgroundImage: AssetImage('assets/images/default_user.png'),
+                            backgroundImage: AssetImage(
+                              'assets/images/default_user.png',
+                            ),
                           ),
                           const SizedBox(width: 10),
                           Text(
                             postAuthor,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                         ],
                       ),
@@ -71,10 +79,7 @@ class _CommunityPageState extends State<CommunityPage> {
                       const SizedBox(height: 10),
 
                       // Post Content
-                      Text(
-                        postContent,
-                        style: const TextStyle(fontSize: 15),
-                      ),
+                      Text(postContent, style: const TextStyle(fontSize: 15)),
 
                       const SizedBox(height: 10),
 
@@ -89,10 +94,14 @@ class _CommunityPageState extends State<CommunityPage> {
                             height: 200,
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
-                              return const Center(child: CircularProgressIndicator());
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
                             },
-                            errorBuilder: (context, error, stackTrace) =>
-                            const Center(child: Icon(Icons.error, color: Colors.red)),
+                            errorBuilder:
+                                (context, error, stackTrace) => const Center(
+                                  child: Icon(Icons.error, color: Colors.red),
+                                ),
                           ),
                         ),
 
@@ -112,7 +121,10 @@ class _CommunityPageState extends State<CommunityPage> {
                               ),
                               Text(
                                 "$likes Likes",
-                                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ],
                           ),

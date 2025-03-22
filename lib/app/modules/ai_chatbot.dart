@@ -6,6 +6,8 @@ import 'dart:convert'; // For base64 encoding
 import 'dart:io'; // For File operations
 
 class AIChatbotScreen extends StatefulWidget {
+  const AIChatbotScreen({super.key});
+
   @override
   _AIChatbotScreenState createState() => _AIChatbotScreenState();
 }
@@ -44,22 +46,28 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
         print('Received response: ${response.output}'); // Log the response
         // Add bot response to the chat
         setState(() {
-          _messages.insert(0, ChatMessage(
-            user: _bot,
-            text: response.output!,
-            createdAt: DateTime.now(),
-          ));
+          _messages.insert(
+            0,
+            ChatMessage(
+              user: _bot,
+              text: response.output!,
+              createdAt: DateTime.now(),
+            ),
+          );
         });
       }
     } catch (e) {
       print('Error: $e'); // Log the error
       // Handle errors
       setState(() {
-        _messages.insert(0, ChatMessage(
-          user: _bot,
-          text: 'Error: Failed to fetch response.',
-          createdAt: DateTime.now(),
-        ));
+        _messages.insert(
+          0,
+          ChatMessage(
+            user: _bot,
+            text: 'Error: Failed to fetch response.',
+            createdAt: DateTime.now(),
+          ),
+        );
       });
     }
   }
@@ -74,17 +82,20 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
 
       // Add image message to the chat
       setState(() {
-        _messages.insert(0, ChatMessage(
-          user: _user,
-          createdAt: DateTime.now(),
-          medias: [
-            ChatMedia(
-              url: image.path,
-              fileName: "image.jpg",
-              type: MediaType.image,
-            ),
-          ],
-        ));
+        _messages.insert(
+          0,
+          ChatMessage(
+            user: _user,
+            createdAt: DateTime.now(),
+            medias: [
+              ChatMedia(
+                url: image.path,
+                fileName: "image.jpg",
+                type: MediaType.image,
+              ),
+            ],
+          ),
+        );
       });
 
       // Send the image to Gemini API
@@ -97,22 +108,28 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
           print('Received response: ${response.output}'); // Log the response
           // Add bot response to the chat
           setState(() {
-            _messages.insert(0, ChatMessage(
-              user: _bot,
-              text: response.output!,
-              createdAt: DateTime.now(),
-            ));
+            _messages.insert(
+              0,
+              ChatMessage(
+                user: _bot,
+                text: response.output!,
+                createdAt: DateTime.now(),
+              ),
+            );
           });
         }
       } catch (e) {
         print('Error: $e'); // Log the error
         // Handle errors
         setState(() {
-          _messages.insert(0, ChatMessage(
-            user: _bot,
-            text: 'Error: Failed to process image.',
-            createdAt: DateTime.now(),
-          ));
+          _messages.insert(
+            0,
+            ChatMessage(
+              user: _bot,
+              text: 'Error: Failed to process image.',
+              createdAt: DateTime.now(),
+            ),
+          );
         });
       }
     }
@@ -166,7 +183,9 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                 height: 100, // Adjust height as needed
                 decoration: BoxDecoration(
                   color: Colors.blue[100], // Lightest blue background
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(10)), // Fixed syntax
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(10),
+                  ), // Fixed syntax
                 ),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -179,17 +198,24 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                           backgroundColor: Colors.blue[80], // Button color
                           foregroundColor: Colors.grey[900], // Text color
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20), // Rounded corners
+                            borderRadius: BorderRadius.circular(
+                              20,
+                            ), // Rounded corners
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
                         ),
                         onPressed: () {
                           // Automatically send the selected prompt
-                          _sendMessage(ChatMessage(
-                            user: _user,
-                            text: _customPrompts[index],
-                            createdAt: DateTime.now(),
-                          ));
+                          _sendMessage(
+                            ChatMessage(
+                              user: _user,
+                              text: _customPrompts[index],
+                              createdAt: DateTime.now(),
+                            ),
+                          );
                         },
                         child: Text(
                           _customPrompts[index],

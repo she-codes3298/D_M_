@@ -6,6 +6,8 @@ import 'complete_profile_page.dart';
 import 'view_details_page.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -51,7 +53,8 @@ Disabilities - Vision Impairment
       isProfileComplete = prefs.getString('abhaId')?.isNotEmpty ?? false;
 
       if (isProfileComplete) {
-        qrData = prefs.getString('qrData') ?? dummyQRData; // Load actual QR data
+        qrData =
+            prefs.getString('qrData') ?? dummyQRData; // Load actual QR data
       } else {
         qrData = dummyQRData; // Show predefined dummy QR data
       }
@@ -82,7 +85,9 @@ Disabilities - Vision Impairment
   void _navigateToMedicalDetails() {
     if (isProfileComplete) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ViewDetailsPage()));
+        context,
+        MaterialPageRoute(builder: (context) => ViewDetailsPage()),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Complete your profile to view details")),
@@ -117,9 +122,10 @@ Disabilities - Vision Impairment
                   Text(
                     userName,
                     style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: accentColor),
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: accentColor,
+                    ),
                   ),
                 ],
               ),
@@ -133,7 +139,7 @@ Disabilities - Vision Impairment
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
-                      BoxShadow(color: Colors.grey.shade300, blurRadius: 5)
+                      BoxShadow(color: Colors.grey.shade300, blurRadius: 5),
                     ],
                   ),
                   child: Column(
@@ -145,10 +151,15 @@ Disabilities - Vision Impairment
                       ElevatedButton(
                         onPressed: _navigateToCompleteProfile,
                         style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                            isProfileComplete ? Colors.orange : accentColor),
-                        child: Text(isProfileComplete ? 'Edit Profile' : 'Complete Profile',
-                            style: TextStyle(color: Colors.white)),
+                          backgroundColor:
+                              isProfileComplete ? Colors.orange : accentColor,
+                        ),
+                        child: Text(
+                          isProfileComplete
+                              ? 'Edit Profile'
+                              : 'Complete Profile',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
@@ -162,20 +173,26 @@ Disabilities - Vision Impairment
                 children: [
                   ElevatedButton.icon(
                     onPressed: _navigateToMedicalDetails,
-                    style:
-                    ElevatedButton.styleFrom(backgroundColor: accentColor),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: accentColor,
+                    ),
                     icon: Icon(Icons.info, color: Colors.white),
-                    label: Text("View Medical Details",
-                        style: TextStyle(color: Colors.white)),
+                    label: Text(
+                      "View Medical Details",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                   SizedBox(width: 10),
                   ElevatedButton.icon(
                     onPressed: _shareQRCode,
-                    style:
-                    ElevatedButton.styleFrom(backgroundColor: accentColor),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: accentColor,
+                    ),
                     icon: Icon(Icons.share, color: Colors.white),
-                    label: Text("Share QR Code",
-                        style: TextStyle(color: Colors.white)),
+                    label: Text(
+                      "Share QR Code",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -189,7 +206,8 @@ Disabilities - Vision Impairment
                     title: Text('Community'),
                     tileColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     onTap: () {
                       Navigator.pushNamed(context, '/community_history');
                     }, // Add Community Page Navigation
@@ -198,8 +216,18 @@ Disabilities - Vision Impairment
                   // AI Chatbot Button (Replacing E-Sahyog)
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/ai_chatbot'); // Navigate to chatbot page
+                      Navigator.pushNamed(
+                        context,
+                        '/ai_chatbot',
+                      ); // Navigate to chatbot page
                     },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.all(12),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                     child: Row(
                       children: [
                         Image.asset(
@@ -214,13 +242,6 @@ Disabilities - Vision Impairment
                         ),
                       ],
                     ),
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.all(12),
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
                   ),
 
                   SizedBox(height: 10),
@@ -229,7 +250,8 @@ Disabilities - Vision Impairment
                     title: Text('Settings'),
                     tileColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     onTap: () {}, // Settings Page
                   ),
                   SizedBox(height: 10),
@@ -238,7 +260,8 @@ Disabilities - Vision Impairment
                     title: Text('Help & Support'),
                     tileColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     onTap: () {}, // Help Page
                   ),
                 ],

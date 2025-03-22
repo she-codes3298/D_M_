@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CommunityHistoryPage extends StatelessWidget {
-  const CommunityHistoryPage({Key? key}) : super(key: key);
+  const CommunityHistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
