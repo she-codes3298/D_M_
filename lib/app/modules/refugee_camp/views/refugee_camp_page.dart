@@ -104,7 +104,7 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
                       ),
                       infoWindow: InfoWindow(
                         title: data['name'],
-                        snippet: "Capacity: ${data['capacity']} | ETA: $eta",
+                        snippet: "Capacity: ${data['capacity']}",
                         onTap: () {
                           _launchGoogleMapsNavigation(campPosition);
                         },
@@ -223,8 +223,8 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
     // Create a polyline with the generated points
     final polyline = Polyline(
       polylineId: PolylineId('route'),
-      color: Colors.blue,
-      width: 5,
+      color: const Color.fromARGB(91, 42, 44, 45),
+      width: 3,
       points: points,
     );
 
@@ -407,8 +407,8 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
                   _mapController = controller;
                 },
                 initialCameraPosition: CameraPosition(
-                  target: LatLng(20.5937, 78.9629), // Default position (India)
-                  zoom: 5,
+                  target: LatLng(24.8108, 93.9386), // Default position (India)
+                  zoom: 4,
                 ),
                 markers: _markers,
                 polylines: _polylines,
