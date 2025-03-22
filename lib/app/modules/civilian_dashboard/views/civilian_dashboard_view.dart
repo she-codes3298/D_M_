@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:d_m/app/common/widgets/common_scaffold.dart'; // Adjust your import path
+import 'package:d_m/app/common/widgets/common_scaffold.dart';
+
 // Import the chatbot screen
 
 class CivilianDashboardView extends StatelessWidget {
@@ -113,35 +114,32 @@ class CivilianDashboardView extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                    
                         // Community Post Header
-                        Row(
+                     Row(
                           children: [
-                            const CircleAvatar(
-<<<<<<< HEAD
-                              backgroundImage: NetworkImage('assets/images/default_user.png'),
-=======
-                              backgroundImage: NetworkImage(
-                                'assets/images/default_user.png',
-                              ),
->>>>>>> upstream/master
-                            ),
-                            const SizedBox(width: 8),
-                            const Text(
-                              'NDRF',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const Spacer(),
-                            IconButton(
-                              icon: const Icon(Icons.more_vert),
-                              onPressed: () {
-                                // TODO: Show post options
-                              },
-                            ),
-                          ],
+                                 const CircleAvatar(
+                                 backgroundImage: AssetImage('assets/images/default_user.png'),
+                                    radius: 30,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text(
+                                    'NDRF',
+                                   style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  IconButton(
+                                     icon: const Icon(Icons.more_vert),
+                                     onPressed: () {
+                                        // TODO: Show post options
+                                      },
+                                    ),
+                                  ],
                         ),
+ 
                         const SizedBox(height: 8),
                         // Community Post Content
                         const Text(
