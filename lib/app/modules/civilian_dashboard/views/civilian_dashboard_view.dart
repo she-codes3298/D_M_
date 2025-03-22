@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:d_m/app/common/widgets/common_scaffold.dart'; // Adjust your import path
-import 'package:d_m/app/modules/ai_chatbot.dart'; // Import the chatbot screen
-import 'package:d_m/app/modules/community_history/views/community_page.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-
+// Import the chatbot screen
 
 class CivilianDashboardView extends StatelessWidget {
-  const CivilianDashboardView({Key? key}) : super(key: key);
+  const CivilianDashboardView({super.key});
 
   // Dummy function to check if the user is in a risk-free zone
   bool isRiskFree() {
@@ -22,7 +18,10 @@ class CivilianDashboardView extends StatelessWidget {
     // Determine the risk status dynamically
     bool riskFree = isRiskFree();
     Color riskCardColor = riskFree ? Colors.green[100]! : Colors.red[100]!;
-    String riskText = riskFree ? "You are in a Risk-Free Zone" : "You are in a High-Risk Zone!";
+    String riskText =
+        riskFree
+            ? "You are in a Risk-Free Zone"
+            : "You are in a High-Risk Zone!";
     Color riskTextColor = riskFree ? Colors.green[900]! : Colors.red[900]!;
 
     return CommonScaffold(
@@ -55,7 +54,10 @@ class CivilianDashboardView extends StatelessWidget {
 
                 // RISK STATUS SECTION
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
                   padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
                     color: riskCardColor,
@@ -65,7 +67,7 @@ class CivilianDashboardView extends StatelessWidget {
                         color: Colors.grey.withOpacity(0.3),
                         blurRadius: 6,
                         offset: const Offset(0, 2),
-                      )
+                      ),
                     ],
                   ),
                   child: Row(
@@ -92,7 +94,10 @@ class CivilianDashboardView extends StatelessWidget {
                 // COMMUNITY SECTION
                 Expanded(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 8.0,
+                    ),
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       color: communityBackground,
@@ -102,7 +107,7 @@ class CivilianDashboardView extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.3),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
-                        )
+                        ),
                       ],
                     ),
                     child: Column(
@@ -112,12 +117,17 @@ class CivilianDashboardView extends StatelessWidget {
                         Row(
                           children: [
                             const CircleAvatar(
-                              backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+                              backgroundImage: NetworkImage(
+                                'assets/images/default_user.png',
+                              ),
                             ),
                             const SizedBox(width: 8),
                             const Text(
                               'NDRF',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
                             const Spacer(),
                             IconButton(
@@ -125,13 +135,13 @@ class CivilianDashboardView extends StatelessWidget {
                               onPressed: () {
                                 // TODO: Show post options
                               },
-                            )
+                            ),
                           ],
                         ),
                         const SizedBox(height: 8),
                         // Community Post Content
                         const Text(
-                          'This is a sample community post showing real-time updates on disaster management. Stay alert and follow the instructions provided.',
+                          'we have set few refugee camp near abc area',
                           style: TextStyle(fontSize: 14),
                         ),
                         const SizedBox(height: 8),
@@ -139,9 +149,18 @@ class CivilianDashboardView extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _buildReactionIcon(icon: Icons.thumb_up_alt_outlined, label: 'Like'),
-                            _buildReactionIcon(icon: Icons.mode_comment_outlined, label: 'Comment'),
-                            _buildReactionIcon(icon: Icons.share_outlined, label: 'Share'),
+                            _buildReactionIcon(
+                              icon: Icons.thumb_up_alt_outlined,
+                              label: 'Like',
+                            ),
+                            _buildReactionIcon(
+                              icon: Icons.mode_comment_outlined,
+                              label: 'Comment',
+                            ),
+                            _buildReactionIcon(
+                              icon: Icons.share_outlined,
+                              label: 'Share',
+                            ),
                           ],
                         ),
                         const SizedBox(height: 8),
@@ -154,10 +173,10 @@ class CivilianDashboardView extends StatelessWidget {
                                 '/community_history',
                                 arguments: {
                                   'author': 'NDRF',
-                                  'content': 'This is a sample community post showing real-time updates on disaster management.',
+                                  'content':
+                                      'This is a sample community post showing real-time updates on disaster management.',
                                 },
                               );
-
                             },
                             child: const Text('View Community'),
                           ),
@@ -169,7 +188,10 @@ class CivilianDashboardView extends StatelessWidget {
 
                 // WEATHER CARD
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
                   padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
                     color: Colors.blue[100],
@@ -184,7 +206,10 @@ class CivilianDashboardView extends StatelessWidget {
                         children: const [
                           Text(
                             'Manipur, Imphal',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           Text('28° | Sunny'),
                         ],
@@ -200,10 +225,13 @@ class CivilianDashboardView extends StatelessWidget {
           Positioned(
             bottom: 101, // Adjusted position
             right: 16,
-            child:FloatingActionButton(
+            child: FloatingActionButton(
               backgroundColor: accentColor,
               onPressed: () {
-                Navigator.pushNamed(context, '/ai_chatbot'); // Navigate to chatbot page
+                Navigator.pushNamed(
+                  context,
+                  '/ai_chatbot',
+                ); // Navigate to chatbot page
               },
               child: Image.asset(
                 'assets/images/chatbot.png',
@@ -239,7 +267,10 @@ class CivilianDashboardView extends StatelessWidget {
           child: Center(
             child: Text(
               title,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
               textAlign: TextAlign.center,
             ),
           ),

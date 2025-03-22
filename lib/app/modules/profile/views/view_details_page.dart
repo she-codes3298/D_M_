@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewDetailsPage extends StatefulWidget {
+  const ViewDetailsPage({super.key});
+
   @override
   _ViewDetailsPageState createState() => _ViewDetailsPageState();
 }
@@ -10,8 +12,17 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
   final Color accentColor = const Color(0xFF5F6898);
   final Color background = const Color(0xFFE3F2FD);
 
-  String? name, age, bloodGroup, emergencyName, emergencyContact, emergencyRelation, abhaId;
-  List<String> medicalHistory = [], allergies = [], medications = [], disabilities = [];
+  String? name,
+      age,
+      bloodGroup,
+      emergencyName,
+      emergencyContact,
+      emergencyRelation,
+      abhaId;
+  List<String> medicalHistory = [],
+      allergies = [],
+      medications = [],
+      disabilities = [];
 
   @override
   void initState() {
@@ -86,7 +97,10 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: accentColor),
                   icon: Icon(Icons.arrow_back, color: Colors.white),
-                  label: Text("Back to Profile", style: TextStyle(color: Colors.white)),
+                  label: Text(
+                    "Back to Profile",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ],
@@ -102,11 +116,15 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 3,
       child: ListTile(
-        title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: accentColor)),
+        title: Text(
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold, color: accentColor),
+        ),
         subtitle: Text(value ?? "N/A", style: TextStyle(fontSize: 16)),
       ),
     );
   }
 
-  TextStyle sectionTitleStyle() => TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: accentColor);
+  TextStyle sectionTitleStyle() =>
+      TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: accentColor);
 }

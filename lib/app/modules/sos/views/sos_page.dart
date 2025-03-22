@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:d_m/app/common/widgets/common_scaffold.dart';
 
 class SOSPage extends StatelessWidget {
-  const SOSPage({Key? key}) : super(key: key);
+  const SOSPage({super.key});
 
   @override
   Widget build(BuildContext context) {
