@@ -1,57 +1,70 @@
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoding/geocoding.dart';
 
 class LocationService {
+  // Request Location, FCM Token, and Store User Data
   static Future<void> requestLocationAndFCM() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+    try {
+      print("📍 Requesting location permission...");
+      LocationPermission permission = await Geolocator.requestPermission();
 
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      print("Location services are disabled.");
-      return;
-    }
-
-    // Request permission for location
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        print("Location permission denied.");
+      if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+        print("❌ Location permission denied");
         return;
       }
+
+      print("📍 Getting current location...");
+      Position position = await Geolocator.getCurrentPosition();
+      String userCity = await getUserCity(position);
+
+      print("📍 User is in: $userCity");
+
+      print("📲 Requesting FCM token...");
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+
+      if (fcmToken != null) {
+        print("✅ Got FCM Token: $fcmToken");
+        print("📤 Storing user data in Firestore...");
+
+        await FirebaseFirestore.instance.collection('users').add({
+          'city': userCity,
+          'fcmToken': fcmToken,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+
+        print("✅ User data stored successfully!");
+
+      } else {
+        print("❌ Failed to get FCM Token.");
+      }
+
+    } catch (e) {
+      print("❌ Error getting location and FCM token: $e");
     }
+  }
 
-    if (permission == LocationPermission.deniedForever) {
-      print("Location permission permanently denied.");
-      return;
-    }
+  // Get city name from latitude and longitude
+  static Future<String> getUserCity(Position position) async {
+    try {
+      print("🔍 Reverse geocoding to get city name...");
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude, position.longitude,
+      );
 
-    // Get current location
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    // Convert coordinates to city name
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    String city = placemarks[0].locality ?? "Unknown";
-
-    // Get FCM Token
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-    String? token = await messaging.getToken();
-    print("FCM Token: $token");
-
-    if (token != null) {
-      // Store user location and FCM token in Firestore
-      await FirebaseFirestore.instance.collection('users').doc(token).set({
-        'token': token,
-        'city': city,
-      });
-      print("Stored location and FCM token in Firestore.");
+      if (placemarks.isNotEmpty) {
+        String city = placemarks.first.locality ?? "Unknown City";
+        print("📍 City detected: $city");
+        return city;
+      } else {
+        print("⚠️ No city found, using default.");
+        return "UnknownCity";
+      }
+    } catch (e) {
+      print("❌ Error getting city name: $e");
+      return "UnknownCity";
     }
   }
 }
-

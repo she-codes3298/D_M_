@@ -125,9 +125,8 @@ class CivilianDashboardView extends StatelessWidget {
                                 
 
                             const CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                'assets/images/default_user.png',
-                              ),
+                              backgroundImage: const AssetImage("assets/images/default_user.png"),
+
                             ),
                             const SizedBox(width: 8),
                             const Text(
