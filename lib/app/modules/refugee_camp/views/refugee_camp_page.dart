@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+
+import 'package:d_m/app/common/widgets/common_scaffold.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:permission_handler/permission_handler.dart' as perm;
 import 'dart:math'; // For calculating dummy ETA
 import 'package:url_launcher/url_launcher.dart'; // For launching Google Maps
+
+
+
 
 class RefugeeCampMap extends StatefulWidget {
   @override
@@ -416,6 +421,7 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
                 myLocationButtonEnabled: true,
               )
               : Center(child: Text("Please grant location permissions.")),
+
     );
   }
 }
