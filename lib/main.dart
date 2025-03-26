@@ -11,6 +11,7 @@ import 'app/modules/community_history/views/community_page.dart';
 import 'app/modules/ai_chatbot.dart';
 import 'package:flutter_gemini/flutter_gemini.dart'; // Import Gemini
 import 'package:firebase_core/firebase_core.dart';
+import 'app/modules/donate.dart';
 
 import 'services/location_service.dart';
 
@@ -76,5 +77,6 @@ class MyApp extends StatelessWidget {
     '/call': (context) => CallPage(),
     '/profile': (context) => ProfilePage(),
     '/ai_chatbot': (context) => AIChatbotScreen(),
+    '/donate': (context) => DonatePage(),
   };
 }

@@ -6,8 +6,10 @@ class CommonScaffold extends StatelessWidget {
   final int currentIndex;
   final String profileImageUrl;
 
-  static const IconData accountCircleOutlined =
-  IconData(0xee35, fontFamily: 'MaterialIcons');
+  static const IconData accountCircleOutlined = IconData(
+    0xee35,
+    fontFamily: 'MaterialIcons',
+  );
 
   const CommonScaffold({
     super.key,
@@ -26,12 +28,13 @@ class CommonScaffold extends StatelessWidget {
         backgroundColor: primaryColor,
         title: Text(title),
         leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer(); // Open the drawer
-            },
-          ),
+          builder:
+              (context) => IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer(); // Open the drawer
+                },
+              ),
         ),
         actions: [
           IconButton(
@@ -70,7 +73,10 @@ class CommonScaffold extends StatelessWidget {
           switch (index) {
             case 0:
               Navigator.pushNamedAndRemoveUntil(
-                  context, '/civilian_dashboard', (route) => false);
+                context,
+                '/civilian_dashboard',
+                (route) => false,
+              );
               break;
             case 1:
               Navigator.pushNamed(context, '/refugee_camp');
@@ -87,13 +93,13 @@ class CommonScaffold extends StatelessWidget {
             case 5:
               Navigator.pushNamed(context, '/community_history');
               break;
+            case 6:
+              Navigator.pushNamed(context, '/donate');
+              break;
           }
         },
         items: [
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
+          const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           const BottomNavigationBarItem(
             icon: Icon(Icons.location_on),
             label: 'Refugee Camp',
@@ -105,7 +111,11 @@ class CommonScaffold extends StatelessWidget {
                 color: Color(0xFFB01629),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.sos, color: Colors.white, size: 40), // Larger size
+              child: const Icon(
+                Icons.sos,
+                color: Colors.white,
+                size: 40,
+              ), // Larger size
             ),
             label: 'SOS',
           ),
@@ -113,13 +123,10 @@ class CommonScaffold extends StatelessWidget {
             icon: Icon(Icons.menu_book),
             label: 'User Guide',
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.call),
-            label: 'Call',
-          ),
+          const BottomNavigationBarItem(icon: Icon(Icons.call), label: 'Call'),
         ],
       ),
-    ); 
+    );
   }
 
   // Build the drawer
@@ -163,10 +170,7 @@ class CommonScaffold extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.person, color: Colors.white),
-            title: const Text(
-              "Profile",
-              style: TextStyle(color: Colors.white),
-            ),
+            title: const Text("Profile", style: TextStyle(color: Colors.white)),
             onTap: () {
               Navigator.pop(context); // Close the drawer
               Navigator.pushNamed(context, '/profile'); // Navigate to profile
@@ -180,15 +184,15 @@ class CommonScaffold extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context); // Close the drawer
-              Navigator.pushNamed(context, '/community_history'); // Navigate to community
+              Navigator.pushNamed(
+                context,
+                '/community_history',
+              ); // Navigate to community
             },
           ),
           ListTile(
             leading: const Icon(Icons.help, color: Colors.white),
-            title: const Text(
-              "Help",
-              style: TextStyle(color: Colors.white),
-            ),
+            title: const Text("Help", style: TextStyle(color: Colors.white)),
             onTap: () {
               // TODO: Implement help action
               Navigator.pop(context); // Close the drawer
@@ -212,21 +216,32 @@ class CommonScaffold extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
             onTap: () {
-            Navigator.pushNamed(context, '/ai_chatbot'); // Navigate to chatbot page
-           },
+              Navigator.pushNamed(
+                context,
+                '/ai_chatbot',
+              ); // Navigate to chatbot page
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.heart_broken, color: Colors.white),
+            title: const Text("Donate", style: TextStyle(color: Colors.white)),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.pushNamed(
+                context,
+                '/donate',
+              ); // Navigate to chatbot page
+            },
           ),
           const Divider(color: Colors.white30),
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text(
-              "Logout",
-              style: TextStyle(color: Colors.red),
-            ),
+            title: const Text("Logout", style: TextStyle(color: Colors.red)),
             onTap: () {
               Navigator.pop(context); // Close the drawer
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Signed Out')),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Signed Out')));
             },
           ),
         ],
