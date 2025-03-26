@@ -36,16 +36,9 @@ class CivilianDashboardView extends StatelessWidget {
           SafeArea(
             child: Column(
               children: [
-                // BUTTON TILES (Predictive AI and Learn)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildDashboardTile(
-                      context: context,
-                      title: 'PREDICTIVE AI',
-                      color: accentColor,
-                      routeName: '/predictive_ai',
-                    ),
                     _buildDashboardTile(
                       context: context,
                       title: 'LEARN',
