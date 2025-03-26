@@ -1,7 +1,6 @@
 import 'package:d_m/app/modules/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'app/modules/civilian_dashboard/views/civilian_dashboard_view.dart';
-import 'app/modules/predictive_ai/views/predictive_ai_page.dart';
 import 'app/modules/learn/views/learn_page.dart';
 import 'app/modules/refugee_camp/views/refugee_camp_page.dart';
 import 'app/modules/sos/views/sos_page.dart';
@@ -79,7 +78,6 @@ class MyApp extends StatelessWidget {
   static final Map<String, WidgetBuilder> routes = {
     '/': (context) => const SplashScreen(),
     '/civilian_dashboard': (context) => const CivilianDashboardView(),
-    '/predictive_ai': (context) => const PredictiveAIPage(),
     '/learn': (context) => const LearnPage(),
 
     
