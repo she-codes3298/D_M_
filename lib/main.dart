@@ -1,7 +1,6 @@
 import 'package:d_m/app/modules/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'app/modules/civilian_dashboard/views/civilian_dashboard_view.dart';
-import 'app/modules/predictive_ai/views/predictive_ai_page.dart';
 import 'app/modules/learn/views/learn_page.dart';
 import 'app/modules/refugee_camp/views/refugee_camp_page.dart';
 import 'app/modules/sos/views/sos_page.dart';
@@ -20,9 +19,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-
   await LocationService.requestLocationAndFCM();
-
 
   print("Firebase initialized");
   Gemini.init(apiKey: 'AIzaSyADGh1jYjjOA5hNJVVFUzBwNZ-SVMYdqXc');
@@ -42,16 +39,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/', // Set splash screen as the initial route
       onGenerateRoute: (settings) {
         if (settings.name == '/community_history') {
-
-          return MaterialPageRoute(
-            builder: (context) => const CommunityPage(),
-          );
+          return MaterialPageRoute(builder: (context) => const CommunityPage());
         }
-
-
-
-          
-
 
         // Handle other named routes safely
         final pageBuilder = routes[settings.name];
@@ -61,15 +50,11 @@ class MyApp extends StatelessWidget {
 
         // Return a default error page if the route does not exist
         return MaterialPageRoute(
-
-         
-
           builder:
               (context) => Scaffold(
                 appBar: AppBar(title: const Text("Error")),
                 body: const Center(child: Text("Page not found")),
               ),
-
         );
       },
     );
@@ -79,10 +64,10 @@ class MyApp extends StatelessWidget {
   static final Map<String, WidgetBuilder> routes = {
     '/': (context) => const SplashScreen(),
     '/civilian_dashboard': (context) => const CivilianDashboardView(),
-    '/predictive_ai': (context) => const PredictiveAIPage(),
+
     '/learn': (context) => const LearnPage(),
 
-    
+    '/CommunityPage': (context) => const CommunityPage(),
 
     '/refugee_camp': (context) => RefugeeCampMap(),
 

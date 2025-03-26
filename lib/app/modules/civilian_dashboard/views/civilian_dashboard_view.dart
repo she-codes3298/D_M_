@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 import 'package:d_m/app/common/widgets/common_scaffold.dart'; // Adjust your import path
 
 // Import the chatbot screen
@@ -40,12 +38,6 @@ class CivilianDashboardView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildDashboardTile(
-                      context: context,
-                      title: 'PREDICTIVE AI',
-                      color: accentColor,
-                      routeName: '/predictive_ai',
-                    ),
                     _buildDashboardTile(
                       context: context,
                       title: 'LEARN',
@@ -117,13 +109,9 @@ class CivilianDashboardView extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                    
                         // Community Post Header
-                     Row(
+                        Row(
                           children: [
-
-                                
-
                             const CircleAvatar(
                               backgroundImage: NetworkImage(
                                 'assets/images/default_user.png',
@@ -145,9 +133,8 @@ class CivilianDashboardView extends StatelessWidget {
                               },
                             ),
                           ],
-
                         ),
- 
+
                         const SizedBox(height: 8),
                         // Community Post Content
                         const Text(
