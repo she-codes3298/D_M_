@@ -223,7 +223,10 @@ class CommonScaffold extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.heart_broken, color: Colors.white),
+            leading: const Icon(
+              Icons.monitor_heart_outlined,
+              color: Colors.white,
+            ),
             title: const Text("Donate", style: TextStyle(color: Colors.white)),
             onTap: () {
               Navigator.pop(context); // Close the drawer

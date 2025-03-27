@@ -87,13 +87,10 @@ class CivilianDashboardView extends StatelessWidget {
                   ),
                 ),
 
-                // COMMUNITY SECTION
+               // COMMUNITY SECTION
                 Expanded(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 8.0,
-                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       color: communityBackground,
@@ -106,79 +103,82 @@ class CivilianDashboardView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Community Post Header
-                        Row(
-                          children: [
-                            const CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                'assets/images/default_user.png',
+                    child: SingleChildScrollView( // Add ScrollView to prevent overflow
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Community Post Header
+                          Row(
+                            children: [
+                              const CircleAvatar(
+                                backgroundImage: AssetImage("assets/images/default_user.png"),
                               ),
-                            ),
-                            const SizedBox(width: 8),
-                            const Text(
-                              'NDRF',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                              const SizedBox(width: 8),
+                              const Text(
+                                'NDRF - Disaster Response',
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                               ),
-                            ),
-                            const Spacer(),
-                            IconButton(
-                              icon: const Icon(Icons.more_vert),
-                              onPressed: () {
-                                // TODO: Show post options
-                              },
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 8),
-                        // Community Post Content
-                        const Text(
-                          'we have set few refugee camp near abc area',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        const SizedBox(height: 8),
-                        // Reaction Bar
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _buildReactionIcon(
-                              icon: Icons.thumb_up_alt_outlined,
-                              label: 'Like',
-                            ),
-                            _buildReactionIcon(
-                              icon: Icons.mode_comment_outlined,
-                              label: 'Comment',
-                            ),
-                            _buildReactionIcon(
-                              icon: Icons.share_outlined,
-                              label: 'Share',
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        // History Button
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                '/community_history',
-                                arguments: {
-                                  'author': 'NDRF',
-                                  'content':
-                                      'This is a sample community post showing real-time updates on disaster management.',
-                                },
-                              );
-                            },
-                            child: const Text('View Community'),
+                              const Spacer(),
+                              IconButton(
+                                icon: const Icon(Icons.more_vert),
+                                onPressed: () {},
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+
+                          const SizedBox(height: 8),
+
+                          // Post Content
+                          const Text(
+                            'A 6.2 magnitude earthquake struck Manipur today, causing tremors across the region. Our teams are assessing damage, and emergency relief camps have been set up in Imphal and nearby areas. Citizens are advised to stay alert and follow safety protocols.',
+                            style: TextStyle(fontSize: 14),
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          // Earthquake Image
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Image.asset(
+                              "assets/images/dummy_img.jpg",
+                              width: double.infinity,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          // Reaction Bar
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildReactionIcon(icon: Icons.thumb_up_alt_outlined, label: 'Like'),
+                              _buildReactionIcon(icon: Icons.mode_comment_outlined, label: 'Comment'),
+                              _buildReactionIcon(icon: Icons.share_outlined, label: 'Share'),
+                            ],
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          // History Button
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/community_history',
+                                  arguments: {
+                                    'author': 'Disaster Response team',
+                                    'content': 'A 6.2 magnitude earthquake struck Manipur today. Relief camps are being set up. Stay alert and follow safety protocols.',
+                                  },
+                                );
+                              },
+                              child: const Text('View Community'),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
