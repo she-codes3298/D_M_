@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +14,8 @@ class SOSPage extends StatefulWidget {
 
 class _SOSPageState extends State<SOSPage> {
   bool _isSending = false;
+  static const String serverKey =
+      "YOUR_FCM_SERVER_KEY"; // 🔹 Replace with actual FCM Server Key
 
   // 🔹 Function to get user's current location
   Future<String> _getUserLocation() async {
@@ -25,7 +29,60 @@ class _SOSPageState extends State<SOSPage> {
     }
   }
 
-  // 🔴 Function to send SOS alert to Firebase
+  // 🔹 Fetch all FCM tokens of gsc app users
+  Future<List<String>> _getFCMTokens() async {
+    List<String> tokens = [];
+    try {
+      QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('FCM_TOKENS').get();
+      for (var doc in snapshot.docs) {
+        tokens.add(doc['token']); // 🔹 Assuming 'token' is the field name
+      }
+    } catch (e) {
+      print("Error fetching FCM tokens: $e");
+    }
+    return tokens;
+  }
+
+  // 🔹 Function to send FCM notification to gsc app
+  Future<void> _sendSOSNotification(String location) async {
+    List<String> tokens = await _getFCMTokens();
+    if (tokens.isEmpty) {
+      print("No FCM tokens found!");
+      return;
+    }
+
+    for (String token in tokens) {
+      try {
+        var url = Uri.parse("https://fcm.googleapis.com/fcm/send");
+
+        var body = jsonEncode({
+          "to": token,
+          "notification": {
+            "title": "🚨 SOS Alert",
+            "body": "A user has activated an SOS alert at $location!",
+            "click_action": "FLUTTER_NOTIFICATION_CLICK",
+          },
+          "data": {"screen": "SOS_ALERTS", "location": location},
+        });
+
+        var response = await http.post(
+          url,
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "key=$serverKey",
+          },
+          body: body,
+        );
+
+        print("FCM Response: ${response.body}");
+      } catch (e) {
+        print("Error sending notification: $e");
+      }
+    }
+  }
+
+  // 🔴 Function to send SOS alert to Firestore and notify gsc
   Future<void> _sendSOS() async {
     setState(() {
       _isSending = true;
@@ -46,6 +103,8 @@ class _SOSPageState extends State<SOSPage> {
       'timestamp': timestamp,
       'status': 'pending',
     });
+
+    await _sendSOSNotification(location); // 🔹 Send FCM notification
 
     setState(() {
       _isSending = false;

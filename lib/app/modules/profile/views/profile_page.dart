@@ -23,21 +23,20 @@ class _ProfilePageState extends State<ProfilePage> {
   // Dummy QR Data for Initial Display
   final String dummyQRData = """
 Personal Information:
-Name - Pratiksha
-Age - 21
-Blood Group - O+
-ABHA ID - 5278496372920016
+Name - XXXXXXXXX
+Age - XX
+Blood Group - xxX
+ABHA ID - XXXXXXXXXXX
 
 Emergency Contact:
-Name - Kumari Nisha
-Relation - Sibling
-Phone Number - 9863301615
-
+Name - XXXX
+Relation - xxxxxx
+Phone Number - xxxxxxxxxxxx
 Medical Details:
-Medical History - Asthma, Hypertension
-Allergies - Dust, Peanuts, Soy
-Medications - Painkillers, Antibiotics, Aspirin
-Disabilities - Vision Impairment
+Medical History - XXXXXXXXXXX
+Allergies - XXXXXX
+Medications - XXXXXXXXX
+Disabilities - XXXXXXXXXX
 """;
 
   @override
