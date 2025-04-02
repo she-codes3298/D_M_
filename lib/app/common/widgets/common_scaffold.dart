@@ -38,6 +38,12 @@ class CommonScaffold extends StatelessWidget {
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.language, color: Colors.black),
+            onPressed: () {
+              // TODO: Implement Language Change Feature
+            },
+          ),
+          IconButton(
             icon: CircleAvatar(
               backgroundColor: Colors.grey[300],
               child: ClipOval(

@@ -87,10 +87,13 @@ class CivilianDashboardView extends StatelessWidget {
                   ),
                 ),
 
-               // COMMUNITY SECTION
+                // COMMUNITY SECTION
                 Expanded(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 8.0,
+                    ),
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       color: communityBackground,
@@ -103,7 +106,8 @@ class CivilianDashboardView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: SingleChildScrollView( // Add ScrollView to prevent overflow
+                    child: SingleChildScrollView(
+                      // Add ScrollView to prevent overflow
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -111,12 +115,17 @@ class CivilianDashboardView extends StatelessWidget {
                           Row(
                             children: [
                               const CircleAvatar(
-                                backgroundImage: AssetImage("assets/images/default_user.png"),
+                                backgroundImage: AssetImage(
+                                  "assets/images/default_user.png",
+                                ),
                               ),
                               const SizedBox(width: 8),
                               const Text(
                                 'NDRF - Disaster Response',
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
                               const Spacer(),
                               IconButton(
@@ -153,9 +162,18 @@ class CivilianDashboardView extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              _buildReactionIcon(icon: Icons.thumb_up_alt_outlined, label: 'Like'),
-                              _buildReactionIcon(icon: Icons.mode_comment_outlined, label: 'Comment'),
-                              _buildReactionIcon(icon: Icons.share_outlined, label: 'Share'),
+                              _buildReactionIcon(
+                                icon: Icons.thumb_up_alt_outlined,
+                                label: 'Like',
+                              ),
+                              _buildReactionIcon(
+                                icon: Icons.mode_comment_outlined,
+                                label: 'Comment',
+                              ),
+                              _buildReactionIcon(
+                                icon: Icons.share_outlined,
+                                label: 'Share',
+                              ),
                             ],
                           ),
 
@@ -170,7 +188,8 @@ class CivilianDashboardView extends StatelessWidget {
                                   '/community_history',
                                   arguments: {
                                     'author': 'Disaster Response team',
-                                    'content': 'A 6.2 magnitude earthquake struck Manipur today. Relief camps are being set up. Stay alert and follow safety protocols.',
+                                    'content':
+                                        'A 6.2 magnitude earthquake struck Manipur today. Relief camps are being set up. Stay alert and follow safety protocols.',
                                   },
                                 );
                               },

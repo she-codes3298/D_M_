@@ -19,6 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String userName = "Pratiksha"; // Default name
   String? qrData;
   bool isProfileComplete = false;
+  bool showWarning = false;
 
   // Dummy QR Data for Initial Display
   final String dummyQRData = """
@@ -88,9 +89,18 @@ Disabilities - XXXXXXXXXX
         MaterialPageRoute(builder: (context) => ViewDetailsPage()),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Complete your profile to view details")),
-      );
+      setState(() {
+        showWarning = true;
+      });
+
+      // Hide the message after 5 seconds
+      Future.delayed(Duration(seconds: 5), () {
+        if (mounted) {
+          setState(() {
+            showWarning = false;
+          });
+        }
+      });
     }
   }
 
