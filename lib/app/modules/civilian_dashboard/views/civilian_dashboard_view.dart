@@ -37,14 +37,7 @@ class CivilianDashboardView extends StatelessWidget {
                 // BUTTON TILES (Predictive AI and Learn)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildDashboardTile(
-                      context: context,
-                      title: 'LEARN',
-                      color: accentColor,
-                      routeName: '/learn',
-                    ),
-                  ],
+                  children: [],
                 ),
                 const SizedBox(height: 8),
 
