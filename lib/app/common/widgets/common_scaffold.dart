@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
 class CommonScaffold extends StatelessWidget {
   final Widget body;
   final String title;
@@ -41,6 +41,10 @@ class CommonScaffold extends StatelessWidget {
             icon: const Icon(Icons.language, color: Colors.black),
             onPressed: () {
               // TODO: Implement Language Change Feature
+              showDialog(
+                context: context,
+                builder: (context) => const LanguageSelectionDialog(),
+              );
             },
           ),
           IconButton(
