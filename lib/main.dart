@@ -12,6 +12,9 @@ import 'app/modules/ai_chatbot.dart';
 import 'package:flutter_gemini/flutter_gemini.dart'; // Import Gemini
 import 'package:firebase_core/firebase_core.dart';
 import 'app/modules/donate.dart';
+// Add this to the top of lib/main.dart
+import 'package:d_m/providers/language_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'services/location_service.dart';
 
@@ -25,7 +28,15 @@ void main() async {
   print("Firebase initialized");
   Gemini.init(apiKey: 'AIzaSyADGh1jYjjOA5hNJVVFUzBwNZ-SVMYdqXc');
   print("Gemini initialized");
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LanguageProvider()),
+        // Any other providers you need
+      ],
+      child: MyApp(),
+    ),
+  );
   print("App started");
 }
 

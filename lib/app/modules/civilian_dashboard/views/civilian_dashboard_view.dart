@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:d_m/app/common/widgets/common_scaffold.dart'; // Adjust your import path
+import 'package:d_m/app/common/widgets/common_scaffold.dart';
+import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
+import 'package:d_m/app/common/widgets/translatable_text.dart';
+
 
 // Import the chatbot screen
 
@@ -113,7 +116,7 @@ class CivilianDashboardView extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(width: 8),
-                              const Text(
+                              const TranslatableText(
                                 'NDRF - Disaster Response',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -131,7 +134,7 @@ class CivilianDashboardView extends StatelessWidget {
                           const SizedBox(height: 8),
 
                           // Post Content
-                          const Text(
+                          const TranslatableText(
                             'A 6.2 magnitude earthquake struck Manipur today, causing tremors across the region. Our teams are assessing damage, and emergency relief camps have been set up in Imphal and nearby areas. Citizens are advised to stay alert and follow safety protocols.',
                             style: TextStyle(fontSize: 14),
                           ),
@@ -186,7 +189,7 @@ class CivilianDashboardView extends StatelessWidget {
                                   },
                                 );
                               },
-                              child: const Text('View Community'),
+                              child: const TranslatableText('View Community'),
                             ),
                           ),
                         ],
@@ -213,14 +216,14 @@ class CivilianDashboardView extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
-                          Text(
+                          TranslatableText(
                             'Manipur, Imphal',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text('28° | Sunny'),
+                          TranslatableText('28° | Sunny'),
                         ],
                       ),
                     ],
@@ -274,7 +277,7 @@ class CivilianDashboardView extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: Center(
-            child: Text(
+            child: TranslatableText(
               title,
               style: const TextStyle(
                 color: Colors.white,
@@ -294,7 +297,7 @@ class CivilianDashboardView extends StatelessWidget {
       children: [
         Icon(icon, size: 20, color: Colors.grey[600]),
         const SizedBox(width: 4),
-        Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+        TranslatableText(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
       ],
     );
   }
