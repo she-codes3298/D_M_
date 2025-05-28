@@ -60,6 +60,10 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
     'Heart Disease',
     'Epilepsy',
     'Cancer',
+    'Thyroid Disorder',
+    'Kidney Disease',
+    'Liver Disease',
+    'None',
     'Other',
   ];
   final List<String> allergiesOptions = [
@@ -72,6 +76,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
     'Insect Stings',
     'Latex',
     'Medication',
+    'None',
     'Other',
   ];
   final List<String> medicationsOptions = [
@@ -80,6 +85,14 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
     'Antibiotics',
     'Steroids',
     'Painkillers',
+    'Antidepressants',
+    'Antihistamines',
+    'Blood Pressure Medications',
+    'Cholesterol Medications',
+    'Thyroid Medications',
+    'Vitamins',
+    'Herbal Supplements',
+    'None',
     'Other',
   ];
   final List<String> disabilitiesOptions = [
@@ -88,6 +101,11 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
     'Physical Disability',
     'Cognitive Disability',
     'Speech Impairment',
+    'Mental Health Condition',
+    'Autism Spectrum Disorder',
+    'Learning Disability',
+    'Chronic Illness',
+    'None',
     'Other',
   ];
 
