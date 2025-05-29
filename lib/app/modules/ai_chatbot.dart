@@ -4,6 +4,10 @@ import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+final Color primaryColor = Color(0xFF5F6898);
+const Color lightBackground = Color(0xFFE3F2FD);
+const Color secondaryBackground = Color(0xFFBBDEFB);
+
 class AIChatbotScreen extends StatefulWidget {
   const AIChatbotScreen({super.key});
 
@@ -127,10 +131,10 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEAF6FB), // Light sky-blue background
+      backgroundColor: lightBackground,
       appBar: AppBar(
         title: const Text('E-Sahyog', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF4FA6DC), // Sky blue app bar
+        backgroundColor: primaryColor,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
@@ -143,12 +147,10 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
             messages: _messages,
             typingUsers: _isTyping ? [_bot] : [],
             messageOptions: MessageOptions(
-              containerColor: const Color(0xFFB3E5FC), // Light blue bot bubble
+              containerColor: secondaryBackground,
               textColor: Colors.black87,
-              currentUserContainerColor: const Color(
-                0xFF81D4FA,
-              ), // Sky blue user bubble
-              currentUserTextColor: Colors.black,
+              currentUserContainerColor: primaryColor.withOpacity(0.8),
+              currentUserTextColor: Colors.white,
             ),
             inputOptions: InputOptions(
               inputTextStyle: const TextStyle(color: Colors.black),
@@ -159,29 +161,23 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                 hintStyle: const TextStyle(color: Colors.grey),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide: const BorderSide(
-                    color: Color(0xFF4FA6DC),
-                    width: 2,
-                  ),
+                  borderSide: BorderSide(color: primaryColor, width: 2),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide: const BorderSide(
-                    color: Color(0xFF4FA6DC),
-                    width: 2,
-                  ),
+                  borderSide: BorderSide(color: primaryColor, width: 2),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide: const BorderSide(
-                    color: Colors.blueAccent,
+                  borderSide: BorderSide(
+                    color: primaryColor.withOpacity(0.8),
                     width: 2,
                   ),
                 ),
               ),
               trailing: [
                 IconButton(
-                  icon: const Icon(Icons.image, color: Color(0xFF4FA6DC)),
+                  icon: Icon(Icons.image, color: primaryColor),
                   onPressed: _sendImage,
                 ),
               ],
@@ -196,9 +192,11 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
               right: 0,
               child: Container(
                 height: 100,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFE1F5FE), // Very light blue background
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                decoration: BoxDecoration(
+                  color: lightBackground,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
                 ),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -211,9 +209,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                       ),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(
-                            0xFF4FC3F7,
-                          ), // Light sky blue
+                          backgroundColor: primaryColor,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
