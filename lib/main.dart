@@ -43,24 +43,50 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static final Color primaryColor = Color(0xFF5F6898);
+  static const Color lightBackground = Color(0xFFE3F2FD);
+  static const Color secondaryBackground = Color(0xFFBBDEFB);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Disaster Management App',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/', // Set splash screen as the initial route
+      theme: ThemeData(
+        scaffoldBackgroundColor: lightBackground,
+        primaryColor: primaryColor,
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: primaryColor,
+          secondary: secondaryBackground,
+          background: lightBackground,
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
+          elevation: 2,
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: primaryColor,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryColor,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
+      ),
+      initialRoute: '/',
       onGenerateRoute: (settings) {
         if (settings.name == '/community_history') {
           return MaterialPageRoute(builder: (context) => const CommunityPage());
         }
-
-        // Handle other named routes safely
         final pageBuilder = routes[settings.name];
         if (pageBuilder != null) {
           return MaterialPageRoute(builder: (context) => pageBuilder(context));
         }
-
-        // Return a default error page if the route does not exist
         return MaterialPageRoute(
           builder:
               (context) => Scaffold(
@@ -72,17 +98,12 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  // Define static named routes (only for routes without parameters)
   static final Map<String, WidgetBuilder> routes = {
     '/': (context) => const SplashScreen(),
     '/civilian_dashboard': (context) => const CivilianDashboardView(),
-
     '/learn': (context) => const LearnPage(),
-
     '/CommunityPage': (context) => const CommunityPage(),
-
     '/refugee_camp': (context) => RefugeeCampMap(),
-
     '/sos': (context) => const SOSPage(),
     '/user_guide': (context) => const UserGuidePage(),
     '/call': (context) => CallPage(),

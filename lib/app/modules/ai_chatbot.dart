@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gemini/flutter_gemini.dart'; // For Gemini API
-import 'package:dash_chat_2/dash_chat_2.dart'; // For chat UI
-import 'package:image_picker/image_picker.dart'; // For image upload
-import 'dart:convert'; // For base64 encoding
-import 'dart:io'; // For File operations
+import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:dash_chat_2/dash_chat_2.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class AIChatbotScreen extends StatefulWidget {
   const AIChatbotScreen({super.key});
 
   @override
-  _AIChatbotScreenState createState() => _AIChatbotScreenState();
+  State<AIChatbotScreen> createState() => _AIChatbotScreenState();
 }
 
 class _AIChatbotScreenState extends State<AIChatbotScreen> {
@@ -96,7 +95,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
     try {
       final response = await Gemini.instance.textAndImage(
         text: "Describe this image in detail",
-        images: [bytes], // Changed from File to Uint8List
+        images: [bytes],
       );
 
       setState(() {
@@ -128,15 +127,15 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFEAF6FB), // Light sky-blue background
       appBar: AppBar(
         title: const Text('E-Sahyog', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFF4FA6DC), // Sky blue app bar
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      backgroundColor: Colors.grey[900],
       body: Stack(
         children: [
           DashChat(
@@ -144,33 +143,45 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
             messages: _messages,
             typingUsers: _isTyping ? [_bot] : [],
             messageOptions: MessageOptions(
-              containerColor: const Color.fromARGB(255, 66, 66, 66),
-              textColor: Colors.white,
-              currentUserContainerColor: Colors.blue,
+              containerColor: const Color(0xFFB3E5FC), // Light blue bot bubble
+              textColor: Colors.black87,
+              currentUserContainerColor: const Color(
+                0xFF81D4FA,
+              ), // Sky blue user bubble
+              currentUserTextColor: Colors.black,
             ),
             inputOptions: InputOptions(
-              inputTextStyle: const TextStyle(color: Colors.white),
+              inputTextStyle: const TextStyle(color: Colors.black),
               inputDecoration: InputDecoration(
-                fillColor: Colors.black,
+                fillColor: Colors.white,
                 filled: true,
+                hintText: 'Type your message...',
+                hintStyle: const TextStyle(color: Colors.grey),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide: const BorderSide(color: Colors.grey, width: 2),
+                  borderSide: const BorderSide(
+                    color: Color(0xFF4FA6DC),
+                    width: 2,
+                  ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide: const BorderSide(color: Colors.grey, width: 2),
+                  borderSide: const BorderSide(
+                    color: Color(0xFF4FA6DC),
+                    width: 2,
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide: const BorderSide(color: Colors.white, width: 2),
+                  borderSide: const BorderSide(
+                    color: Colors.blueAccent,
+                    width: 2,
+                  ),
                 ),
-                hintText: 'Type your message...',
-                hintStyle: const TextStyle(color: Colors.grey),
               ),
               trailing: [
                 IconButton(
-                  icon: const Icon(Icons.image, color: Colors.white),
+                  icon: const Icon(Icons.image, color: Color(0xFF4FA6DC)),
                   onPressed: _sendImage,
                 ),
               ],
@@ -185,28 +196,27 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
               right: 0,
               child: Container(
                 height: 100,
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.8),
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(10),
-                  ),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFE1F5FE), // Very light blue background
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                 ),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: _customPrompts.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 12,
+                      ),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey[700],
+                          backgroundColor: const Color(
+                            0xFF4FC3F7,
+                          ), // Light sky blue
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
                           ),
                         ),
                         onPressed: () {
@@ -220,7 +230,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                         },
                         child: Text(
                           _customPrompts[index],
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 13),
                         ),
                       ),
                     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
+
 class CommonScaffold extends StatelessWidget {
   final Widget body;
   final String title;
@@ -21,7 +22,7 @@ class CommonScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF0D47A1); // Dark Blue
+    final Color primaryColor = const Color(0xFF5F6898);
 
     return Scaffold(
       appBar: AppBar(
