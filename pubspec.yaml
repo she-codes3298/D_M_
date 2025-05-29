@@ -47,6 +47,7 @@ dependencies:
   location: ^8.0.0
   dio: ^5.8.0+1
   firebase_storage: ^12.4.5
+  markdown: ^7.3.0
   
 
 

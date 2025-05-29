@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:markdown/markdown.dart' as md;
 import 'dart:io';
 
 final Color primaryColor = Color(0xFF5F6898);
@@ -46,15 +47,31 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
 
     try {
       final response = await Gemini.instance.text(message.text);
+      String fullText = response?.output ?? 'No response received';
+      String cleanedText = fullText.replaceAll('**', '');
+      ChatMessage botMessage = ChatMessage(
+        user: _bot,
+        text: '',
+        createdAt: DateTime.now(),
+      );
+
       setState(() {
-        _messages.insert(
-          0,
-          ChatMessage(
+        _messages.insert(0, botMessage);
+      });
+
+      for (int i = 0; i < cleanedText.length; i++) {
+        await Future.delayed(const Duration(milliseconds: 2)); // Fast typing
+
+        setState(() {
+          _messages[0] = ChatMessage(
             user: _bot,
-            text: response?.output ?? 'No response received',
-            createdAt: DateTime.now(),
-          ),
-        );
+            text: cleanedText.substring(0, i + 1),
+            createdAt: botMessage.createdAt,
+          );
+        });
+      }
+
+      setState(() {
         _isTyping = false;
       });
     } catch (e) {

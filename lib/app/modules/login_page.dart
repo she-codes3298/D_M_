@@ -56,9 +56,7 @@ class LoginPageState extends State<LoginPage> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (context) => const CivilianDashboardView(),
-        ),
+        MaterialPageRoute(builder: (context) => const CivilianDashboardView()),
       );
     } on FirebaseAuthException catch (e) {
       String errorMessage = 'An error occurred. Please try again.';
@@ -72,10 +70,7 @@ class LoginPageState extends State<LoginPage> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(errorMessage),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text(errorMessage), backgroundColor: Colors.red),
       );
     } finally {
       if (mounted) {
@@ -104,9 +99,7 @@ class LoginPageState extends State<LoginPage> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (context) => const CivilianDashboardView(),
-        ),
+        MaterialPageRoute(builder: (context) => const CivilianDashboardView()),
       );
     } on FirebaseAuthException catch (e) {
       String errorMessage = 'An error occurred. Please try again.';
@@ -118,10 +111,7 @@ class LoginPageState extends State<LoginPage> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(errorMessage),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text(errorMessage), backgroundColor: Colors.red),
       );
     } finally {
       if (mounted) {
@@ -143,7 +133,7 @@ class LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Welcome to E-Sahyog',
+                'Welcome to Aapda-Sanrakshan',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 24,
@@ -174,7 +164,9 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                       color: Colors.black26,
                     ),
                     onPressed: () {
@@ -190,18 +182,18 @@ class LoginPageState extends State<LoginPage> {
               _isLoading
                   ? CircularProgressIndicator()
                   : Column(
-                      children: [
-                        ElevatedButton(
-                          onPressed: _isLoading ? null : _signIn,
-                          child: const Text('Login'),
-                        ),
-                        const SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: _isLoading ? null : _signUp,
-                          child: const Text('Sign Up'),
-                        ),
-                      ],
-                    ),
+                    children: [
+                      ElevatedButton(
+                        onPressed: _isLoading ? null : _signIn,
+                        child: const Text('Login'),
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: _isLoading ? null : _signUp,
+                        child: const Text('Sign Up'),
+                      ),
+                    ],
+                  ),
             ],
           ),
         ),
