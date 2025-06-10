@@ -420,7 +420,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
             bottom: 165, // Adjusted to avoid overlap
             right: 16,
             child: FloatingActionButton(
-              backgroundColor: Colors.green,
+              backgroundColor: Color(0xFF5F6898),
               heroTag: "marketplace", // Add unique hero tag
               onPressed: () => Navigator.push(
                 context,

@@ -39,7 +39,7 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: TranslatableText('${item['name']} added to cart'),
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xFF5F6898),
         duration: const Duration(seconds: 1),
       ),
     );
@@ -113,7 +113,7 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.shopping_cart_outlined, size: 64, color: Colors.grey),
+                            Icon(Icons.shopping_cart_outlined, size: 64, color: Color(0xFF5F6898)),
                             SizedBox(height: 16),
                             TranslatableText(
                               'Your cart is empty',
@@ -134,7 +134,7 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                           return Card(
                             child: ListTile(
                               leading: CircleAvatar(
-                                backgroundColor: Colors.blue,
+                                backgroundColor: Color(0xFF5F6898),
                                 child: Text(
                                   (item['name'] ?? 'N')[0].toUpperCase(),
                                   style: const TextStyle(color: Colors.white),
@@ -160,7 +160,7 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                                       setModalState(() {});
                                       setState(() {});
                                     },
-                                    icon: const Icon(Icons.add_circle, color: Colors.green),
+                                    icon: const Icon(Icons.add_circle, color: Color(0xFF5F6898)),
                                   ),
                                 ],
                               ),
@@ -183,7 +183,7 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                           ),
                           TranslatableText(
                             '₹${_getTotalAmount().toStringAsFixed(2)}',
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green),
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF5F6898)),
                           ),
                         ],
                       ),
@@ -193,7 +193,7 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                       child: ElevatedButton(
                         onPressed: _proceedToCheckout,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
+                          backgroundColor: Color(0xFF5F6898),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
                         child: const TranslatableText(
@@ -255,7 +255,7 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
     return Scaffold(
       appBar: AppBar(
         title: const TranslatableText("Government Marketplace"),
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xFF5F6898),
         actions: [
           Stack(
             children: [
@@ -316,8 +316,8 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                       });
                     },
                     backgroundColor: Colors.grey[200],
-                    selectedColor: Colors.green[100],
-                    checkmarkColor: Colors.green,
+                    selectedColor: Color(0xFF5F6898),
+                    checkmarkColor: Color(0xFF5F6898),
                   ),
                 );
               },
@@ -454,7 +454,7 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.green,
+                                    color: Color(0xFF5F6898),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -486,7 +486,7 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                                         ? () => _addToCart(itemId, item)
                                         : null,
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blue,
+                                      backgroundColor: Color(0xFF5F6898),
                                       padding: const EdgeInsets.symmetric(vertical: 8),
                                     ),
                                     child: TranslatableText(
