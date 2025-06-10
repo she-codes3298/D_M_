@@ -32,6 +32,98 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
     _fetchWeatherData();
   }
 
+  String _getCityName() {
+    if (_errorMessage != null) {
+      return 'Weather Unavailable';
+    }
+    return LocationService.currentCity ?? 'Current Location';
+  }
+
+  String _getWeatherInfo() {
+    if (_errorMessage != null) {
+      return 'Tap to retry';
+    }
+
+    if (_weatherData == null) {
+      return '--°C | No data available';
+    }
+
+    final temp = _weatherData?['main']?['temp'];
+    final description = _weatherData?['weather']?[0]?['description'];
+
+    final tempString = temp != null ? '${temp.toStringAsFixed(1)}°C' : '--°C';
+
+    final descString =
+        description != null
+            ? description
+                .toString()
+                .toLowerCase()
+                .split(' ')
+                .map((word) => word[0].toUpperCase() + word.substring(1))
+                .join(' ')
+            : 'Weather info unavailable';
+
+    return '$tempString | $descString';
+  }
+
+  IconData _getWeatherIcon() {
+    if (_errorMessage != null) {
+      return Icons.cloud_off;
+    }
+
+    if (_weatherData == null) {
+      return Icons.cloud_outlined;
+    }
+
+    final weatherMain =
+        _weatherData?['weather']?[0]?['main']?.toString().toLowerCase();
+
+    switch (weatherMain) {
+      case 'clear':
+        return Icons.wb_sunny;
+      case 'clouds':
+        return Icons.cloud;
+      case 'rain':
+        return Icons.umbrella;
+      case 'drizzle':
+        return Icons.grain;
+      case 'thunderstorm':
+        return Icons.flash_on;
+      case 'snow':
+        return Icons.ac_unit;
+      case 'mist':
+      case 'fog':
+        return Icons.blur_on;
+      default:
+        return Icons.cloud;
+    }
+  }
+
+  Color _getWeatherColor() {
+    if (_errorMessage != null) {
+      return Colors.red;
+    }
+
+    final weatherMain =
+        _weatherData?['weather']?[0]?['main']?.toString().toLowerCase();
+
+    switch (weatherMain) {
+      case 'clear':
+        return Colors.orange;
+      case 'rain':
+      case 'drizzle':
+        return Colors.blue;
+      case 'thunderstorm':
+        return Colors.purple;
+      case 'snow':
+        return Colors.lightBlue;
+      case 'clouds':
+        return Colors.grey;
+      default:
+        return Colors.blue;
+    }
+  }
+
   Future<void> _fetchWeatherData() async {
     setState(() {
       _isLoading = true;
