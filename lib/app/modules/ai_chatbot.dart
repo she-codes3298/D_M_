@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:markdown/markdown.dart' as md;
 import 'dart:io';
 
 final Color primaryColor = Color(0xFF5F6898);
@@ -61,7 +60,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
       });
 
       for (int i = 0; i < cleanedText.length; i++) {
-        await Future.delayed(const Duration(milliseconds: 2)); // Fast typing
+        await Future.delayed(const Duration(milliseconds: 1)); // Fast typing
 
         setState(() {
           _messages[0] = ChatMessage(

@@ -4,6 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:geocoding/geocoding.dart';
 
 class LocationService {
+  static String? _currentCity;
+
   static Future<void> requestLocationAndFCM() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -32,12 +34,16 @@ class LocationService {
 
     // Get current location
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      desiredAccuracy: LocationAccuracy.high,
+    );
 
     // Convert coordinates to city name
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+      position.latitude,
+      position.longitude,
+    );
     String city = placemarks[0].locality ?? "Unknown";
+    _currentCity = city;
 
     // Get FCM Token
     FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -53,5 +59,6 @@ class LocationService {
       print("Stored location and FCM token in Firestore.");
     }
   }
-}
 
+  static String? get currentCity => _currentCity;
+}
