@@ -1,12 +1,14 @@
 import 'package:d_m/services/location_service.dart';
 import 'package:d_m/services/weather_service.dart';
 import 'package:flutter/material.dart';
-
 import 'package:d_m/app/common/widgets/common_scaffold.dart';
 import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
 import 'package:d_m/app/common/widgets/translatable_text.dart';
 
-// Import the chatbot screen
+import 'package:d_m/app/modules/user_marketplace.dart'; // Make sure this path is correct
+
+
+// Import the chatbot scree
 
 class CivilianDashboardView extends StatefulWidget {
   const CivilianDashboardView({super.key});
@@ -159,10 +161,12 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
     // Determine the risk status dynamically
     bool riskFree = isRiskFree();
     Color riskCardColor = riskFree ? Colors.green[100]! : Colors.red[100]!;
+
     String riskText =
         riskFree
             ? "You are in a Risk-Free Zone"
             : "You are in a High-Risk Zone!";
+
     Color riskTextColor = riskFree ? Colors.green[900]! : Colors.red[900]!;
 
     return CommonScaffold(
@@ -239,7 +243,6 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
                       ],
                     ),
                     child: SingleChildScrollView(
-                      // Add ScrollView to prevent overflow
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -410,22 +413,43 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
             ),
           ),
 
+          // Floating Ecommerce button
+          Positioned(
+            bottom: 165, // Adjusted to avoid overlap
+            right: 16,
+            child: FloatingActionButton(
+              backgroundColor: Colors.green,
+              heroTag: "marketplace", // Add unique hero tag
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UserMarketplacePage(),
+                ),
+              ),
+              child: const Icon(
+                Icons.shopping_cart,
+                color: Colors.white,
+              ),
+            ),
+          ),
+
           // Floating AI Chatbot Button
           Positioned(
-            bottom: 101, // Adjusted position
+            bottom: 101,
             right: 16,
             child: FloatingActionButton(
               backgroundColor: accentColor,
+              heroTag: "chatbot", // Add unique hero tag
               onPressed: () {
                 Navigator.pushNamed(
                   context,
                   '/ai_chatbot',
-                ); // Navigate to chatbot page
+                );
               },
               child: Image.asset(
                 'assets/images/chatbot.png',
-                width: 28, // Set the width
-                height: 28, // Set the height
+                width: 28,
+                height: 28,
               ),
             ),
           ),
