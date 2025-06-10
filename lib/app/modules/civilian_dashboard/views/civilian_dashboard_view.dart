@@ -1,18 +1,62 @@
+import 'package:d_m/services/location_service.dart';
+import 'package:d_m/services/weather_service.dart';
 import 'package:flutter/material.dart';
 
 import 'package:d_m/app/common/widgets/common_scaffold.dart';
 import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
 import 'package:d_m/app/common/widgets/translatable_text.dart';
 
-
 // Import the chatbot screen
 
-class CivilianDashboardView extends StatelessWidget {
+class CivilianDashboardView extends StatefulWidget {
   const CivilianDashboardView({super.key});
+
+  @override
+  State<CivilianDashboardView> createState() => _CivilianDashboardViewState();
+}
+
+class _CivilianDashboardViewState extends State<CivilianDashboardView> {
+  Map<String, dynamic>? _weatherData;
+  bool _isLoading = true;
+  String? _errorMessage;
+  final WeatherService _weatherService = WeatherService();
 
   // Dummy function to check if the user is in a risk-free zone
   bool isRiskFree() {
     return DateTime.now().second % 2 == 0; // Example: Changes every second
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchWeatherData();
+  }
+
+  Future<void> _fetchWeatherData() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    String? city = LocationService.currentCity;
+
+    if (city == null || city.isEmpty) {
+      setState(() {
+        _errorMessage = 'City not found.';
+        _isLoading = false;
+      });
+      return;
+    }
+
+    try {
+      _weatherData = await _weatherService.fetchWeather(city);
+    } catch (e) {
+      _errorMessage = 'Could not fetch weather.';
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -24,9 +68,9 @@ class CivilianDashboardView extends StatelessWidget {
     bool riskFree = isRiskFree();
     Color riskCardColor = riskFree ? Colors.green[100]! : Colors.red[100]!;
     String riskText =
-    riskFree
-        ? "You are in a Risk-Free Zone"
-        : "You are in a High-Risk Zone!";
+        riskFree
+            ? "You are in a Risk-Free Zone"
+            : "You are in a High-Risk Zone!";
     Color riskTextColor = riskFree ? Colors.green[900]! : Colors.red[900]!;
 
     return CommonScaffold(
@@ -185,7 +229,7 @@ class CivilianDashboardView extends StatelessWidget {
                                   arguments: {
                                     'author': 'Disaster Response team',
                                     'content':
-                                    'A 6.2 magnitude earthquake struck Manipur today. Relief camps are being set up. Stay alert and follow safety protocols.',
+                                        'A 6.2 magnitude earthquake struck Manipur today. Relief camps are being set up. Stay alert and follow safety protocols.',
                                   },
                                 );
                               },
@@ -213,18 +257,36 @@ class CivilianDashboardView extends StatelessWidget {
                     children: [
                       const Icon(Icons.cloud, size: 48, color: Colors.blue),
                       const SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          TranslatableText(
-                            'Manipur, Imphal',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TranslatableText('28° | Sunny'),
-                        ],
+                      Expanded(
+                        // Added Expanded to prevent overflow if text is long
+                        child:
+                            _isLoading
+                                ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                                : _errorMessage != null
+                                ? TranslatableText(
+                                  _errorMessage!,
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 16,
+                                  ),
+                                )
+                                : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TranslatableText(
+                                      LocationService.currentCity ?? 'Unknown',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    TranslatableText(
+                                      '${_weatherData?['main']?['temp']?.toStringAsFixed(1) ?? '--'}°C | ${_weatherData?['weather']?[0]?['description'] ?? 'N/A'}',
+                                    ),
+                                  ],
+                                ),
                       ),
                     ],
                   ),
@@ -297,7 +359,10 @@ class CivilianDashboardView extends StatelessWidget {
       children: [
         Icon(icon, size: 20, color: Colors.grey[600]),
         const SizedBox(width: 4),
-        TranslatableText(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+        TranslatableText(
+          label,
+          style: const TextStyle(fontSize: 12, color: Colors.grey),
+        ),
       ],
     );
   }
