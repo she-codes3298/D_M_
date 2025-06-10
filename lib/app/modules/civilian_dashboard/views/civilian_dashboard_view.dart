@@ -255,35 +255,58 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.cloud, size: 48, color: Colors.blue),
+                      Icon(
+                        _getWeatherIcon(),
+                        size: 48,
+                        color: _getWeatherColor(),
+                      ),
                       const SizedBox(width: 16),
                       Expanded(
-                        // Added Expanded to prevent overflow if text is long
                         child:
                             _isLoading
-                                ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                                : _errorMessage != null
-                                ? TranslatableText(
-                                  _errorMessage!,
-                                  style: const TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 16,
-                                  ),
+                                ? const Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Loading weather...',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
                                 )
                                 : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     TranslatableText(
-                                      LocationService.currentCity ?? 'Unknown',
-                                      style: const TextStyle(
+                                      _getCityName(),
+                                      style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
+                                        color:
+                                            _errorMessage != null
+                                                ? Colors.red
+                                                : null,
                                       ),
                                     ),
+                                    const SizedBox(height: 2),
                                     TranslatableText(
-                                      '${_weatherData?['main']?['temp']?.toStringAsFixed(1) ?? '--'}°C | ${_weatherData?['weather']?[0]?['description'] ?? 'N/A'}',
+                                      _getWeatherInfo(),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color:
+                                            _errorMessage != null
+                                                ? Colors.red.shade700
+                                                : Colors.grey.shade700,
+                                      ),
                                     ),
                                   ],
                                 ),
