@@ -5,8 +5,11 @@ import 'package:d_m/app/common/widgets/common_scaffold.dart';
 import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
 import 'package:d_m/app/common/widgets/translatable_text.dart';
 
+import 'package:d_m/app/modules/user_marketplace.dart'; // Make sure this path is correct
 
-// Import the chatbot screen
+
+// Import the chatbot scree
+
 
 
 class CivilianDashboardView extends StatefulWidget {
