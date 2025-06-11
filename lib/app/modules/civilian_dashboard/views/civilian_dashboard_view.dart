@@ -23,11 +23,6 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
   final WeatherService _weatherService = WeatherService();
   String _weatherIconCode = '01d'; // default sunny icon
 
-  // Dummy function to check if the user is in a risk-free zone
-  bool isRiskFree() {
-    return DateTime.now().second % 2 == 0; // Example: Changes every second
-  }
-
   @override
   void initState() {
     super.initState();
@@ -165,17 +160,6 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
     final Color accentColor = const Color(0xFF5F6898);
     final Color communityBackground = const Color(0xFFE3F2FD);
 
-    // Determine the risk status dynamically
-    bool riskFree = isRiskFree();
-    Color riskCardColor = riskFree ? Colors.green[100]! : Colors.green[100]!;
-
-    String riskText =
-        riskFree
-            ? "You are in a Risk-Free Zone"
-            : "You are in a Risk-Free Zone!";
-
-    Color riskTextColor = riskFree ? Colors.green[900]! : Colors.green[900]!;
-
     return CommonScaffold(
       title: 'Dashboard',
       currentIndex: 0, // Home index
@@ -190,45 +174,6 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
                   children: [],
                 ),
                 const SizedBox(height: 8),
-
-                // RISK STATUS SECTION
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 8.0,
-                  ),
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: riskCardColor,
-                    borderRadius: BorderRadius.circular(8.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        blurRadius: 6,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        riskFree ? Icons.check_circle : Icons.warning,
-                        color: riskTextColor,
-                        size: 32,
-                      ),
-                      const SizedBox(width: 8),
-                      TranslatableText(
-                        riskText,
-                        style: TextStyle(
-                          color: riskTextColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
 
                 // COMMUNITY SECTION
                 Expanded(
