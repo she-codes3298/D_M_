@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
 
+final Color primaryColor = Color(0xFF5F6898);
+const Color lightBackground = Color(0xFFE3F2FD);
+const Color secondaryBackground = Color(0xFFBBDEFB);
+
 class CommonScaffold extends StatelessWidget {
   final Widget body;
   final String title;
@@ -31,11 +35,11 @@ class CommonScaffold extends StatelessWidget {
         leading: Builder(
           builder:
               (context) => IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer(); // Open the drawer
-            },
-          ),
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer(); // Open the drawer
+                },
+              ),
         ),
         actions: [
           IconButton(
@@ -86,7 +90,7 @@ class CommonScaffold extends StatelessWidget {
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 '/civilian_dashboard',
-                    (route) => false,
+                (route) => false,
               );
               break;
             case 1:
