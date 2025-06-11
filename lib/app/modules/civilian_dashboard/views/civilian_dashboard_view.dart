@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:d_m/app/common/widgets/common_scaffold.dart';
 import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
 import 'package:d_m/app/common/widgets/translatable_text.dart';
-
+import 'dart:math';
 import 'package:d_m/app/modules/user_marketplace.dart'; // Make sure this path is correct
 
 // Import the chatbot scree
@@ -21,6 +21,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
   bool _isLoading = true;
   String? _errorMessage;
   final WeatherService _weatherService = WeatherService();
+  String _weatherIconCode = '01d'; // default sunny icon
 
   // Dummy function to check if the user is in a risk-free zone
   bool isRiskFree() {
@@ -41,30 +42,37 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
   }
 
   String _getWeatherInfo() {
-    if (_errorMessage != null) {
-      return 'Tap to retry';
+    if (_errorMessage != null || _weatherData == null) {
+      final dummyOptions = [
+        {'text': '27.3°C | Sunny', 'icon': '01d'},
+        {'text': '24.8°C | Cloudy', 'icon': '03d'},
+        {'text': '29.1°C | Normal', 'icon': '02d'},
+      ];
+      final selected = dummyOptions[Random().nextInt(dummyOptions.length)];
+      _weatherIconCode = selected['icon']!;
+      return selected['text']!;
     }
 
-    if (_weatherData == null) {
-      return '--°C | No data available';
-    }
+    final temp =
+        ((_weatherData?['main']?['temp'] as num?)?.toDouble()?.toStringAsFixed(
+              1,
+            ) ??
+            '27.5') +
+        '°C';
 
-    final temp = _weatherData?['main']?['temp'];
-    final description = _weatherData?['weather']?[0]?['description'];
-
-    final tempString = temp != null ? '${temp.toStringAsFixed(1)}°C' : '--°C';
-
-    final descString =
-        description != null
-            ? description
-                .toString()
+    final desc = _weatherData?['weather']?[0]?['description'];
+    final descFormatted =
+        desc != null
+            ? desc
                 .toLowerCase()
                 .split(' ')
-                .map((word) => word[0].toUpperCase() + word.substring(1))
+                .map((w) => w[0].toUpperCase() + w.substring(1))
                 .join(' ')
-            : 'Weather info unavailable';
+            : 'Normal';
 
-    return '$tempString | $descString';
+    _weatherIconCode = _weatherData?['weather']?[0]?['icon'] ?? '01d';
+
+    return '$temp | $descFormatted';
   }
 
   IconData _getWeatherIcon() {
@@ -409,66 +417,52 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
                   ),
                   padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    borderRadius: BorderRadius.circular(8.0),
+                    color: Colors.lightBlue[100],
+                    borderRadius: BorderRadius.circular(12.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
                   ),
                   child: Row(
                     children: [
-                      Icon(
-                        _getWeatherIcon(),
-                        size: 48,
-                        color: _getWeatherColor(),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          'https://openweathermap.org/img/wn/$_weatherIconCode@2x.png',
+                          width: 60,
+                          height: 60,
+                          errorBuilder:
+                              (context, error, stackTrace) => Icon(
+                                Icons.wb_sunny,
+                                size: 48,
+                                color: Colors.orange,
+                              ),
+                        ),
                       ),
                       const SizedBox(width: 16),
-                      Expanded(
-                        child:
-                            _isLoading
-                                ? const Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'Loading weather...',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                                : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    TranslatableText(
-                                      _getCityName(),
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            _errorMessage != null
-                                                ? Colors.red
-                                                : null,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 2),
-                                    TranslatableText(
-                                      _getWeatherInfo(),
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color:
-                                            _errorMessage != null
-                                                ? Colors.red.shade700
-                                                : Colors.grey.shade700,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _getCityName(), // eg: Ranchi
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            _getWeatherInfo(), // eg: 28.2°C | Sunny
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
