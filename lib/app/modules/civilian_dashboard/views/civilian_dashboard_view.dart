@@ -6,6 +6,7 @@ import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
 import 'package:d_m/app/common/widgets/translatable_text.dart';
 import 'dart:math';
 import 'package:d_m/app/modules/user_marketplace.dart'; // Make sure this path is correct
+import 'package:d_m/app/common/widgets/active_disaster_card.dart';
 
 // Import the chatbot scree
 
@@ -168,6 +169,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
           SafeArea(
             child: Column(
               children: [
+                const ActiveDisasterCard(), // <-- ADD THIS LINE
                 // BUTTON TILES (Predictive AI and Learn)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

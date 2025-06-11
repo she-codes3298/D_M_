@@ -5,6 +5,8 @@ import 'package:geocoding/geocoding.dart';
 
 class LocationService {
   static String? _currentCity;
+  static double? _currentLatitude;
+  static double? _currentLongitude;
 
   static Future<void> requestLocationAndFCM() async {
     bool serviceEnabled;
@@ -36,6 +38,8 @@ class LocationService {
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
+    _currentLatitude = position.latitude;
+    _currentLongitude = position.longitude;
 
     // Convert coordinates to city name
     List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -61,4 +65,6 @@ class LocationService {
   }
 
   static String? get currentCity => _currentCity;
+  static double? get currentLatitude => _currentLatitude;
+  static double? get currentLongitude => _currentLongitude;
 }
