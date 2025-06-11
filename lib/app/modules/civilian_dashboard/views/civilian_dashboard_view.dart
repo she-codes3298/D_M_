@@ -79,6 +79,71 @@ class CivilianDashboardView extends StatelessWidget {
                   ),
                 ),
 
+                // ACTIVE DISASTER SECTION
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                    borderRadius: BorderRadius.circular(8.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.emergency,
+                        color: Colors.blueAccent,
+                        size: 32,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TranslatableText(
+                              'Active Disaster',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            TranslatableText(
+                              'Earthquake - Magnitude 6.2',
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontSize: 14,
+                              ),
+                            ),
+                            TranslatableText(
+                              'Location: Manipur, Imphal',
+                              style: TextStyle(
+                                color: Colors.black26,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.blueAccent,
+                        size: 16,
+                      ),
+                    ],
+                  ),
+                ),
+
                 // COMMUNITY SECTION
                 Expanded(
                   child: Container(
