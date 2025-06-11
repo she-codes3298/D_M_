@@ -1,15 +1,17 @@
 import 'package:d_m/app/common/widgets/translatable_text.dart';
+import 'package:d_m/app/common/widgets/common_scaffold.dart'; // Import CommonScaffold
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:d_m/app/common/widgets/common_scaffold.dart';
 
 class LearnPage extends StatelessWidget {
+  final Color primaryColor = const Color(0xFF5F6898);
+
   const LearnPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
       title: 'Virtual Training Guide',
-      currentIndex: 3,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
@@ -24,27 +26,26 @@ class LearnPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: ListTile(
-                leading: Icon(icon, size: 30, color: Color(0xFF5F6898)),
+                leading: Icon(icon, size: 30, color: primaryColor),
                 title: TranslatableText(
                   category,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF5F6898),
+                    color: primaryColor,
                   ),
                 ),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder:
-                          (context) => DisasterDetailPage(category: category),
+                      builder: (context) => DisasterDetailPage(category: category),
                     ),
                   );
                 },
                 trailing: Icon(
                   Icons.arrow_forward_ios,
-                  color: Color(0xFF5F6898),
+                  color: primaryColor,
                 ),
               ),
             );
@@ -57,6 +58,8 @@ class LearnPage extends StatelessWidget {
 
 class DisasterDetailPage extends StatelessWidget {
   final String category;
+  final Color primaryColor = const Color(0xFF5F6898);
+
   const DisasterDetailPage({super.key, required this.category});
 
   @override
@@ -66,14 +69,13 @@ class DisasterDetailPage extends StatelessWidget {
 
     return CommonScaffold(
       title: category,
-      currentIndex: 3,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-            TranslatableText(
+            const TranslatableText(
               '🌍 Causes:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -81,8 +83,8 @@ class DisasterDetailPage extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            TranslatableText(disasterInfo['causes'] ?? '', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 12),
+            TranslatableText(disasterInfo['causes'] ?? '', style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 12),
 
             TranslatableText(
               '✅ To-Do List:',
@@ -102,13 +104,13 @@ class DisasterDetailPage extends StatelessWidget {
                       color: Colors.green[700],
                       size: 18,
                     ),
-                    SizedBox(width: 8),
-                    Expanded(child: TranslatableText(item, style: TextStyle(fontSize: 16))),
+                    const SizedBox(width: 8),
+                    Expanded(child: TranslatableText(item, style: const TextStyle(fontSize: 16))),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
 
             TranslatableText(
               "❌ Don'ts:",
@@ -124,13 +126,13 @@ class DisasterDetailPage extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(Icons.cancel, color: Colors.red[700], size: 18),
-                    SizedBox(width: 8),
-                    Expanded(child: TranslatableText(item, style: TextStyle(fontSize: 16))),
+                    const SizedBox(width: 8),
+                    Expanded(child: TranslatableText(item, style: const TextStyle(fontSize: 16))),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
 
             if (disasterInfo['video']!.isNotEmpty)
               ElevatedButton.icon(
@@ -140,8 +142,8 @@ class DisasterDetailPage extends StatelessWidget {
                     await launchUrl(url);
                   }
                 },
-                icon: Icon(Icons.video_library),
-                label: TranslatableText('Watch Training Video'),
+                icon: const Icon(Icons.video_library),
+                label: const TranslatableText('Watch Training Video'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
                   foregroundColor: Colors.white,
@@ -156,8 +158,8 @@ class DisasterDetailPage extends StatelessWidget {
     );
   }
 }
-// Disaster Categories
 
+// Disaster Categories
 Map<String, IconData> disasterCategories = {
   'Earthquake': Icons.house, // Represents home safety
   'Flood': Icons.water, // Represents water-related disasters
@@ -191,7 +193,7 @@ Map<String, IconData> disasterCategories = {
   'Electrocution': Icons.electric_bolt, // Represents electrical hazards
 };
 
-// Disaster-Specific Do’s, Don'ts, and Video Links
+// Disaster-Specific Do's, Don'ts, and Video Links
 Map<String, Map<String, dynamic>> disasterDetails = {
   'Earthquake': {
     'causes':
@@ -210,7 +212,7 @@ Map<String, Map<String, dynamic>> disasterDetails = {
     ],
     'dont': [
       "Do not use elevators during or after an earthquake.",
-      "Do not rush outside if you’re in a high-rise building; use stairs after the shaking stops.",
+      "Do not rush outside if you're in a high-rise building; use stairs after the shaking stops.",
       "Do not light matches or candles immediately after a quake, as gas leaks may cause explosions.",
       "Do not stand under doorways, as they are no longer the safest places in modern buildings.",
       "Do not spread unverified information or rumors that could cause panic.",
