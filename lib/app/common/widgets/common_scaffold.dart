@@ -145,14 +145,15 @@ class CommonScaffold extends StatelessWidget {
   }
 
   // Build the drawer
+
   Widget _buildDrawer(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.blueGrey[300],
+      backgroundColor: lightBackground,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(color: Colors.grey[900]),
+            decoration: BoxDecoration(color: primaryColor),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -184,79 +185,56 @@ class CommonScaffold extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.person, color: Colors.white),
-            title: const Text("Profile", style: TextStyle(color: Colors.white)),
+            leading: Icon(Icons.person, color: primaryColor),
+            title: Text("Profile", style: TextStyle(color: primaryColor)),
             onTap: () {
-              Navigator.pop(context); // Close the drawer
-              Navigator.pushNamed(context, '/profile'); // Navigate to profile
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/profile');
             },
           ),
           ListTile(
-            leading: const Icon(Icons.group, color: Colors.white),
-            title: const Text(
-              "Community",
-              style: TextStyle(color: Colors.white),
-            ),
+            leading: Icon(Icons.group, color: primaryColor),
+            title: Text("Community", style: TextStyle(color: primaryColor)),
             onTap: () {
-              Navigator.pop(context); // Close the drawer
-              Navigator.pushNamed(
-                context,
-                '/community_history',
-              ); // Navigate to community
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/community_history');
             },
           ),
           ListTile(
-            leading: const Icon(Icons.help, color: Colors.white),
-            title: const Text("Help", style: TextStyle(color: Colors.white)),
+            leading: Icon(Icons.help, color: primaryColor),
+            title: Text("Help", style: TextStyle(color: primaryColor)),
             onTap: () {
-              // TODO: Implement help action
-              Navigator.pop(context); // Close the drawer
+              Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: const Icon(Icons.settings, color: Colors.white),
-            title: const Text(
-              "Settings",
-              style: TextStyle(color: Colors.white),
-            ),
+            leading: Icon(Icons.settings, color: primaryColor),
+            title: Text("Settings", style: TextStyle(color: primaryColor)),
             onTap: () {
-              // TODO: Implement settings action
-              Navigator.pop(context); // Close the drawer
+              Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: const Icon(Icons.info, color: Colors.white),
-            title: const Text(
-              "E-Sahyog",
-              style: TextStyle(color: Colors.white),
-            ),
+            leading: Icon(Icons.info, color: primaryColor),
+            title: Text("E-Sahyog", style: TextStyle(color: primaryColor)),
             onTap: () {
-              Navigator.pushNamed(
-                context,
-                '/ai_chatbot',
-              ); // Navigate to chatbot page
+              Navigator.pushNamed(context, '/ai_chatbot');
             },
           ),
           ListTile(
-            leading: const Icon(
-              Icons.monitor_heart_outlined,
-              color: Colors.white,
-            ),
-            title: const Text("Donate", style: TextStyle(color: Colors.white)),
+            leading: Icon(Icons.monitor_heart_outlined, color: primaryColor),
+            title: Text("Donate", style: TextStyle(color: primaryColor)),
             onTap: () {
-              Navigator.pop(context); // Close the drawer
-              Navigator.pushNamed(
-                context,
-                '/donate',
-              ); // Navigate to chatbot page
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/donate');
             },
           ),
-          const Divider(color: Colors.white30),
+          Divider(color: primaryColor.withOpacity(0.3)),
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
             title: const Text("Logout", style: TextStyle(color: Colors.red)),
             onTap: () {
-              Navigator.pop(context); // Close the drawer
+              Navigator.pop(context);
               ScaffoldMessenger.of(
                 context,
               ).showSnackBar(const SnackBar(content: Text('Signed Out')));
