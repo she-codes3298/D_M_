@@ -506,7 +506,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
                 Navigator.pushNamed(context, '/ai_chatbot');
               },
               child: Image.asset(
-                'assets/images/chatbot.png',
+                'assets/images/chatbot1.png',
                 width: 28,
                 height: 28,
               ),
