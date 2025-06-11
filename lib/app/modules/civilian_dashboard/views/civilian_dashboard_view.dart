@@ -7,10 +7,7 @@ import 'package:d_m/app/common/widgets/translatable_text.dart';
 
 import 'package:d_m/app/modules/user_marketplace.dart'; // Make sure this path is correct
 
-
 // Import the chatbot scree
-
-
 
 class CivilianDashboardView extends StatefulWidget {
   const CivilianDashboardView({super.key});
@@ -162,14 +159,14 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
 
     // Determine the risk status dynamically
     bool riskFree = isRiskFree();
-    Color riskCardColor = riskFree ? Colors.green[100]! : Colors.red[100]!;
+    Color riskCardColor = riskFree ? Colors.green[100]! : Colors.green[100]!;
 
     String riskText =
         riskFree
             ? "You are in a Risk-Free Zone"
-            : "You are in a High-Risk Zone!";
+            : "You are in a Risk-Free Zone!";
 
-    Color riskTextColor = riskFree ? Colors.green[900]! : Colors.red[900]!;
+    Color riskTextColor = riskFree ? Colors.green[900]! : Colors.green[900]!;
 
     return CommonScaffold(
       title: 'Dashboard',
@@ -487,16 +484,14 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
             child: FloatingActionButton(
               backgroundColor: Color(0xFF5F6898),
               heroTag: "marketplace", // Add unique hero tag
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const UserMarketplacePage(),
-                ),
-              ),
-              child: const Icon(
-                Icons.shopping_cart,
-                color: Colors.white,
-              ),
+              onPressed:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserMarketplacePage(),
+                    ),
+                  ),
+              child: const Icon(Icons.shopping_cart, color: Colors.white),
             ),
           ),
 
@@ -508,10 +503,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
               backgroundColor: accentColor,
               heroTag: "chatbot", // Add unique hero tag
               onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  '/ai_chatbot',
-                );
+                Navigator.pushNamed(context, '/ai_chatbot');
               },
               child: Image.asset(
                 'assets/images/chatbot.png',
