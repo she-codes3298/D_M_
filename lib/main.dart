@@ -12,6 +12,7 @@ import 'app/modules/ai_chatbot.dart';
 import 'package:flutter_gemini/flutter_gemini.dart'; // Import Gemini
 import 'package:firebase_core/firebase_core.dart';
 import 'app/modules/donate.dart';
+import 'app/modules/disaster_details/views/disaster_details_page.dart'; // Added import
 // Add this to the top of lib/main.dart
 import 'package:d_m/providers/language_provider.dart';
 import 'package:provider/provider.dart';
@@ -110,5 +111,6 @@ class MyApp extends StatelessWidget {
     '/profile': (context) => ProfilePage(),
     '/ai_chatbot': (context) => AIChatbotScreen(),
     '/donate': (context) => DonatePage(),
+    '/disaster_details': (context) => const DisasterDetailsPage(), // Added route
   };
 }
