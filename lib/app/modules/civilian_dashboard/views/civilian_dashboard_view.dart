@@ -5,10 +5,9 @@ import 'package:d_m/app/common/widgets/common_scaffold.dart';
 import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
 import 'package:d_m/app/common/widgets/translatable_text.dart';
 import 'dart:math';
-import 'package:d_m/app/modules/user_marketplace.dart'; // Make sure this path is correct
+import 'package:d_m/app/modules/user_marketplace.dart';
 import 'package:d_m/app/common/widgets/active_disaster_card.dart';
-
-// Import the chatbot scree
+import 'package:d_m/app/modules/disaster_details/views/disaster_details_page.dart';
 
 class CivilianDashboardView extends StatefulWidget {
   const CivilianDashboardView({super.key});
@@ -22,7 +21,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
   bool _isLoading = true;
   String? _errorMessage;
   final WeatherService _weatherService = WeatherService();
-  String _weatherIconCode = '01d'; // default sunny icon
+  String _weatherIconCode = '01d';
 
   @override
   void initState() {
@@ -51,20 +50,20 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
 
     final temp =
         ((_weatherData?['main']?['temp'] as num?)?.toDouble()?.toStringAsFixed(
-              1,
-            ) ??
+          1,
+        ) ??
             '27.5') +
-        '°C';
+            '°C';
 
     final desc = _weatherData?['weather']?[0]?['description'];
     final descFormatted =
-        desc != null
-            ? desc
-                .toLowerCase()
-                .split(' ')
-                .map((w) => w[0].toUpperCase() + w.substring(1))
-                .join(' ')
-            : 'Normal';
+    desc != null
+        ? desc
+        .toLowerCase()
+        .split(' ')
+        .map((w) => w[0].toUpperCase() + w.substring(1))
+        .join(' ')
+        : 'Normal';
 
     _weatherIconCode = _weatherData?['weather']?[0]?['icon'] ?? '01d';
 
@@ -81,7 +80,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
     }
 
     final weatherMain =
-        _weatherData?['weather']?[0]?['main']?.toString().toLowerCase();
+    _weatherData?['weather']?[0]?['main']?.toString().toLowerCase();
 
     switch (weatherMain) {
       case 'clear':
@@ -110,7 +109,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
     }
 
     final weatherMain =
-        _weatherData?['weather']?[0]?['main']?.toString().toLowerCase();
+    _weatherData?['weather']?[0]?['main']?.toString().toLowerCase();
 
     switch (weatherMain) {
       case 'clear':
@@ -160,34 +159,83 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
   Widget build(BuildContext context) {
     final Color accentColor = const Color(0xFF5F6898);
     final Color communityBackground = const Color(0xFFE3F2FD);
+    final Color disasterBackground = const Color(0xFFE3F2FD); // Same color as community
 
     return CommonScaffold(
       title: 'Dashboard',
-      currentIndex: 0, // Home index
+      currentIndex: 0,
       body: Stack(
         children: [
           SafeArea(
-            child: Column(
-              children: [
-                const ActiveDisasterCard(), // <-- ADD THIS LINE
-                // BUTTON TILES (Predictive AI and Learn)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [],
-                ),
-                const SizedBox(height: 8),
-
-                // COMMUNITY SECTION
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 8.0,
-                    ),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  // WEATHER CARD - Moved to top for better visibility
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 16.0),
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
-                      color: communityBackground,
-                      borderRadius: BorderRadius.circular(8.0),
+                      color: Colors.lightBlue[100],
+                      borderRadius: BorderRadius.circular(12.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          blurRadius: 6,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            'https://openweathermap.org/img/wn/$_weatherIconCode@2x.png',
+                            width: 60,
+                            height: 60,
+                            errorBuilder: (context, error, stackTrace) => const Icon(
+                              Icons.wb_sunny,
+                              size: 48,
+                              color: Colors.orange,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _getCityName(),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                _getWeatherInfo(),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey[800],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // ACTIVE DISASTER SECTION - Now tappable and handled by ActiveDisasterCard
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 16.0),
+                    padding: const EdgeInsets.all(16.0),
+                    height: 280, // Increased height for more content
+                    decoration: BoxDecoration(
+                      color: disasterBackground,
+                      borderRadius: BorderRadius.circular(12.0),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.3),
@@ -196,177 +244,222 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
                         ),
                       ],
                     ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Community Post Header
-                          Row(
-                            children: [
-                              const CircleAvatar(
-                                backgroundImage: AssetImage(
-                                  "assets/images/default_user.png",
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const TranslatableText(
-                                'NDRF - Disaster Response',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                icon: const Icon(Icons.more_vert),
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // Post Content
-                          const TranslatableText(
-                            'A 6.2 magnitude earthquake struck Manipur today, causing tremors across the region. Our teams are assessing damage, and emergency relief camps have been set up in Imphal and nearby areas. Citizens are advised to stay alert and follow safety protocols.',
-                            style: TextStyle(fontSize: 14),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // Earthquake Image
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image.asset(
-                              "assets/images/dummy_img.jpg",
-                              width: double.infinity,
-                              height: 200,
-                              fit: BoxFit.cover,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.warning_amber_rounded,
+                              color: Colors.red[600],
+                              size: 24,
                             ),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // Reaction Bar
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildReactionIcon(
-                                icon: Icons.thumb_up_alt_outlined,
-                                label: 'Like',
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Active Disasters',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
                               ),
-                              _buildReactionIcon(
-                                icon: Icons.mode_comment_outlined,
-                                label: 'Comment',
-                              ),
-                              _buildReactionIcon(
-                                icon: Icons.share_outlined,
-                                label: 'Share',
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // History Button
-                          Center(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  '/community_history',
-                                  arguments: {
-                                    'author': 'Disaster Response team',
-                                    'content':
-                                        'A 6.2 magnitude earthquake struck Manipur today. Relief camps are being set up. Stay alert and follow safety protocols.',
-                                  },
-                                );
-                              },
-                              child: const TranslatableText('View Community'),
                             ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: const ActiveDisasterCard(),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
 
-                // WEATHER CARD
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 8.0,
-                  ),
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue[100],
-                    borderRadius: BorderRadius.circular(12.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          'https://openweathermap.org/img/wn/$_weatherIconCode@2x.png',
-                          width: 60,
-                          height: 60,
-                          errorBuilder:
-                              (context, error, stackTrace) => Icon(
-                                Icons.wb_sunny,
-                                size: 48,
-                                color: Colors.orange,
-                              ),
+                  // COMMUNITY SECTION - Compact layout
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    height: 320, // Reduced height for more compact layout
+                    decoration: BoxDecoration(
+                      color: communityBackground,
+                      borderRadius: BorderRadius.circular(12.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _getCityName(), // eg: Ranchi
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Community Header
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.people_outline,
+                              color: Color(0xFF5F6898),
+                              size: 24,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Community Updates',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF5F6898),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+
+                        // Scrollable Community Content
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Community Post Header
+                                Row(
+                                  children: [
+                                    const CircleAvatar(
+                                      radius: 20,
+                                      backgroundImage: AssetImage(
+                                        "assets/images/default_user.png",
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    const Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          TranslatableText(
+                                            'NDRF - Disaster Response',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          Text(
+                                            '2 hours ago',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.more_vert, size: 20),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 12),
+
+                                // Post Content
+                                const TranslatableText(
+                                  'A 6.2 magnitude earthquake struck Manipur today, causing tremors across the region. Our teams are assessing damage, and emergency relief camps have been set up in Imphal and nearby areas. Citizens are advised to stay alert and follow safety protocols.',
+                                  style: TextStyle(fontSize: 13, height: 1.4),
+                                ),
+
+                                const SizedBox(height: 12),
+
+                                // Earthquake Image
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.asset(
+                                    "assets/images/dummy_img.jpg",
+                                    width: double.infinity,
+                                    height: 150,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+
+                                const SizedBox(height: 12),
+
+                                // Reaction Bar
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    _buildReactionIcon(
+                                      icon: Icons.thumb_up_alt_outlined,
+                                      label: 'Like',
+                                      count: '24',
+                                    ),
+                                    _buildReactionIcon(
+                                      icon: Icons.mode_comment_outlined,
+                                      label: 'Comment',
+                                      count: '8',
+                                    ),
+                                    _buildReactionIcon(
+                                      icon: Icons.share_outlined,
+                                      label: 'Share',
+                                      count: '12',
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            _getWeatherInfo(), // eg: 28.2°C | Sunny
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[800],
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        // View Community Button
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                '/community_history',
+                                arguments: {
+                                  'author': 'Disaster Response team',
+                                  'content':
+                                  'A 6.2 magnitude earthquake struck Manipur today. Relief camps are being set up. Stay alert and follow safety protocols.',
+                                },
+                              );
+                            },
+                            icon: const Icon(Icons.group, size: 18),
+                            label: const TranslatableText('View Full Community'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF5F6898),
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+
+                  // Add some bottom padding to avoid floating button overlap
+                  const SizedBox(height: 100),
+                ],
+              ),
             ),
           ),
 
           // Floating Ecommerce button
           Positioned(
-            bottom: 165, // Adjusted to avoid overlap
+            bottom: 165,
             right: 16,
             child: FloatingActionButton(
-              backgroundColor: Color(0xFF5F6898),
-              heroTag: "marketplace", // Add unique hero tag
-              onPressed:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const UserMarketplacePage(),
-                    ),
-                  ),
+              backgroundColor: const Color(0xFF5F6898),
+              heroTag: "marketplace",
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UserMarketplacePage(),
+                ),
+              ),
               child: const Icon(Icons.shopping_cart, color: Colors.white),
             ),
           ),
@@ -377,7 +470,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
             right: 16,
             child: FloatingActionButton(
               backgroundColor: accentColor,
-              heroTag: "chatbot", // Add unique hero tag
+              heroTag: "chatbot",
               onPressed: () {
                 Navigator.pushNamed(context, '/ai_chatbot');
               },
@@ -393,51 +486,46 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
     );
   }
 
-  // Helper widget for dashboard tile
-  Widget _buildDashboardTile({
-    required BuildContext context,
-    required String title,
-    required Color color,
-    required String routeName,
+  // Helper widget for reaction icons with counts
+  Widget _buildReactionIcon({
+    required IconData icon,
+    required String label,
+    String? count
   }) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, routeName);
-        },
-        child: Container(
-          margin: const EdgeInsets.all(8.0),
-          padding: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: Center(
-            child: TranslatableText(
-              title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
+    return InkWell(
+      onTap: () {
+        // Handle reaction tap
+      },
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Column(
+          children: [
+            Icon(icon, size: 20, color: Colors.grey[600]),
+            const SizedBox(height: 2),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (count != null) ...[
+                  Text(
+                    count,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(width: 2),
+                ],
+                TranslatableText(
+                  label,
+                  style: const TextStyle(fontSize: 11, color: Colors.grey),
+                ),
+              ],
             ),
-          ),
+          ],
         ),
       ),
-    );
-  }
-
-  // Helper widget for reaction icons
-  Widget _buildReactionIcon({required IconData icon, required String label}) {
-    return Row(
-      children: [
-        Icon(icon, size: 20, color: Colors.grey[600]),
-        const SizedBox(width: 4),
-        TranslatableText(
-          label,
-          style: const TextStyle(fontSize: 12, color: Colors.grey),
-        ),
-      ],
     );
   }
 }

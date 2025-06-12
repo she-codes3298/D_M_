@@ -4,6 +4,7 @@ import 'package:d_m/services/disaster_service.dart';
 import 'package:d_m/app/data/models/flood_prediction_response.dart';
 import 'package:d_m/app/data/models/cyclone_prediction_response.dart';
 import 'package:d_m/app/data/models/earthquake_prediction_response.dart';
+import 'package:d_m/app/modules/disaster_details/views/disaster_details_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ActiveDisasterCard extends StatefulWidget {
@@ -97,14 +98,14 @@ class _ActiveDisasterCardState extends State<ActiveDisasterCard> {
       // Consolidate error messages if any
       final errors = [floodError, cycloneError, earthquakeError].where((e) => e != null).toList();
       if (errors.isNotEmpty && _isMounted) {
-         setState(() {
-           // If all fail, show a general error. Otherwise, partial data might still be useful.
-           if (errors.length == 3) {
-              _errorMessage = 'Could not fetch disaster data. Please try again.';
-           } else {
-              _errorMessage = errors.join('\n'); // Or display them more granularly
-           }
-         });
+        setState(() {
+          // If all fail, show a general error. Otherwise, partial data might still be useful.
+          if (errors.length == 3) {
+            _errorMessage = 'Could not fetch disaster data. Please try again.';
+          } else {
+            _errorMessage = errors.join('\n'); // Or display them more granularly
+          }
+        });
       }
 
       // Update timestamp if any data was successfully fetched
@@ -134,223 +135,81 @@ class _ActiveDisasterCardState extends State<ActiveDisasterCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(16.0),
-      elevation: 4.0,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Active Disaster Scan',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: _isLoading ? null : _fetchDisasterData,
-                  tooltip: 'Refresh Data',
-                ),
-              ],
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DisasterDetailsPage(),
+            settings: RouteSettings(
+              arguments: {
+                'floodPrediction': _floodPrediction,
+                'cyclonePrediction': _cyclonePrediction,
+                'earthquakePrediction': _earthquakePrediction,
+              },
             ),
-            if (_lastUpdated != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 4.0, bottom: 8.0),
-                child: Text(
-                  'Last updated: ${_formatDateTime(_lastUpdated!)}',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
+          ),
+        );
+      },
+      child: Card(
+        margin: const EdgeInsets.all(16.0),
+        elevation: 4.0,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Active Disaster Scan',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: _isLoading ? null : _fetchDisasterData,
+                    tooltip: 'Refresh Data',
+                  ),
+                ],
               ),
-            const SizedBox(height: 16.0),
-            if (_isLoading)
-              const Center(child: CircularProgressIndicator())
-            else if (_errorMessage != null && _floodPrediction == null && _cyclonePrediction == null && _earthquakePrediction == null)
-              // Only show top-level error if all data is missing
-              Center(
-                child: Column(
-                  children: [
-                    Text(_errorMessage!, textAlign: TextAlign.center, style: const TextStyle(color: Colors.red, fontSize: 16)),
-                    const SizedBox(height: 8),
-                    ElevatedButton(onPressed: _fetchDisasterData, child: const Text('Retry'))
-                  ],
+              if (_lastUpdated != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0, bottom: 8.0),
+                  child: Text(
+                    'Last updated: ${_formatDateTime(_lastUpdated!)}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
                 ),
-              )
-            else
-              _buildDisasterInfo(),
-          ],
+              const SizedBox(height: 16.0),
+              if (_isLoading)
+                const Center(child: CircularProgressIndicator())
+              else if (_errorMessage != null && _floodPrediction == null && _cyclonePrediction == null && _earthquakePrediction == null)
+              // Only show top-level error if all data is missing
+                Center(
+                  child: Column(
+                    children: [
+                      Text(_errorMessage!, textAlign: TextAlign.center, style: const TextStyle(color: Colors.red, fontSize: 16)),
+                      const SizedBox(height: 8),
+                      ElevatedButton(onPressed: _fetchDisasterData, child: const Text('Retry'))
+                    ],
+                  ),
+                )
+              else
+                _buildDisasterInfo(),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildDisasterInfo() {
-    // Placeholder for now, will be expanded
-    List<Widget> children = [];
-
-    if (_floodPrediction != null) {
-      children.add(_buildFloodInfo(_floodPrediction!));
-      children.add(const Divider(height: 20));
-    } else if (_errorMessage != null && _errorMessage!.contains("Flood")) {
-      children.add(Text("Flood data: ${_errorMessage!.split('\n').firstWhere((e) => e.contains("Flood"), orElse: () => "Error")}", style: TextStyle(color: Colors.orange)));
-      children.add(const Divider(height: 20));
-    }
-
-
-    if (_cyclonePrediction != null) {
-      children.add(_buildCycloneInfo(_cyclonePrediction!));
-      children.add(const Divider(height: 20));
-    } else if (_errorMessage != null && _errorMessage!.contains("Cyclone")) {
-      children.add(Text("Cyclone data: ${_errorMessage!.split('\n').firstWhere((e) => e.contains("Cyclone"), orElse: () => "Error")}", style: TextStyle(color: Colors.orange)));
-      children.add(const Divider(height: 20));
-    }
-
-    if (_earthquakePrediction != null) {
-      children.add(_buildEarthquakeInfo(_earthquakePrediction!));
-    } else if (_errorMessage != null && _errorMessage!.contains("Earthquake")) {
-       children.add(Text("Earthquake data: ${_errorMessage!.split('\n').firstWhere((e) => e.contains("Earthquake"), orElse: () => "Error")}", style: TextStyle(color: Colors.orange)));
-    }
-
-    if (children.isEmpty && _errorMessage == null) {
-      // This case should ideally not happen if APIs return something or an error
-      return const Center(child: Text('No disaster data available at the moment.'));
-    }
-
-    // Remove last divider if it exists
-    if (children.isNotEmpty && children.last is Divider) {
-        children.removeLast();
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: children,
-    );
-  }
-
-  Widget _buildFloodInfo(FloodPredictionResponse flood) {
-    String risk = flood.floodRisk ?? "N/A";
-    Color riskColor = Colors.green;
-    if (risk.toLowerCase() == 'high') riskColor = Colors.red;
-    if (risk.toLowerCase() == 'medium') riskColor = Colors.orange;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(Icons.water_drop_outlined, color: Colors.blue.shade700),
-            const SizedBox(width: 8),
-            Text('Flood Prediction', style: Theme.of(context).textTheme.titleMedium),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Padding(
-          padding: const EdgeInsets.only(left: 32.0), // Indent details under icon/title
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('District: ${flood.matchedDistrict ?? "N/A"}'),
-              Row(
-                children: [
-                  Text('Risk: '),
-                  Text(risk, style: TextStyle(color: riskColor, fontWeight: FontWeight.bold)),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCycloneInfo(CyclonePredictionResponse cyclone) {
-    String condition = cyclone.cycloneCondition ?? "N/A";
-    Color conditionColor = Colors.grey; // Default for N/A or unknown
-    if (cyclone.cycloneCondition != null) { // Apply colors only if condition is not null
-        conditionColor = Colors.green; // Default for known conditions
-        if (condition.toLowerCase().contains('depression')) conditionColor = Colors.yellow.shade700;
-        if (condition.toLowerCase().contains('storm')) conditionColor = Colors.orange;
-        if (condition.toLowerCase().contains('cyclone') && !condition.toLowerCase().contains('no cyclone')) conditionColor = Colors.red;
-        if (condition.toLowerCase().contains('super cyclone')) conditionColor = Colors.purple.shade700;
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(Icons.cyclone_outlined, color: Colors.blueGrey.shade700),
-            const SizedBox(width: 8),
-            Text('Cyclone Prediction', style: Theme.of(context).textTheme.titleMedium),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Padding(
-          padding: const EdgeInsets.only(left: 32.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Condition: ${condition}', style: TextStyle(color: conditionColor, fontWeight: FontWeight.bold)),
-              Text('Location: ${cyclone.location?.district ?? "N/A"} (${cyclone.location?.latitude?.toStringAsFixed(2)}, ${cyclone.location?.longitude?.toStringAsFixed(2)})'),
-              if (cyclone.weatherData != null) ...[
-                Text('Wind Speed: ${cyclone.weatherData?.usaWind} m/s, Pressure: ${cyclone.weatherData?.usaPres} hPa'),
-              ]
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildEarthquakeInfo(EarthquakePredictionResponse earthquake) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(Icons.vibration_outlined, color: Colors.brown.shade700),
-            const SizedBox(width: 8),
-            Text('Earthquake Prediction', style: Theme.of(context).textTheme.titleMedium),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Padding(
-          padding: const EdgeInsets.only(left: 32.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (earthquake.highRiskCities != null && earthquake.highRiskCities!.isNotEmpty) ...[
-                Text('High-Risk Cities:', style: TextStyle(fontWeight: FontWeight.bold)),
-                ...earthquake.highRiskCities!.map((city) => Text('- ${city.city}, ${city.state} (Magnitude: ${city.magnitude})')).toList(),
-                if (earthquake.readMoreUrl != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: InkWell(
-                      child: Text('Read more', style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline)),
-                      onTap: () async {
-                        final Uri? url = Uri.tryParse(earthquake.readMoreUrl!);
-                        if (url != null) {
-                          if (!await launchUrl(url)) {
-                            // Log or show a snackbar if launching fails
-                            print('Could not launch ${earthquake.readMoreUrl}');
-                            if (_isMounted) { // Ensure widget is still mounted before showing snackbar
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Could not open link: ${earthquake.readMoreUrl}')),
-                              );
-                            }
-                          }
-                        }
-                      },
-                    ),
-                  ),
-              ] else
-                const Text('No specific high-risk cities identified currently.'),
-            ],
-          ),
-        ),
-      ],
+    return Center(
+      child: Text(
+        "Tap to view active disaster details.",
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
     );
   }
 

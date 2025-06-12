@@ -16,6 +16,7 @@ class LoginPageState extends State<LoginPage> {
   final _auth = FirebaseAuth.instance;
   bool _isLoading = false;
   bool _obscurePassword = true;
+  bool _isLoginMode = true; // Toggle between login and signup
 
   bool _validateInputs() {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
@@ -129,75 +130,145 @@ class LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.blue[100],
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const TranslatableText(
-                'Welcome to Aapda-Sanrakshan',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  labelStyle: TextStyle(color: Colors.black26),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                ),
-                style: TextStyle(color: Colors.black),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: _obscurePassword,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  labelStyle: TextStyle(color: Colors.black26),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Colors.black26,
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Card(
+            elevation: 12,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            color: Colors.white.withOpacity(0.95),
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
                     ),
+                    child: Icon(
+                      _isLoginMode ? Icons.login : Icons.person_add,
+                      size: 48,
+                      color: Color(0xFF5F6898),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: TranslatableText(
+                      _isLoginMode ? 'Welcome to Aapda-Sanrakshan' : 'Create Your Account',
+                      style: TextStyle(
+                        color: Color(0xFF5F6898),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  _buildTextField(_emailController, "Email"),
+                  const SizedBox(height: 20),
+                  _buildTextField(_passwordController, "Password", isPassword: true),
+                  const SizedBox(height: 30),
+                  _isLoading
+                      ? CircularProgressIndicator(
+                    color: Color(0xFF5F6898),
+                  )
+                      : SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: _isLoginMode ? _signIn : _signUp,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF5F6898),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 4,
+                      ),
+                      child: TranslatableText(
+                        _isLoginMode ? "LOGIN" : "SIGN UP",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextButton(
                     onPressed: () {
                       setState(() {
-                        _obscurePassword = !_obscurePassword;
+                        _isLoginMode = !_isLoginMode;
+                        // Clear any previous errors when switching modes
+                        ScaffoldMessenger.of(context).clearSnackBars();
                       });
                     },
-                  ),
-                ),
-                style: TextStyle(color: Colors.black),
-              ),
-              const SizedBox(height: 20),
-              _isLoading
-                  ? CircularProgressIndicator()
-                  : Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: _isLoading ? null : _signIn,
-                    child: const TranslatableText('Login'),
+                    child: TranslatableText(
+                      _isLoginMode
+                          ? "Don't have an account? Sign Up"
+                          : "Already have an account? Login",
+                      style: TextStyle(color: Color(0xFF5F6898)),
+                    ),
                   ),
                   const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: _isLoading ? null : _signUp,
-                    child: const TranslatableText('Sign Up'),
+                  TextButton(
+                    onPressed: () {
+                      // TODO: Implement password reset functionality
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: TranslatableText('Password reset feature coming soon!'),
+                          backgroundColor: Colors.orange,
+                        ),
+                      );
+                    },
+                    child: TranslatableText(
+                      "Forgot Password?",
+                      style: TextStyle(color: Color(0xFF5F6898)),
+                    ),
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label, {bool isPassword = false}) {
+    return TextField(
+      controller: controller,
+      obscureText: isPassword ? _obscurePassword : false,
+      style: TextStyle(color: Color(0xFF5F6898)),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Color(0xFF5F6898)),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF5F6898)!),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF5F6898)!, width: 2),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        suffixIcon: isPassword
+            ? IconButton(
+          icon: Icon(
+            _obscurePassword ? Icons.visibility : Icons.visibility_off,
+            color: Color(0xFF5F6898),
+          ),
+          onPressed: () {
+            setState(() {
+              _obscurePassword = !_obscurePassword;
+            });
+          },
+        )
+            : null,
       ),
     );
   }
