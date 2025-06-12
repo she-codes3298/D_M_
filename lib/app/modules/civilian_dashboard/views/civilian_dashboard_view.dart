@@ -7,6 +7,7 @@ import 'package:d_m/app/common/widgets/translatable_text.dart';
 import 'dart:math';
 import 'package:d_m/app/modules/user_marketplace.dart';
 import 'package:d_m/app/common/widgets/active_disaster_card.dart';
+import 'package:d_m/app/modules/disaster_details/views/disaster_details_page.dart';
 
 class CivilianDashboardView extends StatefulWidget {
   const CivilianDashboardView({super.key});
@@ -227,7 +228,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
                     ),
                   ),
 
-                  // ACTIVE DISASTER SECTION - Larger and scrollable
+                  // ACTIVE DISASTER SECTION - Now tappable and handled by ActiveDisasterCard
                   Container(
                     margin: const EdgeInsets.only(bottom: 16.0),
                     padding: const EdgeInsets.all(16.0),
@@ -297,7 +298,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
                           children: [
                             const Icon(
                               Icons.people_outline,
-                              color: Colors.blue,
+                              color: Color(0xFF5F6898),
                               size: 24,
                             ),
                             const SizedBox(width: 8),
@@ -306,7 +307,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.blue,
+                                color: Color(0xFF5F6898),
                               ),
                             ),
                           ],
@@ -426,7 +427,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
                             icon: const Icon(Icons.group, size: 18),
                             label: const TranslatableText('View Full Community'),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
+                              backgroundColor: Color(0xFF5F6898),
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               shape: RoundedRectangleBorder(

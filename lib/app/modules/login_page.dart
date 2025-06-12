@@ -151,7 +151,7 @@ class LoginPageState extends State<LoginPage> {
                     child: Icon(
                       _isLoginMode ? Icons.login : Icons.person_add,
                       size: 48,
-                      color: Colors.blue[800],
+                      color: Color(0xFF5F6898),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -159,7 +159,7 @@ class LoginPageState extends State<LoginPage> {
                     child: TranslatableText(
                       _isLoginMode ? 'Welcome to Aapda-Sanrakshan' : 'Create Your Account',
                       style: TextStyle(
-                        color: Colors.blue[800],
+                        color: Color(0xFF5F6898),
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
@@ -173,7 +173,7 @@ class LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 30),
                   _isLoading
                       ? CircularProgressIndicator(
-                    color: Colors.blue[800],
+                    color: Color(0xFF5F6898),
                   )
                       : SizedBox(
                     width: double.infinity,
@@ -181,7 +181,7 @@ class LoginPageState extends State<LoginPage> {
                     child: ElevatedButton(
                       onPressed: _isLoginMode ? _signIn : _signUp,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue[800],
+                        backgroundColor: Color(0xFF5F6898),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -210,7 +210,7 @@ class LoginPageState extends State<LoginPage> {
                       _isLoginMode
                           ? "Don't have an account? Sign Up"
                           : "Already have an account? Login",
-                      style: TextStyle(color: Colors.blue[800]),
+                      style: TextStyle(color: Color(0xFF5F6898)),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -226,7 +226,7 @@ class LoginPageState extends State<LoginPage> {
                     },
                     child: TranslatableText(
                       "Forgot Password?",
-                      style: TextStyle(color: Colors.blue[800]),
+                      style: TextStyle(color: Color(0xFF5F6898)),
                     ),
                   ),
                 ],
@@ -242,16 +242,16 @@ class LoginPageState extends State<LoginPage> {
     return TextField(
       controller: controller,
       obscureText: isPassword ? _obscurePassword : false,
-      style: TextStyle(color: Colors.blue[800]),
+      style: TextStyle(color: Color(0xFF5F6898)),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.blue[600]),
+        labelStyle: TextStyle(color: Color(0xFF5F6898)),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue[600]!),
+          borderSide: BorderSide(color: Color(0xFF5F6898)!),
           borderRadius: BorderRadius.circular(12),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue[800]!, width: 2),
+          borderSide: BorderSide(color: Color(0xFF5F6898)!, width: 2),
           borderRadius: BorderRadius.circular(12),
         ),
         filled: true,
@@ -260,7 +260,7 @@ class LoginPageState extends State<LoginPage> {
             ? IconButton(
           icon: Icon(
             _obscurePassword ? Icons.visibility : Icons.visibility_off,
-            color: Colors.blue[600],
+            color: Color(0xFF5F6898),
           ),
           onPressed: () {
             setState(() {
